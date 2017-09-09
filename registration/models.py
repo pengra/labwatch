@@ -8,3 +8,6 @@ class School(models.Model):
     contact_email = models.EmailField()
     auth_code = models.CharField(max_length=32, unique=True)
     school_image = models.URLField()
+
+    def __str__(self):
+        return self.name
