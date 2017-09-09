@@ -2,5 +2,6 @@ from django.conf.urls import url
 from index import views
 
 urlpatterns = [
-    url(r'', views.cover_view)
+    url(r'login/$', views.login_view, name='login'),
+    url(r'$', views.cover_view, name='index'),
 ]
