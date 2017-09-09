@@ -67,6 +67,8 @@ def dashboard_kiosk_view(request):
             'school': school,
             'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
             'kiosks': school.kiosk_set.all(),
+            'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
+            'primary_contact': request.user.associated_school.get().primary_contact,
         }
         return render(request, 'dashboard/kiosk.html', context)
 
