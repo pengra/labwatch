@@ -14,3 +14,13 @@ class School(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Kiosk(models.Model):
+    "An object representing a kiosk available for a school to use."
+    name = models.CharField(max_length=255)
+    school = models.ForeignKey(School)
+    auth_code = models.CharField(max_length=32, unique=True)
+
+    def __str__(self):
+        return self.name
