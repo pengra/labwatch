@@ -28,7 +28,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             # Upon succesful authentication, redirect to homepage
-            return redirect('index:index')
+            return redirect('index:dashboard')
         else:
             # Change context upon invalid login
             context = {
@@ -38,3 +38,16 @@ def login_view(request):
     # If made it all the way to the end, spew out
     # login form with context.
     return render(request, 'index/login.html', context)
+
+
+def dashboard_view(request):
+    "View for dashboards for librarians."
+    
+    context = {}
+
+    if request.user.is_authenticated: 
+        
+        return render(request, 'dashboard/index.html', context)
+
+    # user is not authenticated, redirect them to login page    
+    return redirect('index:login')
