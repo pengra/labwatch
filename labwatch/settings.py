@@ -25,7 +25,9 @@ SECRET_KEY = 'm&d6ko-l3o)_f%%-bk@kiz(89j+2v&rx0%4b#dceobgwv6f56k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'lab-watch.herokuapp.com'
+]
 
 
 # Application definition
