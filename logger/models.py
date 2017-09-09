@@ -30,6 +30,7 @@ class Student(models.Model):
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
+
 class Log(models.Model):
     "A timestamp on top of a card scan/name input."
 
@@ -42,12 +43,12 @@ class Log(models.Model):
         ('CARD', 'Card Scan'),
         ('NAME', 'Name input'),
     )
-    
+
     student = models.ForeignKey(Student)
     mode = models.CharField(max_length=3, choices=SIGN_MODE)
-    input_mode = models.CharField(max_length=4, choices=INPUT_MODE, default=INPUT_MODE[0][0])
+    input_mode = models.CharField(
+        max_length=4, choices=INPUT_MODE, default=INPUT_MODE[0][0])
     timestamp = models.DateTimeField(auto_now_add=True)
 
     # poll add on
     poll_answer = models.ForeignKey(PollChoice, blank=True, null=True)
-
