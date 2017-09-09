@@ -26,7 +26,8 @@ SECRET_KEY = 'm&d6ko-l3o)_f%%-bk@kiz(89j+2v&rx0%4b#dceobgwv6f56k'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'lab-watch.herokuapp.com'
+    'lab-watch.herokuapp.com',
+    '127.0.0.1'
 ]
 
 
