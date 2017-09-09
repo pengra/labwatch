@@ -47,7 +47,8 @@ def dashboard_view(request):
 
     if request.user.is_authenticated:
         context = {
-            "school": request.user.associated_school.get()
+            'school': request.user.associated_school.get(),
+            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
         }
         return render(request, 'dashboard/index.html', context)
 

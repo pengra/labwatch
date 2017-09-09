@@ -35,9 +35,16 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Profile</a>
           </li>
+
+          {% if is_engineer %}
           <li class="nav-item">
-            <a class="nav-link" href="#">Help</a>
-          </li>
+              <a class="nav-link" href="{% url 'admin:index' %}">[Engineer Zone]</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">Help</a>
+            </li>
+          {% endif %}
         </ul>
         <form class="form-inline mt-2 mt-md-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -88,7 +95,7 @@
         </nav>
 
         <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-          <h1>Dashboard</h1>
+          <h1>Poll Results</h1>
 
           <section class="row text-center placeholders">
             <div class="col-6 col-sm-3 placeholder">
@@ -113,7 +120,7 @@
             </div>
           </section>
 
-          <h2>Section title</h2>
+          <h2>Currently Logged In Students</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
