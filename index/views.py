@@ -42,12 +42,14 @@ def login_view(request):
 
 def dashboard_view(request):
     "View for dashboards for librarians."
-    
+
     context = {}
 
-    if request.user.is_authenticated: 
-        
+    if request.user.is_authenticated:
+        context = {
+            "school": request.user.associated_school.get()
+        }
         return render(request, 'dashboard/index.html', context)
 
-    # user is not authenticated, redirect them to login page    
+    # user is not authenticated, redirect them to login page
     return redirect('index:login')
