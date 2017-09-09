@@ -62,9 +62,11 @@ def dashboard_kiosk_view(request):
     context = {}
 
     if request.user.is_authenticated:
+        school =  request.user.associated_school.get()
         context = {
-            'school': request.user.associated_school.get(),
+            'school': school,
             'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+            'kiosks': school.kiosk_set.all(),
         }
         return render(request, 'dashboard/kiosk.html', context)
 
