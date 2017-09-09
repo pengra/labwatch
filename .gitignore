@@ -103,3 +103,6 @@ venv.bak/
 
 # testing for db
 db.sqlite3
+
+# secrets
+secrets.sh

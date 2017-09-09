@@ -1,0 +1,19 @@
+{% extends 'dashboard/_base.html' %}
+
+{% block dashboard_active %}active{% endblock %}
+{% block kiosk_active %}active{% endblock %}
+
+{% block content %}
+<h1>Existing Kiosks</h1>
+
+<section class="row text-center placeholders">
+    {% for kiosk in kiosks %}
+    <div class="col-6 col-sm-3 placeholder">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
+        alt="Generic placeholder thumbnail">
+        <h4>{{kiosk.school}}: {{kiosk.name}}</h4>
+        <div class="text-muted">code: {{kiosk.auth_code}}</div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}
