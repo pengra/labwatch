@@ -54,3 +54,19 @@ def dashboard_view(request):
 
     # user is not authenticated, redirect them to login page
     return redirect('index:login')
+
+
+def dashboard_kiosk_view(request):
+    "View for kiosk management."
+
+    context = {}
+
+    if request.user.is_authenticated:
+        context = {
+            'school': request.user.associated_school.get(),
+            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+        }
+        return render(request, 'dashboard/kiosk.html', context)
+
+    # user is not authenticated, redirect them to login page
+    return redirect('index:login')
