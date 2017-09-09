@@ -1,4 +1,5 @@
 from django.db import models
+from polls.models import PollChoice
 
 # Create your models here.
 
@@ -46,4 +47,7 @@ class Log(models.Model):
     mode = models.CharField(max_length=3, choices=SIGN_MODE)
     input_mode = models.CharField(max_length=4, choices=INPUT_MODE, default=INPUT_MODE[0][0])
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    # poll add on
+    poll_answer = models.ForeignKey(PollChoice, blank=True, null=True)
 
