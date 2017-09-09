@@ -42,7 +42,9 @@
                     </div>
                 {% endif %}
 
-                <form action="test" method="POST" id="kioskForm_{{kiosk.auth_code}}">
+                <form method="POST" id="kioskForm_{{kiosk.auth_code}}">
+                    <input type="hidden" value="{{kiosk.pk}}" name="pk">
+                    {% csrf_token %}
                     <div class="form-group row">
                         <label for="schoolName" class="col-sm-2 col-form-label">School</label>
                         <div class="col-sm-10">
@@ -65,10 +67,10 @@
                         <label for="kioskName" class="col-sm-2 col-form-label">Kiosk Status</label>
                         <div class="btn-group col-sm-10" data-toggle="buttons">
                             <label class="btn btn-secondary {% if kiosk.active %}active{% endif %}">
-                                <input type="radio" name="options" id="active_true" autocomplete="off" {% if kiosk.active %}checked{% endif %}> Active
+                                <input type="radio" name="active" value="true" autocomplete="off" {% if kiosk.active %}checked{% endif %}> Active
                             </label>
                             <label class="btn btn-secondary {% if not kiosk.active %}active{% endif %}">
-                                <input type="radio" name="options" id="active_false" autocomplete="off" {% if not kiosk.active %}checked{% endif %}> Disabled
+                                <input type="radio" name="active" value="false" autocomplete="off" {% if not kiosk.active %}checked{% endif %}> Disabled
                             </label>
                         </div>
                     </div>
@@ -90,6 +92,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item text-danger" href="#">Delete</a>
+                            <a class="dropdown-item text-danger" href="#">Reset Kiosk Code</a>
                         </div>
                     </div>
                     <button type="button" class="btn btn-primary" onclick="$('#kioskForm_{{kiosk.auth_code}}').submit();">Save changes</button>
