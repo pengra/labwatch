@@ -169,24 +169,32 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
-    <section class="header" style="margin-top: 10vh; text-align: center;">
-      <img src="{{school.school_image}}" />
-      <h2 class="title" id="instructions">Hello<span id="name"> {{school}}, Please Sign in!</span></h2>
-      <div class="twelve columns">
-        <input class="u-full-width" type="text" autofocus onclick="$(this).focus()" placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
-          id="cardinput">
-      </div>
-    </section>
-  </div>
-  <div class="container">
-    <section class="header" id="poll" style="text-align: center;">
-      {% if poll_q %}
-      <h3 class="title">Daily Poll: {{poll_q}}</h3>
-      {% for i in poll_a %}
-      <button class="btn btn-large poll-option" onclick="highlightButton(this); submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
-      {% endfor %} 
-      {% endif %}
-    </section>
+    {% if kiosk.active %}
+      <section class="header" style="margin-top: 10vh; text-align: center;">
+        <img src="{{school.school_image}}" />
+        <h2 class="title" id="instructions">Hello<span id="name"> {{school}}, Please Sign in!</span></h2>
+        <div class="twelve columns">
+          <input class="u-full-width" type="text" autofocus onclick="$(this).focus()" placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
+            id="cardinput">
+        </div>
+      </section>
+    </div>
+    <div class="container">
+      <section class="header" id="poll" style="text-align: center;">
+        {% if poll_q %}
+        <h3 class="title">Daily Poll: {{poll_q}}</h3>
+        {% for i in poll_a %}
+        <button class="btn btn-large poll-option" onclick="highlightButton(this); submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
+        {% endfor %} 
+        {% endif %}
+      </section>
+    {% else %}
+      <section class="header" style="margin-top: 10vh; text-align: center;">
+        <img src="{{school.school_image}}" />
+        <h2 class="title" id="instructions">This kiosk is currently disabled.</span></h2>
+        <p>If you're the manager of this kiosk, please activate it via your dashboard.</p>
+      </section>
+    {% endif %}
   </div>
 
   <!-- End Document
