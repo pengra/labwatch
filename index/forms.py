@@ -33,11 +33,15 @@ class LoginForm(forms.Form):
 
     def is_valid_name(self):
         "Is this a valid name this person just typed in?"
+        is_one_space_min = len(self.cleaned_data.get('return_value', '').split(' ')) > 1
+        return self.is_valid_nickname() and is_one_space_min        
+
+    def is_valid_nickname(self):
+        "is this a valid nickname this person just yped in?"
         is_valid = self.is_valid()
         is_box = self.cleaned_data.get('mode') == '_box'
         is_text = self.cleaned_data.get('return_value', '1').replace(' ', '').replace('-', '').isalpha()
-        is_one_space_min = len(self.cleaned_data.get('return_value', '').split(' ')) > 1
-        return is_valid and is_box and is_text and is_one_space_min
+        return is_valid and is_box and is_text
 
     def is_valid_poll(self):
         "Is this a valid poll option coming through?"

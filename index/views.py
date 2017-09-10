@@ -67,6 +67,7 @@ def dashboard_view(request):
                 'school': schools[0],
                 'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
             }
+        
         return render(request, 'dashboard/index.html', context)
 
     # user is not authenticated, redirect them to login page
@@ -178,7 +179,22 @@ def kiosk_view(request, auth_code=None):
             }
             found = True
 
-        # Student typed in their name or nickname
+        # Student typed in their nickname
+        if not found and client_data.is_valid_nickname():
+            name = client_data.cleaned_data['return_value']
+            nickname = Student.objects.filter(nick_name__iexact=name)
+            if len(nickname):
+                student = nickname[0]
+                response['nick'] = True
+                found = True
+
+            response['student'] = {
+                'fname': student.first_name,
+                'status_before_sign': student.signed_in
+            }
+
+
+        # Student typed in their name
         if not found and client_data.is_valid_name():
             name = client_data.cleaned_data['return_value']
             fname = name.split(' ', 1)[0]
@@ -188,7 +204,6 @@ def kiosk_view(request, auth_code=None):
                 first_name__iexact=fname, last_name__iexact=lname.replace(' ', ''))
             spaces = Student.objects.filter(
                 first_name__iexact=fname, last_name__iexact=lname)
-            nickname = Student.objects.filter(nick_name__iexact=name)
 
             # Get student or 404
             if len(no_spaces):
@@ -197,9 +212,6 @@ def kiosk_view(request, auth_code=None):
             elif len(spaces):
                 student = spaces[0]
                 response['name'] = True
-            elif len(nickname):
-                student = nickname[0]
-                response['nick'] = True
             else:
                 raise Http404()
 
