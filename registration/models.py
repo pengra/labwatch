@@ -24,4 +24,4 @@ class Kiosk(models.Model):
     active = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return "{} {}".format(self.school, self.name)
