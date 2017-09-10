@@ -66,6 +66,7 @@ def dashboard_view(request):
             context = {
                 'school': schools[0],
                 'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+                'logged_in_students': Student.objects.filter(school=schools[0], signed_in=True)
             }
         
         return render(request, 'dashboard/index.html', context)
