@@ -51,7 +51,7 @@
         return cookieValue;
     }
 
-    var defaultName = "{{school}}, Please Sign in!";
+    var defaultName = " {{school}}, Please Sign in!";
     var lastPerson = "{{school}}"
     var ableToVote = false;
     
@@ -76,7 +76,7 @@
           .done(function (data) {
             // Success!
             lastPerson = data.student.fname;
-            $("#name").text(lastPerson);
+            $("#name").text(' ' + lastPerson + '!');
             $('#instructions').effect('bounce')
             ableToVote = true;
             $('#poll').fadeTo('fast', 1);
@@ -96,7 +96,14 @@
           })
           .fail(function () {
             // Fail!
-            $("#name").text(defaultName);
+            $("#name").text(", Could you try that again?");
+            $('#instructions').css('color', 'red');
+            $('#instructions').effect('bounce');
+            
+            setTimeout(function() {
+              $("#name").text(defaultName);
+              $('#instructions').css('color', 'black');
+            }, 2000)
           })
           .always(function () {
             // At the end of every fail/okay
@@ -129,7 +136,7 @@
   <div class="container">
     <section class="header" style="margin-top: 10vh; text-align: center;">
       <img src="{{school.school_image}}" />
-      <h2 class="title" id="instructions">Hello <span id="name">{{school}}, Please Sign in!</span></h2>
+      <h2 class="title" id="instructions">Hello<span id="name"> {{school}}, Please Sign in!</span></h2>
       <div class="twelve columns">
         <input class="u-full-width" type="text" autofocus onclick="$(this).focus()" placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
           id="cardinput">
