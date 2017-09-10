@@ -113,7 +113,7 @@
             $(".poll-option").removeClass('button-primary')
           });
       } else if (event.type == 'click' && mode.startsWith('_poll_')) {
-        if (ableToVote || !ableToVote) {
+        if (ableToVote) {
           $.ajaxSetup({
             headers: {"X-CSRFToken": getCookie('csrftoken')}
           });
