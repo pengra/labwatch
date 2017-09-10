@@ -249,3 +249,9 @@ def kiosk_poll_view(request, auth_code):
 
     # Never handle non-post queries
     raise Http404
+
+def kiosk_ping_json(request, auth_code):
+    "View just for pinging."
+    return JsonResponse({
+        'enabled': Kiosk.objects.get(auth_code=auth_code).active
+    })
