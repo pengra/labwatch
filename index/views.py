@@ -229,3 +229,23 @@ def kiosk_view(request, auth_code=None):
             "poll_a": poll_a,
         }
         return render(request, 'kiosk/_base.html', context)
+
+
+def kiosk_poll_view(request, auth_code):
+    "View just for poll submissions"
+    if request.method == 'POST':
+        pollquestion = PollQuestion.objects.filter(
+            kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
+
+        poll_response = forms.LoginForm(request.POST)
+
+        if poll_response.is_valid_poll():
+            answer = pollquestion.pollchoice_set.filter(choice_text__iexact=poll_response.cleaned_data['return_value'])
+            if answer:
+                return JsonResponse({"okay": True, "question": str(pollquestion), "answer": str(answer[0])})
+            return JsonResponse({"okay": False, 'question': str(pollquestion)})
+
+        return JsonResponse({"okay": False})
+
+    # Never handle non-post queries
+    raise Http404
