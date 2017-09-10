@@ -6,7 +6,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Skeleton: Responsive CSS Boilerplate</title>
+  <title>{{kiosk}}</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -31,6 +31,35 @@
     crossorigin="anonymous"></script>
 
 
+  <script>
+    var defaultName = "{{school}}";
+
+    function submitAjaxOnEnter(mode, event) {
+      if (event.keyCode == 13 && mode == '_box') {
+        var payload = {
+          type: "POST",
+          url: location.href,
+          data: {
+            mode: "_box",
+            value: $("#cardinput").value,
+            csrf_token: '{{csrf_token}}'
+          }
+        };
+        $.ajax(payload).done(function (data) {
+          $("#name").text("test");
+        }).fail(function () {
+          $("#name").text("fail");
+        }).always(function() {
+          $("#cardinput").val('');
+          $("#cardinput").focus();
+        });
+      } else if (event.type == 'click' && mode.startsWith('_poll_')) {
+        console.log(event);
+      }
+      
+    }
+  </script>
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="/favicon.ico">
@@ -38,16 +67,21 @@
 </head>
 
 <body class="code-snippets-visible">
-
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <section class="header" style="margin-top: 10vh; text-align: center;">
       <img src="{{school.school_image}}" />
-      <h2 class="title">Hello {{school}}</h2>
+      <h2 class="title">Hello <span id="name">{{school}}</span></h2>
       <div class="twelve columns">
-        <input class="u-full-width" type="text" autofocus placeholder="Scan your ID or type your name" id="exampleEmailInput">
+        <input class="u-full-width" type="text" autofocus placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
+          id="cardinput">
       </div>
+    </section>
+    <section class="header" style="text-align: center;">
+      <h3 class="title">Daily Poll: {{poll_q}}</h3>
+      {% for i in poll_a %}
+      <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> {% endfor %}
     </section>
   </div>
 
@@ -55,4 +89,5 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 </body>
+
 </html>
