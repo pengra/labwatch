@@ -228,6 +228,9 @@ def kiosk_view(request, auth_code=None):
             found = True
 
         if found:
+            student.signed_in = not student.signed_in
+            student.save()
+
             return JsonResponse(response)
 
         raise Http404
