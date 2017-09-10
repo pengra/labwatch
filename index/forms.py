@@ -19,22 +19,27 @@ class LoginForm(forms.Form):
     def is_valid_card_number(self):
         "Is this a card number the user just typed in?"
         is_valid = self.is_valid()
-        is_box = self.cleaned_data['mode'] == '_box'
-        is_numeric = self.cleaned_data['return_value'].isdigit()
+        is_box = self.cleaned_data.get('mode') == '_box'
+        is_numeric = self.cleaned_data.get('return_value', '').isdigit()
         return is_valid and is_box and is_numeric
 
     def is_valid_email(self):
         "Is this an email this person just typed in?"
         is_valid = self.is_valid()
-        is_box = self.cleaned_data['mode'] == '_box'
-        contains_at = "@" in self.cleaned_data['return_value']
-        contains_period = '.' in self.cleaned_data['return_value']
+        is_box = self.cleaned_data.get('mode') == '_box'
+        contains_at = "@" in self.cleaned_data.get('return_value', '')
+        contains_period = '.' in self.cleaned_data.get('return_value', '')
         return is_valid and is_box and contains_at and contains_period
 
     def is_valid_name(self):
         "Is this a valid name this person just typed in?"
         is_valid = self.is_valid()
-        is_box = self.cleaned_data['mode'] == '_box'
-        is_text = self.cleaned_data['return_value'].replace(' ', '').replace('-', '').isalpha()
-        is_one_space_min = len(self.cleaned_data['return_value'].split(' ')) > 1
+        is_box = self.cleaned_data.get('mode') == '_box'
+        is_text = self.cleaned_data.get('return_value', '1').replace(' ', '').replace('-', '').isalpha()
+        is_one_space_min = len(self.cleaned_data.get('return_value', '').split(' ')) > 1
         return is_valid and is_box and is_text and is_one_space_min
+
+    def is_valid_poll(self):
+        "Is this a valid poll option coming through?"
+        is_valid = self.is_valid()
+        is_poll = self.cleaned_data['']
