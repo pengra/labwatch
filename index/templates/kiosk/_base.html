@@ -49,8 +49,10 @@
         return cookieValue;
     }
 
-    var defaultName = "{{school}}";
+    var defaultName = "{{school}}, Please Sign in!";
+    var lastPerson = "{{school}}"
     var ableToVote = false;
+    
 
     function submitAjaxOnEnter(mode, event) {
       if (event.keyCode == 13 && mode == '_box') {
@@ -71,12 +73,27 @@
           })
           .done(function (data) {
             // Success!
-            $("#name").text("test");
+            lastPerson = data.student.fname;
+            $("#name").text(lastPerson);
             ableToVote = true;
+            $('#poll').fadeTo('fast', 1);
+            
+            // Student hello only lasts for 2 seconds
+            setTimeout(function() {
+              $("#name").text(defaultName);
+            }, 2000)
+
+            // Students only have 10 seconds to vote
+            // Otherwise just fade back
+            setTimeout(function() {
+              ableToVote = false;
+              $('#poll').fadeTo('fast', 0.33);
+            }, 10000)
+
           })
           .fail(function () {
             // Fail!
-            $("#name").text("fail");
+            $("#name").text(defaultName);
           })
           .always(function () {
             // At the end of every fail/okay
@@ -86,7 +103,7 @@
           });
       } else if (event.type == 'click' && mode.startsWith('_poll_')) {
         if (ableToVote) {
-          // Send some data
+          $('#poll').fadeTo('fast', 0.33);
         } else {
           // Gotta sign in first!
         }
@@ -103,23 +120,25 @@
 
 </head>
 
-<body class="code-snippets-visible">
+<body class="code-snippets-visible" onkeydown='$("#cardinput").focus();'>
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <section class="header" style="margin-top: 10vh; text-align: center;">
       <img src="{{school.school_image}}" />
-      <h2 class="title">Hello <span id="name">{{school}}</span></h2>
+      <h2 class="title">Hello <span id="name">{{school}}, Please Sign in!</span></h2>
       <div class="twelve columns">
-        <input class="u-full-width" type="text" autofocus placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
+        <input class="u-full-width" type="text" autofocus onclick="$(this).focus()" placeholder="Scan your ID or type your name" onkeydown="submitAjaxOnEnter('_box', event);"
           id="cardinput">
       </div>
     </section>
-    <section class="header" style="text-align: center;">
+  </div>
+  <div class="container">
+    <section class="header" id="poll" style="text-align: center;">
       {% if poll_q %}
       <h3 class="title">Daily Poll: {{poll_q}}</h3>
       {% for i in poll_a %}
-      <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
+      <button class="btn btn-large poll-option" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
       {% endfor %} 
       {% endif %}
     </section>
@@ -129,5 +148,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 </body>
-{% csrf_token %}
+<script>
+  $('#poll').fadeTo( "fast", 0.33 );
+</script>
 </html>
