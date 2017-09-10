@@ -2,12 +2,16 @@
 the Index app basically serves as the primary location for
 all forms and views. These are all the generic views.
 """
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from index import forms
-from registration.models import Kiosk, School
-from polls.models import PollChoice, PollQuestion
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404, Http404
+
 from random import shuffle
+
+from index import forms
+from polls.models import PollChoice, PollQuestion
+from logger.models import Student, Log
+from registration.models import Kiosk, School
 
 
 def cover_view(request):
@@ -139,16 +143,89 @@ def dashboard_kiosk_view(request):
 
 def kiosk_view(request, auth_code=None):
     "Default view for kiosks. Point chromium locks here."
-    kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
-    pollquestion = PollQuestion.objects.filter(kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
-    if pollquestion:
-        poll_a = pollquestion.pollchoice_set.all()
+
+    if request.method == 'POST':
+
+        client_data = forms.LoginForm(request.POST)
+        response = {
+            'card': False,
+            'email': False,
+            'name': False,
+            'nick': False,
+            'student': None
+        }
+        found = False
+
+        # Student scanned their card
+        if client_data.is_valid_card_number():
+            student = get_object_or_404(
+                Student, student_id=client_data.cleaned_data['return_value'])
+            response['card'] = True
+            response['student'] = {
+                "fname": student.first_name,
+                "status_before_sign": student.signed_in,
+            }
+            found = True
+
+        # Student typed in an email
+        if not found and client_data.is_valid_email():
+            student = get_object_or_404(
+                Student, email=client_data.cleaned_data['return_value'])
+            response['email'] = True
+            response['student'] = {
+                "fname": student.first_name,
+                "status_before_sign": student.signed_in
+            }
+            found = True
+
+        # Student typed in their name or nickname
+        if not found and client_data.is_valid_name():
+            name = client_data.cleaned_data['return_value']
+            fname = name.split(' ', 1)[0]
+            lname = name.split(' ', 1)[1]
+
+            no_spaces = Student.objects.filter(
+                first_name__iexact=fname, last_name__iexact=lname.replace(' ', ''))
+            spaces = Student.objects.filter(
+                first_name__iexact=fname, last_name__iexact=lname)
+            nickname = Student.objects.filter(nick_name__iexact=name)
+
+            # Get student or 404
+            if len(no_spaces):
+                student = no_spaces[0]
+                response['name'] = True
+            elif len(spaces):
+                student = spaces[0]
+                response['name'] = True
+            elif len(nickname):
+                student = nickname[0]
+                response['nick'] = True
+            else:
+                raise Http404()
+
+            response['student'] = {
+                'fname': student.first_name,
+                'status_before_sign': student.signed_in
+            }
+
+            found = True
+
+        if found:
+            return JsonResponse(response)
+        raise Http404
+
     else:
-        poll_a = []
-    context = {
-        "kiosk": kiosk,
-        "school": kiosk.school,
-        "poll_q": pollquestion,
-        "poll_a": poll_a,
-    }
-    return render(request, 'kiosk/_base.html', context)
+        kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
+        pollquestion = PollQuestion.objects.filter(
+            kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
+        if pollquestion:
+            poll_a = pollquestion.pollchoice_set.all()
+        else:
+            poll_a = []
+        context = {
+            "kiosk": kiosk,
+            "school": kiosk.school,
+            "poll_q": pollquestion,
+            "poll_a": poll_a,
+        }
+        return render(request, 'kiosk/_base.html', context)
