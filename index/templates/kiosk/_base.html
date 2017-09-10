@@ -32,31 +32,68 @@
 
 
   <script>
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     var defaultName = "{{school}}";
+    var ableToVote = false;
 
     function submitAjaxOnEnter(mode, event) {
       if (event.keyCode == 13 && mode == '_box') {
-        var payload = {
-          type: "POST",
-          url: location.href,
-          data: {
-            mode: "_box",
-            value: $("#cardinput").value,
-            csrf_token: '{{csrf_token}}'
-          }
-        };
-        $.ajax(payload).done(function (data) {
-          $("#name").text("test");
-        }).fail(function () {
-          $("#name").text("fail");
-        }).always(function() {
-          $("#cardinput").val('');
-          $("#cardinput").focus();
+        // Ajax payload
+        
+        $.ajaxSetup({
+          headers: {"X-CSRFToken": getCookie('csrftoken')}
         });
+
+        $.ajax({
+            type: "POST",
+            url: location.href,
+            data: {
+              mode: "_box",
+              return_value: $("#cardinput")[0].value,
+              csrf_token: '{{csrf_token}}'
+            }
+          })
+          .done(function (data) {
+            // Success!
+            $("#name").text("test");
+            ableToVote = true;
+          })
+          .fail(function () {
+            // Fail!
+            $("#name").text("fail");
+          })
+          .always(function () {
+            // At the end of every fail/okay
+            // wipe the slate clean
+            $("#cardinput").val('');
+            $("#cardinput").focus();
+          });
       } else if (event.type == 'click' && mode.startsWith('_poll_')) {
-        console.log(event);
+        if (ableToVote) {
+          // Send some data
+        } else {
+          // Gotta sign in first!
+        }
+        ableToVote = false;
+        $("#cardinput").focus();
       }
-      
+
     }
   </script>
 
@@ -80,10 +117,10 @@
     </section>
     <section class="header" style="text-align: center;">
       {% if poll_q %}
-        <h3 class="title">Daily Poll: {{poll_q}}</h3>
-        {% for i in poll_a %}
-          <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
-        {% endfor %}
+      <h3 class="title">Daily Poll: {{poll_q}}</h3>
+      {% for i in poll_a %}
+      <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
+      {% endfor %} 
       {% endif %}
     </section>
   </div>
@@ -92,5 +129,5 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 </body>
-
+{% csrf_token %}
 </html>
