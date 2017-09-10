@@ -63,10 +63,12 @@ def dashboard_view(request):
                 'school': False
             }
         else:
+            logged_in = Student.objects.filter(school=schools[0], signed_in=True)
             context = {
                 'school': schools[0],
                 'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-                'logged_in_students': Student.objects.filter(school=schools[0], signed_in=True),
+                'logged_in_students': logged_in,
+                'len_students': len(logged_in),
                 'kiosk_active': len(schools[0].kiosk_set.filter(active=True)),
             }
         
@@ -185,15 +187,16 @@ def kiosk_view(request, auth_code=None):
         if not found and client_data.is_valid_nickname():
             name = client_data.cleaned_data['return_value']
             nickname = Student.objects.filter(nick_name__iexact=name)
+
             if len(nickname):
                 student = nickname[0]
                 response['nick'] = True
                 found = True
 
-            response['student'] = {
-                'fname': student.first_name,
-                'status_before_sign': student.signed_in
-            }
+                response['student'] = {
+                    'fname': student.first_name,
+                    'status_before_sign': student.signed_in
+                }
 
 
         # Student typed in their name
@@ -226,6 +229,7 @@ def kiosk_view(request, auth_code=None):
 
         if found:
             return JsonResponse(response)
+
         raise Http404
 
     else:
