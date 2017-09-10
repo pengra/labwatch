@@ -24,7 +24,7 @@ class Student(models.Model):
         max_length=2, choices=YEAR_IN_SCHOOL_CHOICES, blank=True)
 
     # School association
-    school = models.ForeignKey(School, help_text="School this student attends.", null=True, blank=True)
+    school = models.ForeignKey(School, help_text="School this student attends.", null=True)
 
     # Potential future uses
     email = models.EmailField(blank=True, help_text="Student can submit email if they choose to")
