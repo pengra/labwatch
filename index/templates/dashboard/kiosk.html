@@ -97,6 +97,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 {% if is_librarian %}
+                    {% if kiosk.active %}
+                        <button class="btn btn-info">Preview Kiosk</button>
+                    {% endif %}
                     <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Dangerous Options
@@ -137,6 +140,10 @@
             </div>
             <div class="modal-body">
                 {% if is_librarian %}
+
+                <div class="alert alert-primary" role="alert">
+                    Make sure you have the Kiosk Code written down! Never share your Kiosk code!
+                </div>
 
                 <form method="POST" id="kioskForm_create">
                         {% csrf_token %}
