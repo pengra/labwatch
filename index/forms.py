@@ -7,4 +7,5 @@ class KioskForm(forms.Form):
     active = forms.CharField()
     auth_code = forms.CharField()
     pk = forms.IntegerField()
+    proxy_method = forms.CharField(required=False)
     
