@@ -11,7 +11,9 @@
     <div class="col-6 col-sm-3 placeholder text-center">
         <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
         alt="Generic placeholder thumbnail">
-        <h4>{{kiosk.school}}: {{kiosk.name}}</h4>
+        <h4>{{kiosk.school}}: {{kiosk.name}} 
+            {% if not kiosk.active %}<span class="badge badge-danger">Disabled</span>{% endif %}
+        </h4>
         <div style="margin-top: 5px">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kiosk_{{kiosk.auth_code}}">
                 Kiosk Options
@@ -34,11 +36,13 @@
                 
                 {% if kiosk.active %}
                     <div class="alert alert-success" role="alert">
-                        Kiosk is currently active
+                        Kiosk is currently active<hr/>
+                        Important Reminder: Never share your kiosk code!
                     </div>
                 {% else %}
                     <div class="alert alert-danger" role="alert">
-                        Kiosk is currently disabled
+                        Kiosk is currently disabled<hr/>
+                        Important Reminder: Never share your kiosk code!
                     </div>
                 {% endif %}
 
