@@ -92,7 +92,6 @@ def dashboard_kiosk_view(request):
 
         if request.method == 'POST':
             kiosk_put_form = forms.KioskForm(request.POST)
-            import pdb; pdb.set_trace()
             if kiosk_put_form.is_valid():
                 proxy_method = kiosk_put_form.cleaned_data.get('proxy_method').lower()
                 if proxy_method == '': proxy_method = 'put'
