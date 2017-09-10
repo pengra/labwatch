@@ -66,7 +66,8 @@ def dashboard_view(request):
             context = {
                 'school': schools[0],
                 'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-                'logged_in_students': Student.objects.filter(school=schools[0], signed_in=True)
+                'logged_in_students': Student.objects.filter(school=schools[0], signed_in=True),
+                'kiosk_active': len(schools[0].kiosk_set.filter(active=True)),
             }
         
         return render(request, 'dashboard/index.html', context)
