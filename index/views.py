@@ -266,17 +266,17 @@ def kiosk_poll_view(request, auth_code):
             answer = pollquestion.pollchoice_set.filter(
                 choice_text__iexact=poll_response.cleaned_data['return_value'])
 
-            # Update log with choice
-            log = get_object_or_404(
-                Log, pk=poll_response.cleaned_data['log_pk'])
-            log.poll_choice = answer
-            log.save()
-
-            # Update pollchoice vote count
-            answer.votes = answer.votes + 1
-            answer.save()
-
             if answer:
+                # Update log with choice
+                log = get_object_or_404(
+                    Log, pk=poll_response.cleaned_data['log_pk'])
+                log.poll_answer = answer[0]
+                log.save()
+
+                # Update pollchoice vote count
+                answer[0].votes = answer[0].votes + 1
+                answer[0].save()
+
                 return JsonResponse({"okay": True, "question": str(pollquestion), "answer": str(answer[0])})
 
     # Never handle non-post queries
