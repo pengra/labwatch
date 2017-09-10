@@ -52,7 +52,7 @@
     }
 
     var defaultName = " {{school}}, Please Sign in!";
-    var lastPerson = "{{school}}"
+    var lastLog = -1;
     var ableToVote = false;
     
 
@@ -75,19 +75,18 @@
           })
           .done(function (data) {
             // Success!
-            lastPerson = data.student.fname;
-            
             if (data.student.status_before_sign) {
               // Student logging out
-              $("#name").text(' ' + lastPerson + ', Thanks for dropping by!');
+              $("#name").text(' ' + data.student.fname + ', Thanks for dropping by!');
             } else {
               // Student logging in
-              $("#name").text(' ' + lastPerson + '!');
+              $("#name").text(' ' + data.student.fname + '!');
+              lagLog = data.log;
               ableToVote = true;
+              $('#poll').fadeTo('fast', 1);
             }
 
             $('#instructions').effect('bounce');
-            $('#poll').fadeTo('fast', 1);
             
             // Student hello only lasts for 2 seconds
             setTimeout(function() {
@@ -133,6 +132,7 @@
             data: {
               mode: "_poll",
               return_value: mode.replace('_poll_', ''),
+              log_pk: lastLog,
               csrf_token: '{{csrf_token}}'
             }
           })
