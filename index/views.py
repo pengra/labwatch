@@ -141,9 +141,10 @@ def kiosk_view(request, auth_code=None):
     "Default view for kiosks. Point chromium locks here."
     kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
     pollquestion = PollQuestion.objects.filter(kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
-    import pdb; pdb.set_trace()
     context = {
+        "kiosk": kiosk,
         "school": kiosk.school,
         "poll_q": pollquestion,
+        "poll_a": pollquestion.pollchoice_set.all(),
     }
     return render(request, 'kiosk/_base.html', context)
