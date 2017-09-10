@@ -27,6 +27,9 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -40,14 +43,16 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <section class="header" style="margin-top: 10vh; text-align: center;">
-      <img src="{{school.school_image}}"/>
+      <img src="{{school.school_image}}" />
       <h2 class="title">Hello {{school}}</h2>
       <div class="twelve columns">
-        <input class="u-full-width" type="email" autofocus placeholder="Scan your ID or type your name" id="exampleEmailInput">
+        <input class="u-full-width" type="text" autofocus placeholder="Scan your ID or type your name" id="exampleEmailInput">
       </div>
+    </section>
+  </div>
 
-    <!-- End Document
+  <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-</body>
 
+</body>
 </html>
