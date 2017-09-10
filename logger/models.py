@@ -43,6 +43,9 @@ class Log(models.Model):
     INPUT_MODE = (
         ('CARD', 'Card Scan'),
         ('NAME', 'Name input'),
+        ('EMAL', 'Email'),
+        ('NICK', 'Nickname input'),
+        ('ADMI', 'Admin input')
     )
 
     student = models.ForeignKey(Student)
