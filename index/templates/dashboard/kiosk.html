@@ -98,7 +98,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 {% if is_librarian %}
                     {% if kiosk.active %}
-                        <button class="btn btn-info">Preview Kiosk</button>
+                        <a style="color: white;" class="btn btn-info" href="{% url 'index:kiosk-page' kiosk.auth_code %}">Preview Kiosk</a>
                     {% endif %}
                     <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
