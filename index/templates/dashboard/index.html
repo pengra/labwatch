@@ -4,32 +4,19 @@
 {% block overview_active %}active{% endblock %}
 
 {% block content %}
-<h1>Poll Results: "{{poll_question}}"</h1>
-
-<section class="row text-center placeholders">
-  <div class="col-6 col-sm-3 placeholder">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
-      alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <div class="text-muted">Something else</div>
-  </div>
-  <div class="col-6 col-sm-3 placeholder">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
-      alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
-  </div>
-  <div class="col-6 col-sm-3 placeholder">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
-      alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
-  </div>
-  <div class="col-6 col-sm-3 placeholder">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle"
-      alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
+<section class="row placeholders">
+  <div class="col-12 placeholder">
+      <div class="alert alert-info" role="alert">
+        Hey {{user|capfirst}},<br>
+        Keep in mind everything you're seeing is a WIP.
+        Things are subject to change without notice! We appreciate your
+        patience. If you spot a bug, please report it to us.<br>
+        Thanks for your continued support.
+        <hr/>
+        Happy Reading!
+        <br/>
+        &lt;/The LabWatch Team&gt;
+      </div>
   </div>
 </section>
 
