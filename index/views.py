@@ -63,7 +63,8 @@ def dashboard_view(request):
                 'school': False
             }
         else:
-            logged_in = Student.objects.filter(school=schools[0], signed_in=True)
+            logged_in = Student.objects.filter(
+                school=schools[0], signed_in=True)
             context = {
                 'school': schools[0],
                 'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
@@ -71,7 +72,7 @@ def dashboard_view(request):
                 'len_students': len(logged_in),
                 'kiosk_active': len(schools[0].kiosk_set.filter(active=True)),
             }
-        
+
         return render(request, 'dashboard/index.html', context)
 
     # user is not authenticated, redirect them to login page
@@ -153,10 +154,7 @@ def kiosk_view(request, auth_code=None):
 
         client_data = forms.LoginForm(request.POST)
         response = {
-            'card': False,
-            'email': False,
-            'name': False,
-            'nick': False,
+            'input_mode': -1,
             'student': None
         }
         found = False
@@ -165,22 +163,16 @@ def kiosk_view(request, auth_code=None):
         if client_data.is_valid_card_number():
             student = get_object_or_404(
                 Student, student_id=client_data.cleaned_data['return_value'])
-            response['card'] = True
-            response['student'] = {
-                "fname": student.first_name,
-                "status_before_sign": student.signed_in,
-            }
+            response['input_mode'] = 0
+
             found = True
 
         # Student typed in an email
         if not found and client_data.is_valid_email():
             student = get_object_or_404(
                 Student, email=client_data.cleaned_data['return_value'])
-            response['email'] = True
-            response['student'] = {
-                "fname": student.first_name,
-                "status_before_sign": student.signed_in
-            }
+            response['input_mode'] = 2
+
             found = True
 
         # Student typed in their nickname
@@ -190,14 +182,8 @@ def kiosk_view(request, auth_code=None):
 
             if len(nickname):
                 student = nickname[0]
-                response['nick'] = True
+                response['input_mode'] = 3
                 found = True
-
-                response['student'] = {
-                    'fname': student.first_name,
-                    'status_before_sign': student.signed_in
-                }
-
 
         # Student typed in their name
         if not found and client_data.is_valid_name():
@@ -213,23 +199,38 @@ def kiosk_view(request, auth_code=None):
             # Get student or 404
             if len(no_spaces):
                 student = no_spaces[0]
-                response['name'] = True
+                response['input_mode'] = 1
             elif len(spaces):
                 student = spaces[0]
-                response['name'] = True
+                response['input_mode'] = 1
             else:
                 raise Http404()
-
-            response['student'] = {
-                'fname': student.first_name,
-                'status_before_sign': student.signed_in
-            }
 
             found = True
 
         if found:
+
+            # Create response
+            response['student'] = {
+                "fname": student.first_name,
+                "status_before_sign": student.signed_in,
+                "pk": student.pk,
+            }
+
+            # opposite, so if student was signed in, they're
+            # now signing out.
+            signing_out = student.signed_in
+
+            # toggle sign in status
             student.signed_in = not student.signed_in
             student.save()
+
+            # create log
+            Log(
+                student=student,
+                mode=Log.SIGN_MODE[signing_out][0],
+                input_mode=response['input_mode'],
+            ).save()
 
             return JsonResponse(response)
 
@@ -261,7 +262,8 @@ def kiosk_poll_view(request, auth_code):
         poll_response = forms.LoginForm(request.POST)
 
         if poll_response.is_valid_poll():
-            answer = pollquestion.pollchoice_set.filter(choice_text__iexact=poll_response.cleaned_data['return_value'])
+            answer = pollquestion.pollchoice_set.filter(
+                choice_text__iexact=poll_response.cleaned_data['return_value'])
             if answer:
                 return JsonResponse({"okay": True, "question": str(pollquestion), "answer": str(answer[0])})
             return JsonResponse({"okay": False, 'question': str(pollquestion)})
@@ -270,6 +272,7 @@ def kiosk_poll_view(request, auth_code):
 
     # Never handle non-post queries
     raise Http404
+
 
 def kiosk_ping_json(request, auth_code):
     "View just for pinging."
