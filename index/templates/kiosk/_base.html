@@ -79,9 +79,12 @@
       </div>
     </section>
     <section class="header" style="text-align: center;">
-      <h3 class="title">Daily Poll: {{poll_q}}</h3>
-      {% for i in poll_a %}
-      <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> {% endfor %}
+      {% if poll_q %}
+        <h3 class="title">Daily Poll: {{poll_q}}</h3>
+        {% for i in poll_a %}
+          <button class="btn btn-large" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
+        {% endfor %}
+      {% endif %}
     </section>
   </div>
 
