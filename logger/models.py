@@ -60,3 +60,6 @@ class Log(models.Model):
 
     # poll add on
     poll_answer = models.ForeignKey(PollChoice, blank=True, null=True)
+
+    def __str__(self):
+        return "{}: {}".format(self.student, self.mode)
