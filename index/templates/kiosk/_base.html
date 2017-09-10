@@ -113,15 +113,40 @@
             $(".poll-option").removeClass('button-primary')
           });
       } else if (event.type == 'click' && mode.startsWith('_poll_')) {
-        if (ableToVote) {
+        if (ableToVote || !ableToVote) {
+          $.ajaxSetup({
+            headers: {"X-CSRFToken": getCookie('csrftoken')}
+          });
+          
           $('#poll').fadeTo('fast', 0.33);
+            $.ajax({
+              type: "POST",
+              url: location.href + 'poll/',
+              data: {
+                mode: "_poll",
+                return_value: mode.replace('_poll_', ''),
+                csrf_token: '{{csrf_token}}'
+              }
+          })
+          .done(function (data) {
+            // Success!
+
+          })
+          .fail(function () {
+            // Fail!
+            
+          })
+          .always(function () {
+            // At the end of every fail/okay
+            // wipe the slate clean
+            
+          });
         } else {
           $('#instructions').effect('bounce');
         }
         ableToVote = false;
         $("#cardinput").focus();
       }
-
     }
 
     function highlightButton(button) {
