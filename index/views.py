@@ -52,10 +52,17 @@ def dashboard_view(request):
     context = {}
 
     if request.user.is_authenticated:
-        context = {
-            'school': request.user.associated_school.get(),
-            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-        }
+        schools = request.user.associated_school.all()
+
+        if len(schools) == 0:
+            context = {
+                'school': False
+            }
+        else:
+            context = {
+                'school': schools[0],
+                'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+            }
         return render(request, 'dashboard/index.html', context)
 
     # user is not authenticated, redirect them to login page
