@@ -76,9 +76,17 @@
           .done(function (data) {
             // Success!
             lastPerson = data.student.fname;
-            $("#name").text(' ' + lastPerson + '!');
-            $('#instructions').effect('bounce')
-            ableToVote = true;
+            
+            if (data.student.status_before_sign) {
+              // Student logging out
+              $("#name").text(' ' + lastPerson + ', Thanks for dropping by!');
+            } else {
+              // Student logging in
+              $("#name").text(' ' + lastPerson + '!');
+              ableToVote = true;
+            }
+
+            $('#instructions').effect('bounce');
             $('#poll').fadeTo('fast', 1);
             
             // Student hello only lasts for 2 seconds
