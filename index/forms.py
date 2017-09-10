@@ -42,4 +42,5 @@ class LoginForm(forms.Form):
     def is_valid_poll(self):
         "Is this a valid poll option coming through?"
         is_valid = self.is_valid()
-        is_poll = self.cleaned_data['']
+        is_poll = self.cleaned_data.get('mode') == '_poll'
+        return is_valid and is_poll
