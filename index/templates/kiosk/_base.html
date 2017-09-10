@@ -110,17 +110,27 @@
             // wipe the slate clean
             $("#cardinput").val('');
             $("#cardinput").focus();
+            $(".poll-option").removeClass('button-primary')
           });
       } else if (event.type == 'click' && mode.startsWith('_poll_')) {
         if (ableToVote) {
           $('#poll').fadeTo('fast', 0.33);
         } else {
-          $('#instructions').effect('bounce')
+          $('#instructions').effect('bounce');
         }
         ableToVote = false;
         $("#cardinput").focus();
       }
 
+    }
+
+    function highlightButton(button) {
+      if (ableToVote) {
+        $(button).addClass('button-primary');
+        setTimeout(function() {
+          $(button).removeClass('button-primary');
+        }, 1000);
+      }
     }
   </script>
 
@@ -148,7 +158,7 @@
       {% if poll_q %}
       <h3 class="title">Daily Poll: {{poll_q}}</h3>
       {% for i in poll_a %}
-      <button class="btn btn-large poll-option" onclick="submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
+      <button class="btn btn-large poll-option" onclick="highlightButton(this); submitAjaxOnEnter('_poll_{{i}}', event);">{{i}}</button> 
       {% endfor %} 
       {% endif %}
     </section>
