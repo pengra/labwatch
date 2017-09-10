@@ -119,14 +119,14 @@
           });
           
           $('#poll').fadeTo('fast', 0.33);
-            $.ajax({
-              type: "POST",
-              url: location.href + 'poll/',
-              data: {
-                mode: "_poll",
-                return_value: mode.replace('_poll_', ''),
-                csrf_token: '{{csrf_token}}'
-              }
+          $.ajax({
+            type: "POST",
+            url: location.href + 'poll/',
+            data: {
+              mode: "_poll",
+              return_value: mode.replace('_poll_', ''),
+              csrf_token: '{{csrf_token}}'
+            }
           })
           .done(function (data) {
             // Success!
@@ -203,5 +203,25 @@
 </body>
 <script>
   $('#poll').fadeTo( "fast", 0.33 );
+  
+    $.ajaxSetup({
+      headers: {"X-CSRFToken": getCookie('csrftoken')}
+    });
+    setInterval(function() {
+      $.ajax({
+        type: "GET",
+        url: location.href + 'ping/',
+      }).done(function(data) {
+        {% if kiosk.active %}
+        if (!data.enabled)
+        {% else %}
+        if (data.enabled)
+        {% endif %}
+          location.reload();
+        
+      });
+    }, 30000);
+  
+  
 </script>
 </html>
