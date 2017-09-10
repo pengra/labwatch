@@ -226,12 +226,13 @@ def kiosk_view(request, auth_code=None):
             student.save()
 
             # create log
-            Log(
+            log = Log(
                 student=student,
                 mode=Log.SIGN_MODE[signing_out][0],
-                input_mode=response['input_mode'],
-            ).save()
-
+                input_mode=Log.INPUT_MODE[response['input_mode']][0],
+            )
+            log.save()
+            response['log'] = log.pk
             return JsonResponse(response)
 
         raise Http404
