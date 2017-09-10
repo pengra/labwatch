@@ -75,13 +75,13 @@
           })
           .done(function (data) {
             // Success!
+            lastLog = data.log;
             if (data.student.status_before_sign) {
               // Student logging out
               $("#name").text(' ' + data.student.fname + ', Thanks for dropping by!');
             } else {
               // Student logging in
               $("#name").text(' ' + data.student.fname + '!');
-              lagLog = data.log;
               ableToVote = true;
               $('#poll').fadeTo('fast', 1);
             }
