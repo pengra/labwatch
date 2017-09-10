@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from index import forms
 from registration.models import Kiosk, School
+from polls.models import PollChoice, PollQuestion
 from random import shuffle
 
 
@@ -96,8 +97,6 @@ def dashboard_kiosk_view(request):
                 proxy_method = kiosk_put_form.cleaned_data.get(
                     'proxy_method').lower()
                 if proxy_method == '':
-                    proxy_method = 'put'
-                if proxy_method == 'put':
                     existing_kiosk = Kiosk.objects.get(
                         pk=kiosk_put_form.cleaned_data['pk'],
                         auth_code=kiosk_put_form.cleaned_data['auth_code']
@@ -134,7 +133,10 @@ def dashboard_kiosk_view(request):
 def kiosk_view(request, auth_code=None):
     "Default view for kiosks. Point chromium locks here."
     kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
+    pollquestion = PollQuestion.objects.filter(kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
+    import pdb; pdb.set_trace()
     context = {
-        "school": kiosk.school
+        "school": kiosk.school,
+        "poll_q": pollquestion,
     }
     return render(request, 'kiosk/_base.html', context)
