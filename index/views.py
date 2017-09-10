@@ -2,7 +2,7 @@
 the Index app basically serves as the primary location for
 all forms and views. These are all the generic views.
 """
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from index import forms
 from registration.models import Kiosk, School
@@ -129,3 +129,12 @@ def dashboard_kiosk_view(request):
 
     # user is not authenticated, redirect them to login page
     return redirect('index:login')
+
+
+def kiosk_view(request, auth_code=None):
+    "Default view for kiosks. Point chromium locks here."
+    kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
+    context = {
+        "school": kiosk.school
+    }
+    return render(request, 'kiosk/_base.html', context)
