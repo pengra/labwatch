@@ -164,6 +164,7 @@ def kiosk_view(request, auth_code=None):
 
         # Student scanned their card
         if client_data.is_valid_card_number():
+            import pdb; pdb.set_trace()
             student = get_object_or_404(
                 Student, student_id=client_data.cleaned_data['return_value'],
                 school=school)
@@ -221,7 +222,7 @@ def kiosk_view(request, auth_code=None):
                 "fname": student.first_name,
                 "status_before_sign": student.signed_in,
                 "pk": student.pk,
-                "school": school,
+                "school": str(school),
             }
 
             # opposite, so if student was signed in, they're
