@@ -303,7 +303,7 @@ def dashboard_poll_view(request):
                     answers = question.pollchoice_set.all()
                 else:
                     answers = None
-                
+
                 poll_management_context.append([kiosk, question, answers])
 
             context = {
@@ -311,5 +311,5 @@ def dashboard_poll_view(request):
                 "kiosks": poll_management_context,
             }
         return render(request, 'dashboard/poll.html', context)
-    
+
     return redirect('index:login')
