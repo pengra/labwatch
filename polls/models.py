@@ -16,7 +16,7 @@ class PollQuestion(models.Model):
 
 class PollChoice(models.Model):
     "A choice for a question."
-    question = models.ForeignKey(PollQuestion, on_delete=models.CASCADE)
+    question = models.ForeignKey(PollQuestion, on_delete=models.CASCADE, null=True, blank=True)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
