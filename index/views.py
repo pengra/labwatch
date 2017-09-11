@@ -164,7 +164,6 @@ def kiosk_view(request, auth_code=None):
 
         # Student scanned their card
         if client_data.is_valid_card_number():
-            import pdb; pdb.set_trace()
             student = get_object_or_404(
                 Student, student_id=client_data.cleaned_data['return_value'],
                 school=school)
