@@ -58,4 +58,6 @@ class PollMangementForm(forms.Form):
     "Form for librarian/teacher managing the polls."
     question = forms.CharField()
     answers = forms.CharField()
+    pk = forms.IntegerField()
     method_proxy = forms.CharField()
+
