@@ -250,6 +250,7 @@ def kiosk_view(request, auth_code=None):
             "school": kiosk.school,
             "poll_q": pollquestion,
             "poll_a": poll_a,
+            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
         }
         return render(request, 'kiosk/_base.html', context)
 
@@ -310,6 +311,7 @@ def dashboard_poll_view(request):
                 "school": school[0],
                 "kiosks": poll_management_context,
                 'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
+                'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
             }
         return render(request, 'dashboard/poll.html', context)
 
