@@ -306,7 +306,8 @@ def dashboard_poll_view(request):
             if poll_form.is_valid():
                 if poll_form.cleaned_data['method_proxy'] == 'CREATE':
                     # creating a new poll
-                    kiosk = get_object_or_404(Kiosk, pk=poll_form.cleaned_data['pk'])
+                    kiosk = get_object_or_404(
+                        Kiosk, pk=poll_form.cleaned_data['pk'])
                     question = PollQuestion(
                         question_text=poll_form.cleaned_data['question'],
                     )
@@ -328,7 +329,7 @@ def dashboard_poll_view(request):
                     pass
             else:
                 context['form_error'] = "Invalid Form Submission. Try again."
-                    
+
         if school:
             poll_management_context = []
 
