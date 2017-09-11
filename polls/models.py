@@ -16,6 +16,8 @@ class PollQuestion(models.Model):
 
 class PollChoice(models.Model):
     "A choice for a question."
+    # allowed to be null so the teacher can delete a poll choice but still have it show up
+    # under student sign in logs.
     question = models.ForeignKey(PollQuestion, on_delete=models.CASCADE, null=True, blank=True)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
