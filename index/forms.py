@@ -52,3 +52,10 @@ class LoginForm(forms.Form):
         is_poll = self.cleaned_data.get('mode') == '_poll'
         contains_pk = 'log_pk' in self.data
         return is_valid and is_poll and contains_pk
+
+
+class PollMangementForm(forms.Form):
+    "Form for librarian/teacher managing the polls."
+    question = forms.CharField()
+    answers = forms.CharField()
+    method_proxy = forms.CharField()
