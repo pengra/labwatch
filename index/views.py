@@ -309,6 +309,7 @@ def dashboard_poll_view(request):
             context = {
                 "school": school[0],
                 "kiosks": poll_management_context,
+                'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
             }
         return render(request, 'dashboard/poll.html', context)
 
