@@ -83,8 +83,9 @@
             </div>
             <div class="modal-body">
                 
-                <form method="post">
+                <form method="post" id="put_{{kiosk.0.pk}}">
                     {% csrf_token %}
+                    <input type="hidden" name="pk" value="{{kiosk.0.pk}}">
                     <input type="hidden" name="method_proxy" value="PUT">
                     <div class="form-group">
                         <label for="poll-question" class="form-control-label">Poll Question</label>
@@ -101,7 +102,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" onclick="$('#put_{{kiosk.0.pk}}').submit()">Submit</button>
             </div>
         </div>
     </div>
@@ -119,9 +120,10 @@
             </div>
             <div class="modal-body">
                 
-                <form method="post">
+                <form method="post" id="create_{{kiosk.0.pk}}">
                     {% csrf_token %}
                     <input type="hidden" name="method_proxy" value="CREATE">
+                    <input type="hidden" name="pk" value="{{kiosk.0.pk}}">
                     <div class="form-group">
                         <label for="poll-question" class="form-control-label">Poll Question</label>
                         <input type="text" autofocus class="form-control" id="poll-question"
@@ -139,7 +141,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Confirm</button>
+                <button type="button" class="btn btn-success" onclick="$('#create_{{kiosk.0.pk}}').submit()">Confirm</button>
             </div>
         </div>
     </div>
