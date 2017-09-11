@@ -153,6 +153,8 @@ def kiosk_view(request, auth_code=None):
 
     if request.method == 'POST':
 
+        school = get_object_or_404(Kiosk, auth_code=auth_code).school
+
         client_data = forms.LoginForm(request.POST)
         response = {
             'input_mode': -1,
@@ -163,7 +165,8 @@ def kiosk_view(request, auth_code=None):
         # Student scanned their card
         if client_data.is_valid_card_number():
             student = get_object_or_404(
-                Student, student_id=client_data.cleaned_data['return_value'])
+                Student, student_id=client_data.cleaned_data['return_value'],
+                school=school)
             response['input_mode'] = 0
 
             found = True
@@ -171,7 +174,8 @@ def kiosk_view(request, auth_code=None):
         # Student typed in an email
         if not found and client_data.is_valid_email():
             student = get_object_or_404(
-                Student, email=client_data.cleaned_data['return_value'])
+                Student, email=client_data.cleaned_data['return_value'],
+                school=school)
             response['input_mode'] = 2
 
             found = True
@@ -179,7 +183,8 @@ def kiosk_view(request, auth_code=None):
         # Student typed in their nickname
         if not found and client_data.is_valid_nickname():
             name = client_data.cleaned_data['return_value']
-            nickname = Student.objects.filter(nick_name__iexact=name)
+            nickname = Student.objects.filter(
+                nick_name__iexact=name, school=school)
 
             if len(nickname):
                 student = nickname[0]
@@ -193,9 +198,9 @@ def kiosk_view(request, auth_code=None):
             lname = name.split(' ', 1)[1]
 
             no_spaces = Student.objects.filter(
-                first_name__iexact=fname, last_name__iexact=lname.replace(' ', ''))
+                first_name__iexact=fname, last_name__iexact=lname.replace(' ', ''), school=school)
             spaces = Student.objects.filter(
-                first_name__iexact=fname, last_name__iexact=lname)
+                first_name__iexact=fname, last_name__iexact=lname, school=school)
 
             # Get student or 404
             if len(no_spaces):
@@ -216,6 +221,7 @@ def kiosk_view(request, auth_code=None):
                 "fname": student.first_name,
                 "status_before_sign": student.signed_in,
                 "pk": student.pk,
+                "school": school,
             }
 
             # opposite, so if student was signed in, they're
