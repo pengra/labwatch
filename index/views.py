@@ -293,8 +293,42 @@ def kiosk_ping_json(request, auth_code):
 
 def dashboard_poll_view(request):
     "For poll management."
+    context = {
+        'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
+        'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+    }
     if request.user.is_authenticated():
         school = request.user.associated_school.filter()
+        
+        if request.method == 'POST':
+            # Aight so it's a form coming through
+            poll_form = forms.PollMangementForm(request.POST)
+            if poll_form.is_valid():
+                if poll_form.cleaned_data['method_proxy'] == 'CREATE':
+                    # creating a new poll
+                    kiosk = get_object_or_404(Kiosk, pk=poll_form.cleaned_data['pk'])
+                    question = PollQuestion(
+                        question_text=poll_form.cleaned_data['question'],
+                    )
+                    question.save()
+                    question.kiosk.add(kiosk)
+                    question.save()
+
+                    answers = poll_form.cleaned_data['answers']
+                    answers = answers.replace('\r', '').split('\n')
+
+                    for item in answers:
+                        PollChoice(
+                            choice_text=item,
+                            question=question
+                        ).save()
+
+                elif poll_form.cleaned_data['method_proxy'] == 'PUT':
+                    # editing an old poll
+                    pass
+            else:
+                context['form_error'] = "Invalid Form Submission. Try again."
+                    
         if school:
             poll_management_context = []
 
@@ -307,12 +341,9 @@ def dashboard_poll_view(request):
 
                 poll_management_context.append([kiosk, question, answers])
 
-            context = {
-                "school": school[0],
-                "kiosks": poll_management_context,
-                'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
-                'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-            }
+            context["school"] = school[0]
+            context["kiosks"] = poll_management_context
+
         return render(request, 'dashboard/poll.html', context)
 
     return redirect('index:login')
