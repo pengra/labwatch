@@ -3,6 +3,7 @@ the Index app basically serves as the primary location for
 all forms and views. These are all the generic views.
 """
 from django.contrib.auth import authenticate, login
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 
@@ -308,6 +309,7 @@ def dashboard_poll_view(request):
                     # creating a new poll
                     kiosk = get_object_or_404(
                         Kiosk, pk=poll_form.cleaned_data['pk'])
+
                     question = PollQuestion(
                         question_text=poll_form.cleaned_data['question'],
                     )
@@ -319,14 +321,33 @@ def dashboard_poll_view(request):
                     answers = answers.replace('\r', '').split('\n')
 
                     for item in answers:
-                        PollChoice(
-                            choice_text=item,
-                            question=question
-                        ).save()
+                        poll = PollChoice(choice_text=item, question=question)
+                        poll.save()
 
                 elif poll_form.cleaned_data['method_proxy'] == 'PUT':
-                    # editing an old poll
-                    pass
+                    kiosk = get_object_or_404(
+                        Kiosk, pk=poll_form.cleaned_data['pk'])
+                    question = kiosk.pollquestion_set.last()
+                    question.question_text = poll_form.cleaned_data['question']
+                    question.save()
+
+                    new_answers = poll_form.cleaned_data['answers'].replace('\r', '').split('\n')
+
+                    # delete the choices that the user deleted
+                    for choice in question.pollchoice_set.all():
+                        if choice.choice_text not in new_answers:
+                            choice.question = None
+                            choice.save()
+
+                    # add new choices that the user requested
+                    for choice in new_answers:
+                        if not PollChoice.objects.filter(choice_text=choice):
+                            PollChoice(
+                                question=question,
+                                choice_text=choice
+                            ).save()
+
+                
             else:
                 context['form_error'] = "Invalid Form Submission. Try again."
 
@@ -344,6 +365,10 @@ def dashboard_poll_view(request):
 
             context["school"] = school[0]
             context["kiosks"] = poll_management_context
+
+        if request.method == 'POST':
+            # prevent the user from refreshing and mass creating a bunch polls
+            return redirect('index:dashboard-poll')
 
         return render(request, 'dashboard/poll.html', context)
 
