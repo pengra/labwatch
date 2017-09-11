@@ -10,6 +10,19 @@
 {% for kiosk in kiosks %}
 <h3 style="margin-top: 2%;">{{kiosk.0}}{% if not kiosk.0.active %} <span class="badge badge-danger">Disabled</span>{% endif %}{% if kiosk.1 %} - "{{kiosk.1}}"{% endif %}</h3>
 {% if kiosk.1 %}
+<script>
+    function checkSize(textareabox, e, dangertext_id) {
+        var lines = $(textareabox).val().split(/\r|\r\n|\n/).length;
+        console.log(lines, e.keyCode);
+        // set the suggested max as 6
+        if (e.keyCode == 13 && lines >= 6) {
+            $('#' + dangertext_id).text('The maximum suggested number of poll options is 7. You can still submit this though.');
+        } else if (e.keyCode == 8 && lines <= 6) {
+            $('#' + dangertext_id).text('');
+        }
+    }
+
+</script>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -75,7 +88,8 @@
                     </div>
                     <div class="form-group">
                         <label for="poll-answers" class="form-control-label">Poll Answers (Seperated by new lines)</label>
-                        <textarea rows="6" class="form-control" id="poll-answers">{% for answer in kiosk.2 %}{{answer}}&#10;{% endfor %}</textarea>
+                        <textarea rows="6" class="form-control" id="poll-answers" onkeydown="checkSize(this, event, 'warning-create-{{kiosk.0.pk}}');">{% for answer in kiosk.2 %}{{answer}}&#10;{% endfor %}</textarea>
+                        <span class="text-danger" id="warning-create-{{kiosk.0.pk}}"></span>
                     </div>
                 </form>
 
@@ -111,7 +125,9 @@
                     <div class="form-group">
                         <label for="poll-answers" class="form-control-label">Poll Answers (Seperated by new lines)</label>
                         <textarea rows="6" class="form-control" id="poll-answers" 
-                            placeholder="Snapchat&#10;Instagram&#10;Facebook&#10;Twitter&#10;..."></textarea>
+                            placeholder="Snapchat&#10;Instagram&#10;Facebook&#10;Twitter&#10;..."
+                            onkeydown="checkSize(this, event, 'warning-{{kiosk.0.pk}}');"></textarea>
+                        <span class="text-danger" id="warning-{{kiosk.0.pk}}"></span>
                     </div>
                 </form>
 
