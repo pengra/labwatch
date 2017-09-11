@@ -53,15 +53,17 @@
     New Poll
 </button>
 
+<!--
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#loadPollModal_{{kiosk.0.pk}}">
     Load Poll
 </button>
+-->
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPollModal_{{kiosk.0.pk}}">
     Edit Poll
 </button>
 
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editPollModal_{{kiosk.0.pk}}">
+<button type="button" class="btn btn-danger" data-toggle="modal" onclick="$('#delete_{{kiosk.0.pk}}').submit();">
     Delete Poll
 </button>
 {% endif %}
@@ -78,6 +80,16 @@
 {% endif %}
 
 {% if is_librarian %}
+
+<!-- delete form -->
+<form method="post" id="delete_{{kiosk.0.pk}}" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{kiosk.0.pk}}">
+    <input type="hidden" name="method_proxy" value="DELETE">
+    <input type="hidden" value="{{kiosk.1.question_text}}" name="question" >
+    <input name="answers" value="doesnt matter" type="hidden">
+</form>
+
 <!-- Edit Poll Modal -->
 <div class="modal fade" id="editPollModal_{{kiosk.0.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

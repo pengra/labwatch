@@ -60,4 +60,3 @@ class PollMangementForm(forms.Form):
     answers = forms.CharField()
     pk = forms.IntegerField()
     method_proxy = forms.CharField()
-

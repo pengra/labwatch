@@ -349,6 +349,14 @@ def dashboard_poll_view(request):
                                 choice_text=choice
                             ).save()
 
+                elif poll_form.cleaned_data['method_proxy'] == 'DELETE':
+                    kiosk = get_object_or_404(
+                        Kiosk, pk=poll_form.cleaned_data['pk'])
+
+                    question = kiosk.pollquestion_set.last()
+                    question.kiosk.clear()
+                    question.save()
+
             else:
                 context['form_error'] = "Invalid Form Submission. Try again."
 
