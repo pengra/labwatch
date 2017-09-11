@@ -78,22 +78,22 @@
             <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'index:dashboard' %}">{{school}} Overview <span class="badge badge-secondary">Alpha</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% block reports_active %}{% endblock %}" href="#">Analytics &amp; Reports <span class="badge badge-secondary">disabled</span></a>
+            <a class="nav-link {% block reports_active %}{% endblock %}" href="#">Analytics &amp; Reports <span class="badge badge-danger">disabled</span></a>
             <!-- Basic Reports (weekly/monthly/etc) -->
           </li>
           <li class="nav-item">
-            <a class="nav-link {% block export_active %}{% endblock %}" href="#">Export Data <span class="badge badge-secondary">disabled</span></a>
+            <a class="nav-link {% block export_active %}{% endblock %}" href="#">Export Data <span class="badge badge-danger">disabled</span></a>
             <!-- Download Basic Reports -->
           </li>
         </ul>
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link {% block student_active %}{% endblock %}" href="#">Student Administration <span class="badge badge-secondary">disabled</span></a>
+            <a class="nav-link {% block student_active %}{% endblock %}" href="#">Student Administration <span class="badge badge-danger">disabled</span></a>
             <!-- Page for allowing teacher to CRUD students -->
           </li>
           <li class="nav-item">
-            <a class="nav-link {% block bulk_active %}{% endblock %}" href="#">Upload Student Spreadsheet <span class="badge badge-secondary">disabled</span></a>
+            <a class="nav-link {% block bulk_active %}{% endblock %}" href="#">Upload Student Spreadsheet <span class="badge badge-danger">disabled</span></a>
             <!-- Page for allowing teacher to upload a batch of students -->
           </li>
         </ul>
