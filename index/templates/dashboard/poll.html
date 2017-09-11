@@ -8,29 +8,48 @@
 
 <h1>{{school}} Polls by Kiosk</h1>
 {% for kiosk in kiosks %}
-<h3>{{kiosk.0}} - "{{kiosk.1}}"</h3>
+<h3 style="margin-top: 2%;">{{kiosk.0}}{% if not kiosk.0.active %} <span class="badge badge-danger">Disabled</span>{% endif %}{% if kiosk.1 %} - "{{kiosk.1}}"{% endif %}</h3>
+{% if kiosk.1 %}
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Answer</th>
-            <th>Name</th>
-            <th>Teacher</th>
-            <th>Grade</th>
-            <th>Sign in time</th>
+            <th>Votes</th>
         </tr>
         </thead>
         <tbody>
+        {% for answer in kiosk.2 %}
         <tr>
-            <td>something</td>
-            <td>something</td>
-            <td>something</td>
-            <td>something</td>
-            <td>something</td>
+            <td>{{answer}}</td>
+            <td>{{answer.votes}}</td>
         </tr>
+        {% endfor %}
         </tbody>
-</table>
+    </table>
 </div>
+
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal">
+    New Poll
+</button>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPollModal">
+    Edit Poll
+</button>
+
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createPollModal">
+    Delete Poll
+</button>
+
+{% else %}
+<div class="alert alert-warning" role="alert">
+    This kiosk has no active poll. <br/>
+</div>
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal">
+    New Poll
+</button>
+{% endif %}
+
 {% endfor %}
 
 
