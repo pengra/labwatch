@@ -8,7 +8,7 @@ class PollQuestion(models.Model):
     "A question model for asking students questions."
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField(auto_now=True)
-    kiosk = models.ManyToManyField(Kiosk)
+    kiosk = models.ManyToManyField(Kiosk, blank=True)
 
     def __str__(self):
         return self.question_text
