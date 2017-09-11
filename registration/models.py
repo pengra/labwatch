@@ -22,6 +22,7 @@ class Kiosk(models.Model):
     school = models.ForeignKey(School)
     auth_code = models.CharField(max_length=32, unique=True)
     active = models.BooleanField(default=False)
+    poll_active = models.BooleanField(default=True)
 
     def __str__(self):
         return "{} {}".format(self.school, self.name)
