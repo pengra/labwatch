@@ -7,6 +7,13 @@
 {% block content %}
 
 <h1>{{school}} Polls by Kiosk</h1>
+
+{% if form_error %}
+<div class="alert alert-danger" role="alert">
+    {{form_error}}
+</div>
+{% endif %}
+
 {% for kiosk in kiosks %}
 <h3 style="margin-top: 2%;">{{kiosk.0}}{% if not kiosk.0.active %} <span class="badge badge-danger">Disabled</span>{% endif %}{% if kiosk.1 %} - "{{kiosk.1}}"{% endif %}</h3>
 {% if kiosk.1 %}
@@ -126,14 +133,15 @@
                     <input type="hidden" name="pk" value="{{kiosk.0.pk}}">
                     <div class="form-group">
                         <label for="poll-question" class="form-control-label">Poll Question</label>
-                        <input type="text" autofocus class="form-control" id="poll-question"
+                        <input type="text" name="question" autofocus class="form-control" id="poll-question"
                             placeholder="e.g. Which social media platform do you use the most?">
                     </div>
                     <div class="form-group">
                         <label for="poll-answers" class="form-control-label">Poll Answers (Seperated by new lines)</label>
                         <textarea rows="6" class="form-control" id="poll-answers" 
                             placeholder="Snapchat&#10;Instagram&#10;Facebook&#10;Twitter&#10;..."
-                            onkeydown="checkSize(this, event, 'warning-{{kiosk.0.pk}}');"></textarea>
+                            onkeydown="checkSize(this, event, 'warning-{{kiosk.0.pk}}');"
+                            name="answers"></textarea>
                         <span class="text-danger" id="warning-{{kiosk.0.pk}}"></span>
                     </div>
                 </form>
