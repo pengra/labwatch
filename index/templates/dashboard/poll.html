@@ -29,15 +29,15 @@
     </table>
 </div>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal_{{kiosk.0.pk}}">
     New Poll
 </button>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPollModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPollModal_{{kiosk.0.pk}}">
     Edit Poll
 </button>
 
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createPollModal">
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePollModal_{{kiosk.0.pk}}">
     Delete Poll
 </button>
 
@@ -45,12 +45,46 @@
 <div class="alert alert-warning" role="alert">
     This kiosk has no active poll. <br/>
 </div>
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPollModal_{{kiosk.0.pk}}">
     New Poll
 </button>
 {% endif %}
 
+<!-- Modal -->
+<div class="modal fade" id="createPollModal_{{kiosk.0.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{kiosk.0}}: New Poll</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="method_proxy" value="CREATE">
+                    <div class="form-group">
+                        <label for="poll-question" class="form-control-label">Poll Question</label>
+                        <input type="text" autofocus class="form-control" id="poll-question"
+                            placeholder="e.g. Which social media platform do you use the most?">
+                    </div>
+                    <div class="form-group">
+                        <label for="poll-answers" class="form-control-label">Poll Answers (Seperated by new lines)</label>
+                        <textarea rows="6" class="form-control" id="poll-answers" 
+                            placeholder="Snapchat&#10;Instagram&#10;Facebook&#10;Twitter&#10;..."></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endfor %}
-
-
 {% endblock %}
