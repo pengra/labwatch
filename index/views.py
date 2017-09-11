@@ -243,7 +243,7 @@ def kiosk_view(request, auth_code=None):
         pollquestion = PollQuestion.objects.filter(
             kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
         if pollquestion:
-            poll_a = pollquestion.pollchoice_set.all()
+            poll_a = pollquestion.pollchoice_set.filter(active=True)
         else:
             poll_a = []
         context = {
@@ -266,7 +266,8 @@ def kiosk_poll_view(request, auth_code):
 
         if poll_response.is_valid_poll():
             answer = pollquestion.pollchoice_set.filter(
-                choice_text__iexact=poll_response.cleaned_data['return_value'])
+                choice_text__iexact=poll_response.cleaned_data['return_value'],
+                active=True)
 
             if answer:
                 # Update log with choice
@@ -331,23 +332,23 @@ def dashboard_poll_view(request):
                     question.question_text = poll_form.cleaned_data['question']
                     question.save()
 
-                    new_answers = poll_form.cleaned_data['answers'].replace('\r', '').split('\n')
+                    new_answers = poll_form.cleaned_data['answers'].replace(
+                        '\r', '').split('\n')
 
                     # delete the choices that the user deleted
-                    for choice in question.pollchoice_set.all():
+                    for choice in question.pollchoice_set.filter(active=True):
                         if choice.choice_text not in new_answers:
-                            choice.question = None
+                            choice.active = False
                             choice.save()
 
                     # add new choices that the user requested
                     for choice in new_answers:
-                        if not PollChoice.objects.filter(choice_text=choice):
+                        if not PollChoice.objects.filter(choice_text=choice, active=True):
                             PollChoice(
                                 question=question,
                                 choice_text=choice
                             ).save()
 
-                
             else:
                 context['form_error'] = "Invalid Form Submission. Try again."
 
