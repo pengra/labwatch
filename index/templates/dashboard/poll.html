@@ -1,0 +1,37 @@
+{% extends 'dashboard/_base.html' %} 
+
+{% block subtitle %}Poll Management{% endblock %}
+{% block dashboard_active %}active{% endblock %}
+{% block poll_active %}active{% endblock %}
+
+{% block content %}
+
+<h1>{{school}} Polls by Kiosk</h1>
+{% for kiosk in kiosks %}
+<h3>{{kiosk.0}} - "{{kiosk.1}}"</h3>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Answer</th>
+            <th>Name</th>
+            <th>Teacher</th>
+            <th>Grade</th>
+            <th>Sign in time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>something</td>
+            <td>something</td>
+            <td>something</td>
+            <td>something</td>
+            <td>something</td>
+        </tr>
+        </tbody>
+</table>
+</div>
+{% endfor %}
+
+
+{% endblock %}

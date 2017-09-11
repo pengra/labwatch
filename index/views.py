@@ -288,3 +288,28 @@ def kiosk_ping_json(request, auth_code):
     return JsonResponse({
         'enabled': Kiosk.objects.get(auth_code=auth_code).active
     })
+
+
+def dashboard_poll_view(request):
+    "For poll management."
+    if request.user.is_authenticated():
+        school = request.user.associated_school.filter()
+        if school:
+            poll_management_context = []
+
+            for kiosk in school[0].kiosk_set.all():
+                question = kiosk.pollquestion_set.last()
+                if question:
+                    answers = question.pollchoice_set.all()
+                else:
+                    answers = None
+                
+                poll_management_context.append([kiosk, question, answers])
+
+            context = {
+                "school": school[0],
+                "kiosks": poll_management_context,
+            }
+        return render(request, 'dashboard/poll.html', context)
+    
+    return redirect('index:login')
