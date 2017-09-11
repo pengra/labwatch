@@ -299,7 +299,7 @@ def dashboard_poll_view(request):
     }
     if request.user.is_authenticated():
         school = request.user.associated_school.filter()
-        
+
         if request.method == 'POST':
             # Aight so it's a form coming through
             poll_form = forms.PollMangementForm(request.POST)
