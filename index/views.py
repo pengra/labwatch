@@ -388,3 +388,18 @@ def dashboard_poll_view(request):
         return render(request, 'dashboard/poll.html', context)
 
     return redirect('index:login')
+
+
+def dashboard_student_bulk_view(request):
+    "view for uploading students by excel sheet."
+    context = {
+        'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
+        'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+    }
+    if request.user.is_authenticated():
+        school = request.user.associated_school.get()
+        context['school'] = school
+
+        return render(request, 'dashboard/bulk.html', context)
+    
+    return redirect('index:login')
