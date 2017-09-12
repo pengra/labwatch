@@ -1,0 +1,20 @@
+{% extends 'dashboard/_base.html' %} 
+
+{% block dashboard_active %}active{% endblock %}
+{% block student_active %}active{% endblock %}
+
+{% block content %}
+
+{% if message %}
+<section class="row placeholders">
+  <div class="col-12 placeholder">
+      <div class="alert alert-{{msg_type}}" role="alert">
+        {{message}}
+      </div>
+  </div>
+</section>
+{% endif %}
+
+<h1>Upload Student Spreadsheet</h1>
+
+{% endblock %}
