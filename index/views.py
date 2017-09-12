@@ -401,5 +401,19 @@ def dashboard_student_bulk_view(request):
         context['school'] = school
 
         return render(request, 'dashboard/bulk.html', context)
-    
+
+    return redirect('index:login')
+
+def dashboard_student_admin_view(request):
+    "View for individual student tweaking."
+    context = {
+        'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
+        'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
+    }
+    if request.user.is_authenticated():
+        school = request.user.associated_school.get()
+        context['school'] = school
+
+        return render(request, 'dashboard/studentadmin.html', context)
+
     return redirect('index:login')
