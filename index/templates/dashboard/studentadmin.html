@@ -17,4 +17,29 @@
 
 <h1>Manage Students</h1>
 
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="search" aria-expanded="true">Find Existing Student</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="create">Create Student</a>
+    </li>
+</ul>
+
+<div class="tab-content" id="tabContent">
+    <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+        
+        <form class="text-center" style="margin-top: 20vh;">
+            <div class="form-group">
+                <img src="{{school.school_image}}" style="max-height: 10vh">
+                <h2><label for="student-input">{{school}} Student ID # or student name or student nickname or student email</label></h2>
+                <input type="text" class="form-control" id="student-input" aria-describedby="studentHelp" placeholder="Enter student ID # or Student name or Student nickname or Student email">
+                <small id="studentHelp" class="form-text text-muted">You may use keywords such as "OR" and "AND" to expand/narrow you query. e.g. "Norton AND Pengra"</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">Tab2</div>
+</div>
+
 {% endblock %}
