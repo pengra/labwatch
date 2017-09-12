@@ -4,12 +4,17 @@
 {% block bulk_active %}active{% endblock %}
 
 {% block content %}
+
+{% if message %}
 <section class="row placeholders">
   <div class="col-12 placeholder">
-      <div class="alert alert-info" role="alert">
-        Upload Student Spreadsheet View
+      <div class="alert alert-{{msg_type}}" role="alert">
+        {{message}}
       </div>
   </div>
 </section>
+{% endif %}
+
+<h1>Upload Student Spreadsheet</h1>
 
 {% endblock %}
