@@ -3,6 +3,7 @@ from index import views
 
 urlpatterns = [
     url(r'login/$', views.login_view, name='login'),
+    url(r'dashboard/student/bulk/$', views.dashboard_student_bulk_view, name='dashboard-student-bulk'),
     url(r'dashboard/kiosk/$', views.dashboard_kiosk_view, name='dashboard-kiosk'),
     url(r'dashboard/poll/$', views.dashboard_poll_view, name='dashboard-poll'),
     url(r'dashboard/$', views.dashboard_view, name='dashboard'),
