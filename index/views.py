@@ -3,9 +3,12 @@ the Index app basically serves as the primary location for
 all forms and views. These are all the generic views.
 """
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404, Http404
+from django.views.generic import TemplateView, View
 
 from random import shuffle
 
@@ -15,40 +18,52 @@ from logger.models import Student, Log
 from registration.models import Kiosk, School
 
 
-def cover_view(request):
+class CoverView(TemplateView):
     "Primary view."
-    return render(request, 'index/coverpage.html')
+    template_name = 'index/coverpage.html'
 
 
-def login_view(request):
+class BaseLabDashView(View):
+    "Use this as basic class for context generation for all pages."
+    # used for LoginRequiredMixin
+    login_url = '/login/'
+
+    def get_context(self, request):
+        context = {
+            "is_authenticated": request.user.is_authenticated()
+        }
+        return context
+
+
+class LoginView(BaseLabDashView):
     "Login for everyone view."
 
-    # If the user is already authenticated
-    # take them to the home page
-    if request.user.is_authenticated:
-        return redirect('index:index')
+    def get(self, request):
+        "Basic view for login,"
+        context = self.get_context(request)
 
-    context = {}
+        if context['is_authenticated']:
+            return redirect('index:index')
 
-    # handle authentication requests via django auth.login/authenticate
-    if request.method == 'POST':
+        return render(request, 'index/login.html', context)
+
+    def post(self, request):
+        "Handling user login."
+        context = self.get_context(request)
+
         username = request.POST['username']
         password = request.POST['password']
 
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
-            # Upon succesful authentication, redirect to homepage
             return redirect('index:dashboard')
         else:
             # Change context upon invalid login
-            context = {
-                "error": "Invalid Credentials"
-            }
+            context['error'] = "Invalid Credentials"
 
-    # If made it all the way to the end, spew out
-    # login form with context.
-    return render(request, 'index/login.html', context)
+        return render(request, 'index/login.html', context)
 
 
 def dashboard_view(request):
@@ -403,6 +418,7 @@ def dashboard_student_bulk_view(request):
         return render(request, 'dashboard/bulk.html', context)
 
     return redirect('index:login')
+
 
 def dashboard_student_admin_view(request):
     "View for individual student tweaking."
