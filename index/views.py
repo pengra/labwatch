@@ -434,4 +434,5 @@ class BugSplatView(LoginRequiredMixin, BaseLabDashView):
     "View for report bugs."
 
     def get(self, request):
-        return render(request, 'dashboard/bugsplat.html')
+        context = self.get_context(request)
+        return render(request, 'dashboard/bugsplat.html', context)
