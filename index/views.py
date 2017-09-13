@@ -45,9 +45,7 @@ class BaseLabDashView(View):
             context['is_teacher'] = len(
                 request.user.groups.filter(name__in=['Teacher']))
 
-            
             context['school'] = request.user.associated_school.first()
-            
 
         return context
 
@@ -100,72 +98,81 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
         return render(request, 'dashboard/index.html', context)
 
 
-def dashboard_kiosk_view(request):
+class DashboardKioskView(LoginRequiredMixin, BaseLabDashView):
     "View for kiosk management."
 
-    context = {}
-    potential_code = [
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-        'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6',
-        '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-    ]
-
-    shuffle(potential_code)
-
-    while len(Kiosk.objects.filter(auth_code="".join(potential_code)[:32])) > 1:
+    def get_random_code(self):
+        "Random code generation."
+        potential_code = [
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+            'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6',
+            '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+            'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+            'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+        ]
         shuffle(potential_code)
+        return "".join(potential_code)[:32]
 
-    if request.user.is_authenticated:
-        school = request.user.associated_school.get()
-        context = {
-            'school': school,
-            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-            'kiosks': school.kiosk_set.all(),
-            'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
-            'primary_contact': request.user.associated_school.get().primary_contact,
-            'potential_code': "".join(potential_code)[:32],
-        }
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # loop until unique code recieved
+        # Very bad practice.
+        while True:
+            code = self.get_random_code()
+            if not Kiosk.objects.filter(auth_code=code):
+                break
 
-        if request.method == 'POST':
-            kiosk_put_form = forms.KioskForm(request.POST)
-            if kiosk_put_form.is_valid():
-                proxy_method = kiosk_put_form.cleaned_data.get(
-                    'proxy_method').lower()
-                if proxy_method == '':
-                    existing_kiosk = Kiosk.objects.get(
-                        pk=kiosk_put_form.cleaned_data['pk'],
-                        auth_code=kiosk_put_form.cleaned_data['auth_code']
-                    )
+        context['potential_code'] = code
+        context['kiosks'] = context['school'].kiosk_set.all()
+        context['primary_contact'] = request.user.associated_school.get(
+        ).primary_contact
 
-                    existing_kiosk.name = kiosk_put_form.cleaned_data['name']
-                    existing_kiosk.active = kiosk_put_form.cleaned_data['active'].lower(
-                    ) == 'true'
-                    existing_kiosk.save()
-                elif proxy_method == 'delete':
-                    kiosk = Kiosk.objects.get(
-                        pk=kiosk_put_form.cleaned_data['pk'],
-                        auth_code=kiosk_put_form.cleaned_data['auth_code'],
-                        name=kiosk_put_form.cleaned_data['name']
-                    )
-                    kiosk.delete()
-                elif proxy_method == 'create':
-                    kiosk = Kiosk(
-                        auth_code=kiosk_put_form.cleaned_data['auth_code'],
-                        name=kiosk_put_form.cleaned_data['name'],
-                        active=kiosk_put_form.cleaned_data['active'].lower(
-                        ) == 'true',
-                        school=School.objects.get(
-                            name=kiosk_put_form.cleaned_data['school'])
-                    )
-                    kiosk.save()
+        return context
 
+    def get(self, request):
+        "View for kiosk management."
+        context = self.get_context(request)
         return render(request, 'dashboard/kiosk.html', context)
 
-    # user is not authenticated, redirect them to login page
-    return redirect('index:login')
+    def post(self, request):
+        "Manipulating kiosk objects."
+        context = self.get_context(request)
+
+        kiosk_put_form = forms.KioskForm(request.POST)
+        if kiosk_put_form.is_valid():
+            proxy_method = kiosk_put_form.cleaned_data.get(
+                'proxy_method').lower()
+            if proxy_method == '':  # (put)
+                existing_kiosk = Kiosk.objects.get(
+                    pk=kiosk_put_form.cleaned_data['pk'],
+                    auth_code=kiosk_put_form.cleaned_data['auth_code']
+                )
+
+                existing_kiosk.name = kiosk_put_form.cleaned_data['name']
+                existing_kiosk.active = kiosk_put_form.cleaned_data['active'].lower(
+                ) == 'true'
+                existing_kiosk.save()
+            elif proxy_method == 'delete':
+                kiosk = Kiosk.objects.get(
+                    pk=kiosk_put_form.cleaned_data['pk'],
+                    auth_code=kiosk_put_form.cleaned_data['auth_code'],
+                    name=kiosk_put_form.cleaned_data['name']
+                )
+                kiosk.delete()
+            elif proxy_method == 'create':
+                kiosk = Kiosk(
+                    auth_code=kiosk_put_form.cleaned_data['auth_code'],
+                    name=kiosk_put_form.cleaned_data['name'],
+                    active=kiosk_put_form.cleaned_data['active'].lower(
+                    ) == 'true',
+                    school=School.objects.get(
+                        name=kiosk_put_form.cleaned_data['school'])
+                )
+                kiosk.save()
+        
+        return render(request, 'dashboard/kiosk.html', context)
 
 
 def kiosk_view(request, auth_code=None):
