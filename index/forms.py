@@ -60,3 +60,10 @@ class PollMangementForm(forms.Form):
     answers = forms.CharField()
     pk = forms.IntegerField()
     method_proxy = forms.CharField()
+
+
+class BugSplatForm(forms.Form):
+    "Form for bug reports/questions."
+    report_type = forms.CharField()
+    title = forms.CharField()
+    content = forms.CharField()
