@@ -25,6 +25,7 @@
 <h1>Upload Student Spreadsheet</h1>
 
 <form class="container" method="post">
+  {% csrf_token %}
   <div class="col-12">
     <h4>Upload any file: 
       <i class="fa fa-file-excel-o" aria-hidden="true"></i> 
@@ -45,8 +46,12 @@
     </span>
   </div>
 
-  <div id="excel-upload" class="container" style="margin-top: 2%">
-    <h2>We need a few more details...</h2>
+  <div id="excel-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
+    <div class="row">
+      <div class="col-12">
+        <h2>Great! A few more details are required before continuing...</h2>
+      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-lg-6">
           <img src="https://imgur.com/KSLwHmn.png" width="100%">
@@ -57,17 +62,17 @@
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentIDColumn">Enter the Column Letter of Student IDs</label>
         <input type="text" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp">
-        <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "A" (required)</small>
+        <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "A" <strong>(required)</strong></small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentFirstNameColumn">Enter the Column Letter of Student First Names</label>
         <input type="text" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp">
-        <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "B" (required)</small>
+        <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "B" <strong>(required)</strong></small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentLastNamesColumn">Enter the Column Letter of Student Last Names</label>
         <input type="text" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp">
-        <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "C" (required)</small>
+        <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "C" <strong>(required)</strong></small>
       </div>
     </div>
     <div class="row">
@@ -96,11 +101,15 @@
       <div class="form-group col-xs-12 col-lg-4">
         <label for="dataStartColumn">Enter the <strong>row</strong> number of where data begins</label>
         <input type="number" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="1">
-        <small id="dataStarthelp" class="form-text text-muted">Because there's data headers on line 1, the data begins on line 2 (required)</small>
+        <small id="dataStarthelp" class="form-text text-muted">Regardin the example sheet, because there's data headers on line 1, the data begins on line 2 <strong>(required)</strong></small>
       </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Upload Spreadsheet <i class="fa fa-file-excel-o" aria-hidden="true"></i> </button>
+        </div>
+      </div>
   </div>
-
 </form>
 
 <script>
