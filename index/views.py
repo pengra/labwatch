@@ -36,6 +36,8 @@ class BaseLabDashView(View):
             'is_engineer': False,
             'is_librarian': False,
             'is_teacher': False,
+            'is_techsavy': False,
+            'is_tester': False,
             'school': None
         }
         if context['is_authenticated']:
@@ -45,6 +47,12 @@ class BaseLabDashView(View):
                 request.user.groups.filter(name__in=['Librarian']))
             context['is_teacher'] = len(
                 request.user.groups.filter(name__in=['Teacher']))
+            context['is_techsavy'] = len(
+                request.user.groups.filter(name__in=['Tech Savy'])
+            )
+            context['is_tester'] = len(
+                request.user.groupos.filter(name__in['Tester'])
+            )
 
             context['school'] = request.user.associated_school.first()
 
