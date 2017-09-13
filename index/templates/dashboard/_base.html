@@ -50,17 +50,15 @@
           <a class="nav-link {% block profile_active %}{% endblock %}" href="#">Profile <span class="badge badge-danger">disabled</span></a>
           <!-- Page to manipulate this profile -->
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index:bugsplat' %}">Help</a>
+        </li>
         {% if is_engineer %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'admin:index' %}">[Engineer Zone]</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'index:bugsplat' %}">[File Bug]</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'index:bugsplat' %}">Help</a>
         </li>
         {% endif %}
       </ul>
