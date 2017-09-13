@@ -288,9 +288,11 @@ class KioskView(View):
         raise Http404
 
 
-def kiosk_poll_view(request, auth_code):
+class KioskPollView(View):
     "View just for poll submissions"
-    if request.method == 'POST':
+
+    def post(self, request, auth_code):
+        "View just for poll submissions"
         pollquestion = PollQuestion.objects.filter(
             kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
 
@@ -314,8 +316,7 @@ def kiosk_poll_view(request, auth_code):
 
                 return JsonResponse({"okay": True, "question": str(pollquestion), "answer": str(answer[0])})
 
-    # Never handle non-post queries
-    raise Http404
+        raise Http404
 
 
 def kiosk_ping_json(request, auth_code):
