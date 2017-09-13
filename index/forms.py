@@ -66,4 +66,4 @@ class BugSplatForm(forms.Form):
     "Form for bug reports/questions."
     report_type = forms.CharField()
     title = forms.CharField()
-    content = forms.CharField(blank=True)
+    content = forms.CharField(required=False)
