@@ -1,107 +1,157 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/favicon.ico">
 
-    <title>Jumbotron Template for Bootstrap</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon.ico">
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
-  
-    <!-- Font Awesome -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <title>LabWatch - Help Portal</title>
 
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.0/examples/jumbotron/jumbotron.css" rel="stylesheet">
-  </head>
+  <!-- Bootstrap core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
 
-  <body>
+  <!-- Font Awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Help Portal</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- Custom styles for this template -->
+  <link href="https://getbootstrap.com/docs/4.0/examples/jumbotron/jumbotron.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">Help Portal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+      aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'index:dashboard' %}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Settings <span class="badge badge-danger">disabled</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profile <span class="badge badge-danger">disabled</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index:bugsplat' %}">Help</a>
-          </li>
-          {% if is_engineer %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}">[Engineer Zone]</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index:bugsplat' %}">[File Bug]</a>
-          </li>
-          {% endif %}
-        </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index:dashboard' %}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Settings <span class="badge badge-danger">disabled</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile <span class="badge badge-danger">disabled</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'index:bugsplat' %}">Help</a>
+        </li>
+        {% if is_engineer %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin:index' %}">[Engineer Zone]</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'index:bugsplat' %}">[File Bug]</a>
+        </li>
+        {% endif %}
+      </ul>
+      <!-- <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form> -->
-      </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1 class="display-3">Help Portal</h1>
-        <p>We're sorry you ran into some troubles. Because our project is so young, there aren't any help pages yet.
-          However all is not lost! Fill out the form below and we'll try to release a fix as quickly as possible or
-          respond to you. If you're on the tech savy side, perhaps our github wiki could potentially help you out.
-          Additionally, you could also <a href="https://github.com/qwergram/labwatch/issues">open a github issue</a>.
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Help Portal</h1>
+      <p>We're sorry you ran into some troubles. Because our project is so young, there aren't any help pages yet. However all
+        is not lost! Fill out the form below and we'll try to release a fix as quickly as possible or respond to you. If
+        you're on the tech savy side, perhaps our github wiki could potentially help you out. Additionally, you could also
+        <a href="https://github.com/qwergram/labwatch/issues">open a github issue</a>.
+      </p>
+      <p><a class="btn btn-primary btn-lg" href="https://github.com/qwergram/labwatch/wiki" role="button">Github Wiki &raquo;</a></p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Question</h2>
+        <p>Fill out this form if you have a question or suggestion.</p>
+        <p>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#questionModal">
+            Question Form &raquo;
+          </button>
         </p>
-        <p><a class="btn btn-primary btn-lg" href="https://github.com/qwergram/labwatch/wiki" role="button">Github Wiki &raquo;</a></p>
+      </div>
+      <div class="col-md-6">
+        <h2>Report a Bug</h2>
+        <p>Fill out this form if you have a bug to report.</p>
+        <p>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bugModal">
+            Bug Report Form &raquo;
+          </button>
+        </p>
       </div>
     </div>
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-6">
-          <h2>Question</h2>
-          <p>Fill out this form if you have a question or suggestion.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">Question Form &raquo;</a></p>
+    <hr>
+
+    <footer>
+      <p>&copy; by some nerds</p>
+    </footer>
+  </div>
+  <!-- /container -->
+
+  <!-- question modal -->
+  <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="questionModalLabel">Question Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="col-md-6">
-          <h2>Report a Bug</h2>
-          <p>Fill out this form if you have a bug to report.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">Bug Form &raquo;</a></p>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <hr>
+  <!-- bug modal -->
+  <div class="modal fade" id="bugModal" tabindex="-1" role="dialog" aria-labelledby="bugModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bugModalLabel">Bug Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <footer>
-        <p>&copy; by some nerds</p>
-      </footer>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</body>
+
 </html>
