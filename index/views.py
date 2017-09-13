@@ -110,13 +110,13 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
                 return "Just now"
 
             if delta < timezone.timedelta(minutes=60):
-                return "{} minutes ago".format(delta.seconds//60)
+                return "{} minutes ago".format(delta.seconds // 60)
 
             if delta < timezone.timedelta(hours=2):
                 return "Over an hour ago"
 
             if delta < timezone.timedelta(hours=6):
-                return "Over {} hours ago".format(delta.seconds//3600)
+                return "Over {} hours ago".format(delta.seconds // 3600)
 
             return "Over 6 hours ago"
 
@@ -124,8 +124,13 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
 
         if context['school']:
             context['logged_in_students'] = [
-                [student, human_friendly_time(
-                    Log.objects.filter(student=student).last())]
+                [
+                    student,
+                    human_friendly_time(
+                        Log.objects.filter(student=student).last()
+                    ),
+                    Log.objects.filter(student=student).last()
+                ]
                 for student in Student.objects.filter(
                     school=context['school'], signed_in=True
                 )
