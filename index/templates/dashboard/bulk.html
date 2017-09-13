@@ -15,13 +15,13 @@
 <h1>Upload Student Spreadsheet</h1>
 
 {% if message %}
-<section class="row placeholders">
+<div class="container">
   <div class="col-12 placeholder">
       <div class="alert alert-{{msg_type}}" role="alert">
         {{message}}
       </div>
   </div>
-</section>
+</div>
 {% endif %}
 
 {% if is_librarian %}
