@@ -26,7 +26,15 @@
 
 {% if is_librarian %}
 
-<form class="container" method="post">
+<form class="container" method="post" enctype="multipart/form-data">
+  
+  <div class="col-12 placeholder">
+    <div class="alert alert-danger" role="alert">
+      This process will result in a long loading page! 
+      The labwatch team is working hard to improve this system.
+    </div>
+  </div>
+
   {% csrf_token %}
   <div class="col-12">
     <h4>Upload any file: 
@@ -37,7 +45,7 @@
       <label class="input-group-btn">
         <span class="btn btn-primary" style="height: 100%;">
           Browse&hellip; <input type="file" id="fileUploadInput" style="display: none;"
-          onchange="formChanged(this);"
+          onchange="formChanged(this);" name="spreadsheet"
           >
         </span>
       </label>
