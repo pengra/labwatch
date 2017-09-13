@@ -326,95 +326,90 @@ def kiosk_ping_json(request, auth_code):
     })
 
 
-def dashboard_poll_view(request):
+class DashboardPollView(LoginRequiredMixin, BaseLabDashView):
     "For poll management."
-    context = {
-        'is_librarian': len(request.user.groups.filter(name__in=['Librarian'])),
-        'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-    }
-    if request.user.is_authenticated():
-        school = request.user.associated_school.filter()
 
-        if request.method == 'POST':
-            # Aight so it's a form coming through
-            poll_form = forms.PollMangementForm(request.POST)
-            if poll_form.is_valid():
-                if poll_form.cleaned_data['method_proxy'] == 'CREATE':
-                    # creating a new poll
-                    kiosk = get_object_or_404(
-                        Kiosk, pk=poll_form.cleaned_data['pk'])
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['kiosks'] = []
 
-                    question = PollQuestion(
-                        question_text=poll_form.cleaned_data['question'],
-                    )
-                    question.save()
-                    question.kiosk.add(kiosk)
-                    question.save()
-
-                    answers = poll_form.cleaned_data['answers']
-                    answers = answers.replace('\r', '').split('\n')
-
-                    for item in answers:
-                        poll = PollChoice(choice_text=item, question=question)
-                        poll.save()
-
-                elif poll_form.cleaned_data['method_proxy'] == 'PUT':
-                    kiosk = get_object_or_404(
-                        Kiosk, pk=poll_form.cleaned_data['pk'])
-                    question = kiosk.pollquestion_set.last()
-                    question.question_text = poll_form.cleaned_data['question']
-                    question.save()
-
-                    new_answers = poll_form.cleaned_data['answers'].replace(
-                        '\r', '').split('\n')
-
-                    # delete the choices that the user deleted
-                    for choice in question.pollchoice_set.filter(active=True):
-                        if choice.choice_text not in new_answers:
-                            choice.active = False
-                            choice.save()
-
-                    # add new choices that the user requested
-                    for choice in new_answers:
-                        if not PollChoice.objects.filter(choice_text=choice, active=True):
-                            PollChoice(
-                                question=question,
-                                choice_text=choice
-                            ).save()
-
-                elif poll_form.cleaned_data['method_proxy'] == 'DELETE':
-                    kiosk = get_object_or_404(
-                        Kiosk, pk=poll_form.cleaned_data['pk'])
-
-                    question = kiosk.pollquestion_set.last()
-                    question.kiosk.clear()
-                    question.save()
-
-            else:
-                context['form_error'] = "Invalid Form Submission. Try again."
-
-        if school:
-            poll_management_context = []
-
-            for kiosk in school[0].kiosk_set.all():
+        if context['school']:
+            for kiosk in context['school'].kiosk_set.all():
                 question = kiosk.pollquestion_set.last()
-                if question:
-                    answers = question.pollchoice_set.all()
-                else:
-                    answers = None
+                answers = question.pollchoice_set.all() if question else None
+                context['kiosks'].append([kiosk, question, answers])
 
-                poll_management_context.append([kiosk, question, answers])
+        return context
 
-            context["school"] = school[0]
-            context["kiosks"] = poll_management_context
-
-        if request.method == 'POST':
-            # prevent the user from refreshing and mass creating a bunch polls
-            return redirect('index:dashboard-poll')
-
+    def get(self, request):
+        "For poll management."
+        context = self.get_context(request)
         return render(request, 'dashboard/poll.html', context)
 
-    return redirect('index:login')
+    def post(self, request):
+        "For poll management."
+        context = self.get_context(request)
+
+        # Aight so it's a form coming through
+        poll_form = forms.PollMangementForm(request.POST)
+        if poll_form.is_valid():
+            if poll_form.cleaned_data['method_proxy'] == 'CREATE':
+                # creating a new poll
+                kiosk = get_object_or_404(
+                    Kiosk, pk=poll_form.cleaned_data['pk'])
+
+                question = PollQuestion(
+                    question_text=poll_form.cleaned_data['question'],
+                )
+                question.save()
+                question.kiosk.add(kiosk)
+                question.save()
+
+                answers = poll_form.cleaned_data['answers']
+                answers = answers.replace('\r', '').split('\n')
+
+                for item in answers:
+                    poll = PollChoice(choice_text=item, question=question)
+                    poll.save()
+
+            elif poll_form.cleaned_data['method_proxy'] == 'PUT':
+                kiosk = get_object_or_404(
+                    Kiosk, pk=poll_form.cleaned_data['pk'])
+                question = kiosk.pollquestion_set.last()
+                question.question_text = poll_form.cleaned_data['question']
+                question.save()
+
+                new_answers = poll_form.cleaned_data['answers'].replace(
+                    '\r', '').split('\n')
+
+                # delete the choices that the user deleted
+                for choice in question.pollchoice_set.filter(active=True):
+                    if choice.choice_text not in new_answers:
+                        choice.active = False
+                        choice.save()
+
+                # add new choices that the user requested
+                for choice in new_answers:
+                    if not PollChoice.objects.filter(choice_text=choice, active=True):
+                        PollChoice(
+                            question=question,
+                            choice_text=choice
+                        ).save()
+
+            elif poll_form.cleaned_data['method_proxy'] == 'DELETE':
+                kiosk = get_object_or_404(
+                    Kiosk, pk=poll_form.cleaned_data['pk'])
+
+                question = kiosk.pollquestion_set.last()
+                question.kiosk.clear()
+                question.save()
+
+            # context changed, refresh it.
+            context = self.get_context(request)
+        else:
+            context['form_error'] = "Invalid Form Submission. Try again."
+
+        return render(request, 'dashboard/poll.html', context)
 
 
 def dashboard_student_bulk_view(request):
