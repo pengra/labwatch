@@ -13,6 +13,7 @@ class Student(models.Model):
         ('10', 'Sophomore'),
         ('11', 'Junior'),
         ('12', 'Senior'),
+        ('GD', 'Graduated')
     )
 
     first_name = models.CharField(max_length=255, help_text="Student First Name")
