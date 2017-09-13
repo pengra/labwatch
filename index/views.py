@@ -520,8 +520,6 @@ class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
         # elif excelform.is_valid():
             # parse the Excel right here
 
-        
-
         return render(request, 'dashboard/bulk.html', context)
 
 
