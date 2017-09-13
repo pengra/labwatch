@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'kiosk/(?P<auth_code>[a-zA-Z0-9]+)/$', views.KioskView.as_view(), name='kiosk-page'),
     url(r'kiosk/(?P<auth_code>[a-zA-Z0-9]+)/poll/$', views.KioskPollView.as_view(), name='kiosk-poll'),
     url(r'kiosk/(?P<auth_code>[a-zA-Z0-9]+)/ping/$', views.kiosk_ping_json, name='kiosk-ping'),
+    url(r'help/report/$', views.BugSplatView.as_view(), name='bugsplat'),
     url(r'^$', views.CoverView.as_view(), name='index'),
 ]

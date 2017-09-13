@@ -428,3 +428,10 @@ class DashboardStudentAdminView(LoginRequiredMixin, BaseLabDashView):
         "View for individual student tweaking."
         context = self.get_context(request)
         return render(request, 'dashboard/studentadmin.html', context)
+
+
+class BugSplatView(LoginRequiredMixin, BaseLabDashView):
+    "View for report bugs."
+
+    def get(self, request):
+        return render(request, 'dashboard/bugsplat.html')

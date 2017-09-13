@@ -55,9 +55,12 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'admin:index' %}">[Engineer Zone]</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index:bugsplat' %}">[File Bug]</a>
+        </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Help</a>
+          <a class="nav-link" href="{% url 'index:bugsplat' %}">Help</a>
         </li>
         {% endif %}
       </ul>
