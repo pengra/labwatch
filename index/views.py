@@ -554,3 +554,12 @@ class BugSplatView(LoginRequiredMixin, BaseLabDashView):
             context['error'] = "Something went wrong with your form. Please try again."
 
         return render(request, 'dashboard/bugsplat.html', context)
+
+
+class DashboardReportsView(LoginRequiredMixin, BaseLabDashView):
+    "View for reports."
+
+    def get(self, request):
+        "page view."
+        context = self.get_context(request)
+        return render(request, 'dashboard/report.html', context)
