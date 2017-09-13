@@ -17,4 +17,35 @@
 
 <h1>Upload Student Spreadsheet</h1>
 
+<form class="container" method="post">
+  <div class="col-12">
+      <h4>Upload any file: 
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> 
+        <i class="fa fa-file-code-o" aria-hidden="true"></i>
+      </h4>
+      <div class="input-group">
+          <label class="input-group-btn">
+              <span class="btn btn-primary" style="height: 100%;">
+                  Browse&hellip; <input type="file" id="fileUploadInput" style="display: none;" multiple
+                  onchange="formChanged(this);"
+                  >
+              </span>
+          </label>
+          <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
+      </div>
+      <span class="help-block">
+          Currently accepts XML, CSV and Microsoft Excel files.
+      </span>
+  </div>
+  
+</form>
+
+<script>
+function formChanged(self) {
+  console.log($(self)[0].value);
+
+}
+</script>
+
+
 {% endblock %}
