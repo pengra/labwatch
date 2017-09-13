@@ -105,7 +105,7 @@
 
   <!-- question modal -->
   <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="questionModalLabel">Question Form</h5>
@@ -114,7 +114,18 @@
             </button>
         </div>
         <div class="modal-body">
-          ...
+          <form>
+            <div class="form-group">
+              <label for="questionTitle">Question</label>
+              <input type="text" class="form-control" id="questionTitle" aria-describedby="questionHelp" placeholder="Why is the sky blue?">
+              <small id="questionHelp" class="form-text text-muted">Give us a short version of your question.</small>
+            </div>
+            <div class="form-group">
+              <label for="detailsBox">Details</label>
+              <textarea id="detailsBox" class="form-control" placeholder="Since there's a large presense of Argon in our atmosphere, shouldn't it be red?"></textarea>
+              <small id="detailsHelp" rows="6" class="form-text text-muted">Describe your question in detail if you need to.</small>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -126,7 +137,7 @@
 
   <!-- bug modal -->
   <div class="modal fade" id="bugModal" tabindex="-1" role="dialog" aria-labelledby="bugModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog  modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="bugModalLabel">Bug Form</h5>
@@ -135,7 +146,18 @@
               </button>
         </div>
         <div class="modal-body">
-          ...
+          <form>
+            <div class="form-group">
+              <label for="bugTitle">Bug Location</label>
+              <input type="text" class="form-control" id="bugTitle" aria-describedby="bugHelp" placeholder="Kiosk page.">
+              <small id="bugHelp" class="form-text text-muted">Which page is the bug happening on?</small>
+            </div>
+            <div class="form-group">
+              <label for="detailsBox">Details</label>
+              <textarea id="detailsBox" class="form-control" placeholder="The screen suddenly exploded and released the void and sucked in all the students when I tried to divide by zero!"></textarea>
+              <small id="detailsHelp" rows="6" class="form-text text-muted">We want to solve this bug, but we need as much detail as possible. Tell us how to replicate the issue you're running into.</small>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
