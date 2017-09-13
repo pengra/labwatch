@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from registration.models import School
 
 
 class UserReport(models.Model):
@@ -18,6 +19,14 @@ class UserReport(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ImageCard(models.Model):
+    "Model for card image."
+
+    school = models.ForeignKey(School, blank=True, null=True)
+    image = models.URLField(unique=True)
+
 
 '''
     class SpreadsheetUpload(models.Model):
