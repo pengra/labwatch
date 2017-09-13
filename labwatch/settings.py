@@ -27,6 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'def a secret key')
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
+    'lab-watch-beta.herokuapp.com'
     'lab-watch.herokuapp.com',
     '127.0.0.1'
 ]
