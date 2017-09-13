@@ -73,6 +73,16 @@
   </div>
 
   <div class="container">
+
+    {% if message %}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+    {% elif error %}
+    <div class="alert alert-danger" role="alert">
+      {{error}}
+    </div>
+    {% endif %}
     <!-- Example row of columns -->
     <div class="row">
       <div class="col-md-6">
@@ -114,7 +124,7 @@
             </button>
         </div>
         <div class="modal-body">
-          <form method='post'>
+          <form method='post' id='questionForm'>
             {% csrf_token %}
             <input type="hidden" name="report_type" value="question">
             <div class="form-group">
@@ -131,7 +141,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Ask Question</button>
+          <button type="button" class="btn btn-primary" onclick="$('#questionForm')[0].submit()">Ask Question</button>
         </div>
       </div>
     </div>
@@ -148,7 +158,7 @@
               </button>
         </div>
         <div class="modal-body">
-          <form method='post'>
+          <form method='post' id='bugForm'>
             {% csrf_token %}
             <input type="hidden" name="report_type" value="bug">
             <div class="form-group">
@@ -165,7 +175,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-warning">Submit Bug</button>
+          <button type="button" class="btn btn-warning" onclick='$("#bugForm")[0].submit()'>Submit Bug</button>
         </div>
       </div>
     </div>
