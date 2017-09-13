@@ -79,6 +79,4 @@ class XMLFileUploadForm(forms.Form):
     xml_teacher = forms.CharField(required=False)
     xml_nickname = forms.CharField(required=False)
     xml_email = forms.CharField(required=False)
-    xml_row = forms.CharField()
-    xml_parent = forms.CharField()
 
