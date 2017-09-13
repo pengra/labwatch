@@ -78,7 +78,14 @@
             <div class='form-group'>
                 <div class="form-group">
                     <label for="grade">Student Grade</label>
-                    <input type="text" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="Freshman">
+                    <br/>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="grade">
+                        <option selected>------</option>
+                        <option value="9">Freshman</option>
+                        <option value="10">Sophmore</option>
+                        <option value="11">Junior</option>
+                        <option value="12">Senior</option>
+                    </select>
                     <small id="gradehelp" class="form-text text-muted">Student's current year (optional)</small>
                 </div>
             </div>
