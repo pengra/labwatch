@@ -51,7 +51,7 @@ class BaseLabDashView(View):
                 request.user.groups.filter(name__in=['Tech Savy'])
             )
             context['is_tester'] = len(
-                request.user.groupos.filter(name__in['Tester'])
+                request.user.groups.filter(name__in=['Tester'])
             )
 
             context['school'] = request.user.associated_school.first()
