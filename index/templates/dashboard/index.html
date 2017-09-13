@@ -4,6 +4,7 @@
 {% block overview_active %}active{% endblock %}
 
 {% block content %}
+
 <section class="row placeholders">
   <div class="col-12 placeholder">
       <div class="alert alert-info" role="alert">
@@ -48,7 +49,7 @@
         <td>{{student.0.first_name}} {{student.last_name}}</td>
         <td>{{student.0.teacher}}</td>
         <td>{{student.0.grade}}</td>
-        <td>{{ student.1 }}</td>
+        <td><span data-toggle="tooltip" data-placement="right" title="{{student.2.timestamp}}">{{ student.1 }}</span></td>
       </tr>
       {% endfor %}
     </tbody>
