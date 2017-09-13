@@ -67,3 +67,17 @@ class BugSplatForm(forms.Form):
     report_type = forms.CharField()
     title = forms.CharField()
     content = forms.CharField(required=False)
+
+
+class XMLFileUploadForm(forms.Form):
+    "Form for XML uploads."
+    xml_studentid = forms.CharField()
+    xml_fname = forms.CharField()
+    xml_lname = forms.CharField()
+    xml_grade = forms.CharField(required=False)
+    xml_teacher = forms.CharField(required=False)
+    xml_nickname = forms.CharField(required=False)
+    xml_email = forms.CharField(required=False)
+    xml_row = forms.CharField()
+    xml_parent = forms.CharField()
+
