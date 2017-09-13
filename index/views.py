@@ -6,12 +6,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.generic import TemplateView, View
 
 from random import shuffle
+from defusedxml.ElementTree import parse
 
+from labwatch.settings import MAXUPLOADSIZE
 from index import forms
 from index.models import UserReport
 from polls.models import PollChoice, PollQuestion
@@ -429,6 +432,60 @@ class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
         context = self.get_context(request)
         return render(request, 'dashboard/bulk.html', context)
 
+    def post(self, request):
+        "view for accepting uploads."
+        context = self.get_context(request)
+        xmlform = forms.XMLFileUploadForm(request.POST, request.FILES)
+
+        errors = []
+        dupes = 0
+
+        # excelform = forms.ExcelFileUploadForm(request.POST, request.FILES)
+
+        # No other way to do it except here because no S3 Bucket
+        # using defusedxml to protect against basic attacks
+        # Need more robust way to protect against attacks
+        # Idea:
+        # https://www.clamav.net/documents/installing-clamav
+        if xmlform.is_valid() and xmlform.cleaned_data['spreadsheet'].size < MAXUPLOADSIZE:
+            spreadsheet = xmlform.cleaned_data['spreadsheet']
+            content = parse(spreadsheet)
+            root = content.getroot()
+            for row in root:
+                student_data = {
+                    'school': context['school'],
+                }
+                for data in row:
+                    if data.tag == xmlform.cleaned_data['xml_studentid']:
+                        student_data['student_id'] = data.text
+                    elif data.tag == xmlform.cleaned_data['xml_fname']:
+                        student_data['first_name'] = data.text
+                    elif data.tag == xmlform.cleaned_data['xml_lname']:
+                        student_data['last_name'] = data.text
+                    elif data.tag == xmlform.cleaned_data['xml_grade']:
+                        student_data['grade'] = data.text
+                    elif data.tag == xmlform.cleaned_data['xml_teacher']:
+                        student_data['teacher'] = data.text
+                    elif len(xmlform.cleaned_data['xml_nickname']) and data.tag == xmlform.cleaned_data['xml_nickname']:
+                        student_data['nick_name'] = data.text
+                    elif len(xmlform.cleaned_data['xml_email']) and data.tag == xmlform.cleaned_data['xml_email']:
+                        student_data['email'] = data.text
+                student = Student(**student_data)
+                try:
+                    student.save()
+                except (ValueError):
+                    errors.append(student_data)
+                except IntegrityError:
+                    dupes += 1
+
+        # elif excelform.is_valid():
+            # parse the Excel right here
+
+        context['message'] = 'Submitted {} rows. Rejected {} rows. Detected {} duplicates.'.format(len(root), len(errors), dupes)
+        context['msg_type'] = 'info'
+
+        return render(request, 'dashboard/bulk.html', context)
+
 
 class DashboardStudentAdminView(LoginRequiredMixin, BaseLabDashView):
     "View for individual student tweaking."
@@ -461,4 +518,3 @@ class BugSplatView(LoginRequiredMixin, BaseLabDashView):
             context['error'] = "Something went wrong with your form. Please try again."
 
         return render(request, 'dashboard/bugsplat.html', context)
-
