@@ -71,6 +71,7 @@ class BugSplatForm(forms.Form):
 
 class XMLFileUploadForm(forms.Form):
     "Form for XML uploads."
+    spreadsheet = forms.FileField()
     xml_studentid = forms.CharField()
     xml_fname = forms.CharField()
     xml_lname = forms.CharField()
