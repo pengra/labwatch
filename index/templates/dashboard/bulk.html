@@ -42,10 +42,20 @@
       <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
     </div>
     <span class="help-block" id="instructions">
-      Currently accepts XML, CSV and Microsoft Excel files.
+      Currently accepts XML and Microsoft Excel files.
     </span>
   </div>
 
+  <div id="xml-upload" class="container" style="margin-top: 2%; margin-bottom: 5%;">
+    <div class="row">
+      <div class="col-12">
+        <h2>Great! A few more details are required before continuing...</h2>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Excel Upload -->
   <div id="excel-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
     <div class="row">
       <div class="col-12">
@@ -118,10 +128,6 @@ function formChanged(self) {
   $('#fileUploadText').val(file.name);
   if (file.name.endsWith('.xml')) {
     // XML file
-    $('#instructions').removeClass('text-danger')
-    $('#excel-upload').addClass('hidden');
-  } else if (file.name.endsWith('.csv')) {
-    // CSV file
     $('#instructions').removeClass('text-danger')
     $('#excel-upload').addClass('hidden');
   } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
