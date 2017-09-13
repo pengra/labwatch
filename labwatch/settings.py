@@ -26,6 +26,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'def a secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
+IS_BETA = os.getenv('BETA', 'False').lower() == 'true'
+
 ALLOWED_HOSTS = [
     'lab-watch-beta.herokuapp.com'
     'lab-watch.herokuapp.com',
