@@ -114,7 +114,7 @@
             </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form method='post'>
             {% csrf_token %}
             <input type="hidden" name="report_type" value="question">
             <div class="form-group">
@@ -148,7 +148,7 @@
               </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form method='post'>
             {% csrf_token %}
             <input type="hidden" name="report_type" value="bug">
             <div class="form-group">
