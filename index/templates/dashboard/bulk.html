@@ -58,7 +58,7 @@
       <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
     </div>
     <span class="help-block" id="instructions">
-      Currently accepts XML and Microsoft Excel files.
+      Currently accepts XML (Microsoft Excel files coming soon!)<!--  and Microsoft Excel files -->.
     </span>
   </div>
 
@@ -219,15 +219,15 @@ function formChanged(self) {
     $('#instructions').removeClass('text-danger')
     $('#excel-upload').addClass('hidden');
     $('#xml-upload').removeClass('hidden');
-  } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-    // Excel file
-    $('#instructions').removeClass('text-danger')
-    $('#excel-upload').removeClass('hidden');
-    $('#xml-upload').addClass('hidden');
+  // } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+  //   // Excel file
+  //   $('#instructions').removeClass('text-danger')
+  //   $('#excel-upload').removeClass('hidden');
+  //   $('#xml-upload').addClass('hidden');
   } else {
     $('#instructions').addClass('text-danger')
     $('#excel-upload').addClass('hidden');
-    $('#xml-upload').removeClass('hidden');
+    $('#xml-upload').addClass('hidden');
   }
 }
 </script>
