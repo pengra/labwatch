@@ -24,6 +24,8 @@
 
 <h1>Upload Student Spreadsheet</h1>
 
+{% if is_librarian %}
+
 <form class="container" method="post">
   {% csrf_token %}
   <div class="col-12">
@@ -46,7 +48,9 @@
     </span>
   </div>
 
+  <!-- XML Upload -->
   <div id="xml-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
+    {% if is_techsavy or is_engineer %}
     <div class="alert alert-info">
       You are seeing these options because you have the "Tech Savy" badge. Note that all
       values are case sensitive.
@@ -120,6 +124,7 @@
         <small id="dataStarthelp" class="form-text text-muted">In the example, it'd be "DestinyCustomReport" <strong>(required)</strong></small>
       </div>
     </div>
+    {% endif %}
   </div>
 
 
@@ -211,6 +216,15 @@ function formChanged(self) {
   }
 }
 </script>
-
+{% else %}
+<section class="row placeholders">
+  <div class="col-12 placeholder">
+    <div class="alert alert-danger" role="alert">
+      You need to be a librarian to manipulate to access this page!
+    </div>
+  </div>
+</section>
+  
+{% endif %}
 
 {% endblock %}
