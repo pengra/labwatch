@@ -116,7 +116,7 @@ class DashboardKioskView(LoginRequiredMixin, BaseLabDashView):
 
     def get_context(self, request):
         context = super().get_context(request)
-        
+
         # loop until unique code recieved
         # Very bad practice.
         while True:
@@ -171,15 +171,33 @@ class DashboardKioskView(LoginRequiredMixin, BaseLabDashView):
                         name=kiosk_put_form.cleaned_data['school'])
                 )
                 kiosk.save()
-        
+
         return render(request, 'dashboard/kiosk.html', context)
 
 
-def kiosk_view(request, auth_code=None):
-    "Default view for kiosks. Point chromium locks here."
+class KioskView(View):
+    "General view for kiosks."
 
-    if request.method == 'POST':
+    def get(self, request, auth_code):
+        "Get view."
+        kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
+        pollquestion = PollQuestion.objects.filter(
+            kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
 
+        if pollquestion:
+            poll_a = pollquestion.pollchoice_set.filter(active=True)
+        else:
+            poll_a = []
+
+        return render(request, 'kiosk/_base.html', {
+            "kiosk": kiosk,
+            "school": kiosk.school,
+            "poll_q": pollquestion,
+            "poll_a": poll_a,
+        })
+
+    def post(self, request, auth_code):
+        "Post ajax response."
         school = get_object_or_404(Kiosk, auth_code=auth_code).school
 
         client_data = forms.LoginForm(request.POST)
@@ -233,13 +251,11 @@ def kiosk_view(request, auth_code=None):
             if len(no_spaces):
                 student = no_spaces[0]
                 response['input_mode'] = 1
+                found = True
             elif len(spaces):
                 student = spaces[0]
                 response['input_mode'] = 1
-            else:
-                raise Http404()
-
-            found = True
+                found = True
 
         if found:
 
@@ -270,23 +286,6 @@ def kiosk_view(request, auth_code=None):
             return JsonResponse(response)
 
         raise Http404
-
-    else:
-        kiosk = get_object_or_404(Kiosk, auth_code=auth_code)
-        pollquestion = PollQuestion.objects.filter(
-            kiosk=Kiosk.objects.get(auth_code=auth_code)).last()
-        if pollquestion:
-            poll_a = pollquestion.pollchoice_set.filter(active=True)
-        else:
-            poll_a = []
-        context = {
-            "kiosk": kiosk,
-            "school": kiosk.school,
-            "poll_q": pollquestion,
-            "poll_a": poll_a,
-            'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-        }
-        return render(request, 'kiosk/_base.html', context)
 
 
 def kiosk_poll_view(request, auth_code):
