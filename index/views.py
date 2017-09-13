@@ -509,13 +509,18 @@ class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
                     errors.append(student_data)
                 except IntegrityError:
                     dupes += 1
+            context['message'] = 'Submitted {} rows. Rejected {} rows. Detected {} duplicates.'.format(
+                len(root), len(errors), dupes)
+            context['msg_type'] = 'info'
+
+        else:
+            context['message'] = 'Spreadsheet did not match expected headers. Check that your spreadsheet is valid.'
+            context['msg_type'] = 'danger'
 
         # elif excelform.is_valid():
             # parse the Excel right here
 
-        context['message'] = 'Submitted {} rows. Rejected {} rows. Detected {} duplicates.'.format(
-            len(root), len(errors), dupes)
-        context['msg_type'] = 'info'
+        
 
         return render(request, 'dashboard/bulk.html', context)
 
