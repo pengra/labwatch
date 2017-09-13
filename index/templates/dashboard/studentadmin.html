@@ -36,10 +36,64 @@
                 <input type="text" class="form-control" id="student-input" aria-describedby="studentHelp" placeholder="Enter student ID # or Student name or Student nickname or Student email">
                 <small id="studentHelp" class="form-text text-muted">You may use keywords such as "OR" and "AND" to expand/narrow you query. e.g. "Norton AND Pengra"</small>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" disabled>Submit</button>
         </form>
     </div>
-    <div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">Tab2</div>
+    <div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">
+        <form class="container" style="padding-bottom: 2%;">
+            <h2 class="text-center" style="margin-top: 2%;">Student Creation Form</h2>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="studentid">Student ID #</label>
+                    <input type="text" class="form-control" id="studentid" aria-describedby="studentidhelp" placeholder="0123456">
+                    <small id="studentidhelp" class="form-text text-muted">Student ID #</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" aria-describedby="firstnamehelp" placeholder="Norton">
+                    <small id="firstnamehelp" class="form-text text-muted">Student First Name</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" aria-describedby="lastnamehelp" placeholder="Pengra">
+                    <small id="lastnamehelp" class="form-text text-muted">Student Last Name</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="nickname">Nickname</label>
+                    <input type="text" class="form-control" id="nickname" aria-describedby="nicknamehelp" placeholder="npengra">
+                    <small id="nicknamehelp" class="form-text text-muted">Should a student forget is ID, he can type his/her "nickname" or real name. (optional)</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="teacher">Teacher</label>
+                    <input type="text" class="form-control" id="teacher" aria-describedby="teacherhelp" placeholder="Stensland">
+                    <small id="teacherhelp" class="form-text text-muted">Student's homeroom teacher (optional)</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="grade">Student Grade</label>
+                    <input type="text" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="Freshman">
+                    <small id="gradehelp" class="form-text text-muted">Student's current year (optional)</small>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="form-group">
+                    <label for="grade">Email</label>
+                    <input type="text" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="example@example.com">
+                    <small id="gradehelp" class="form-text text-muted">Student's email. Can be used as a sign in option. (optional)</small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" disabled>Submit</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
