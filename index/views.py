@@ -29,9 +29,26 @@ class BaseLabDashView(View):
     login_url = '/login/'
 
     def get_context(self, request):
+        "overall context for all views method."
         context = {
-            "is_authenticated": request.user.is_authenticated()
+            "is_authenticated": request.user.is_authenticated(),
+            'is_engineer': False,
+            'is_librarian': False,
+            'is_teacher': False,
+            'school': None
         }
+        if context['is_authenticated']:
+            context['is_engineer'] = len(
+                request.user.groups.filter(name__in=['Engineer']))
+            context['is_librarian'] = len(
+                request.user.groups.filter(name__in=['Librarian']))
+            context['is_teacher'] = len(
+                request.user.groups.filter(name__in=['Teacher']))
+
+            
+            context['school'] = request.user.associated_school.first()
+            
+
         return context
 
 
@@ -66,33 +83,21 @@ class LoginView(BaseLabDashView):
         return render(request, 'index/login.html', context)
 
 
-def dashboard_view(request):
-    "View for dashboards for librarians."
+class DashboardView(LoginRequiredMixin, BaseLabDashView):
+    "View for dashboard."
 
-    context = {}
+    def get(self, request):
+        "View for dashboard."
+        context = self.get_context(request)
 
-    if request.user.is_authenticated:
-        schools = request.user.associated_school.all()
-
-        if len(schools) == 0:
-            context = {
-                'school': False
-            }
-        else:
-            logged_in = Student.objects.filter(
-                school=schools[0], signed_in=True)
-            context = {
-                'school': schools[0],
-                'is_engineer': len(request.user.groups.filter(name__in=['Engineer'])),
-                'logged_in_students': logged_in,
-                'len_students': len(logged_in),
-                'kiosk_active': len(schools[0].kiosk_set.filter(active=True)),
-            }
+        if context['school']:
+            context['logged_in_students'] = Student.objects.filter(
+                school=context['school'], signed_in=True
+            )
+            context['kiosk_active'] = len(
+                context['school'].kiosk_set.filter(active=True)) >= 1
 
         return render(request, 'dashboard/index.html', context)
-
-    # user is not authenticated, redirect them to login page
-    return redirect('index:login')
 
 
 def dashboard_kiosk_view(request):
