@@ -12,6 +12,8 @@
   }
 </style>
 
+<h1>Upload Student Spreadsheet</h1>
+
 {% if message %}
 <section class="row placeholders">
   <div class="col-12 placeholder">
@@ -22,14 +24,18 @@
 </section>
 {% endif %}
 
-<h1>Upload Student Spreadsheet</h1>
-
 {% if is_librarian %}
+<form class="container" method="post" enctype="multipart/form-data" onsubmit="$('#form_is_submitting').removeClass('hidden'); window.scrollTo(0, 0)">
 
-<form class="container" method="post" enctype="multipart/form-data">
-  
+  <div class="col-12 placeholder hidden" id="form_is_submitting">
+      <div class="alert alert-danger" role="alert">
+        <img src="https://imgur.com/BY76d3S.png" height="100px" style="padding: 0">
+        Form is submitting. This can take up to a minute. <strong>Do not refresh the page.</strong>
+      </div>
+  </div>
+
   <div class="col-12 placeholder">
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-warning" role="alert">
       This process will result in a long loading page! 
       The labwatch team is working hard to improve this system.
     </div>
