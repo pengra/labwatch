@@ -8,11 +8,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import JsonResponse
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.generic import TemplateView, View
 
-from random import shuffle
 from defusedxml.ElementTree import parse
+from random import shuffle
+from time import time
+
 
 from labwatch.settings import MAXUPLOADSIZE
 from index import forms
@@ -98,12 +101,36 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
 
     def get(self, request):
         "View for dashboard."
+
+        def human_friendly_time(timestamp):
+            "Turn 8:32pm to '2 hours ago'."
+            delta = timezone.now() - timestamp.timestamp
+
+            if delta < timezone.timedelta(minutes=1):
+                return "Just now"
+
+            if delta < timezone.timedelta(minutes=60):
+                return "{} minutes ago".format(delta.seconds//60)
+
+            if delta < timezone.timedelta(hours=2):
+                return "Over an hour ago"
+
+            if delta < timezone.timedelta(hours=6):
+                return "Over {} hours ago".format(delta.seconds//3600)
+
+            return "Over 6 hours ago"
+
         context = self.get_context(request)
 
         if context['school']:
-            context['logged_in_students'] = Student.objects.filter(
-                school=context['school'], signed_in=True
-            )
+            context['logged_in_students'] = [
+                [student, human_friendly_time(
+                    Log.objects.filter(student=student).last())]
+                for student in Student.objects.filter(
+                    school=context['school'], signed_in=True
+                )
+            ]
+
             context['kiosk_active'] = len(
                 context['school'].kiosk_set.filter(active=True)) >= 1
 
@@ -481,7 +508,8 @@ class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
         # elif excelform.is_valid():
             # parse the Excel right here
 
-        context['message'] = 'Submitted {} rows. Rejected {} rows. Detected {} duplicates.'.format(len(root), len(errors), dupes)
+        context['message'] = 'Submitted {} rows. Rejected {} rows. Detected {} duplicates.'.format(
+            len(root), len(errors), dupes)
         context['msg_type'] = 'info'
 
         return render(request, 'dashboard/bulk.html', context)
