@@ -135,3 +135,15 @@ STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# File Upload Stuff
+
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAXUPLOADSIZE = 2621440
