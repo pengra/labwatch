@@ -76,54 +76,62 @@
     <div class="row">
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentIDColumn">Enter the tag name containing student IDs</label>
-        <input type="text" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp" value="districtID">
+        <input type="text" name="xml_studentid" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp" value="districtID">
         <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "districtID" <strong>(required)</strong></small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentFirstNameColumn">Enter the tag name containing Student First Names</label>
-        <input type="text" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" value="nameFirst">
+        <input type="text" name="xml_fname" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" value="nameFirst">
         <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "nameFirst" <strong>(required)</strong></small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="studentLastNamesColumn">Enter the tag name containing Student Last Names</label>
-        <input type="text" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" value="nameLast">
+        <input type="text" name="xml_lname" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" value="nameLast">
         <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "nameLast" <strong>(required)</strong></small>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-xs-12 col-lg-4">
         <label for="gradeLevelColumn">Enter the tag name containing Student Grade level</label>
-        <input type="text" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" value="gradeLevel">
+        <input type="text" name="xml_grade" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" value="gradeLevel">
         <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "gradeLevel" (optional)</small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="homeroomColumn">Enter the tag name containing Student's Teacher</label>
-        <input type="text" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" value="homeroom">
+        <input type="text" name="xml_teacher" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" value="homeroom">
         <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "homeroom" (optional)</small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="nicknameColumn">Enter the tag name containing Student's nickname</label>
-        <input type="text" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
+        <input type="text" name="xml_nickname" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
         <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-xs-12 col-lg-4">
         <label for="emailColumn">Enter the tag name containing Student Email</label>
-        <input type="email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
+        <input type="text" name="xml_email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
         <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="rowNameColumn">Enter the row tag name</label>
-        <input type="text" class="form-control" id="rowNameColumn" aria-describedby="rowNamehelp" value="Row">
+        <input type="text" name="xml_row" class="form-control" id="rowNameColumn" aria-describedby="rowNamehelp" value="Row">
         <small id="rowNamehelp" class="form-text text-muted">In the example, it'd be "Row" <strong>(required)</strong></small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
         <label for="dataStartColumn">Enter the parent tag name</label>
-        <input type="text" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="DestinyCustomReport">
+        <input type="text" name="xml_parent" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="DestinyCustomReport">
         <small id="dataStarthelp" class="form-text text-muted">In the example, it'd be "DestinyCustomReport" <strong>(required)</strong></small>
       </div>
     </div>
+    {% else %}
+      <input type="hidden" name="xml_studentid" value="districtID">
+      <input type="hidden" name="xml_fname" value="nameFirst">
+      <input type="hidden" name="xml_lname" value="nameLast">
+      <input type="hidden" name="xml_grade" value="gradeLevel">
+      <input type="hidden" name="xml_teacher" value="homeroom">
+      <input type="hidden" name="xml_row" value="Row">
+      <input type="hidden" name="xml_parent" value="DestinyCustomReport">
     {% endif %}
     <div class="row">
       <div class="col-12">
@@ -183,7 +191,7 @@
     <div class="row">
       <div class="form-group col-xs-12 col-lg-4">
         <label for="emailColumn">Enter the Column Letter of Student Email</label>
-        <input type="email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
+        <input type="text" class="form-control" id="emailColumn" aria-describedby="emailhelp">
         <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
       </div>
       <div class="form-group col-xs-12 col-lg-4">
