@@ -13,6 +13,7 @@ from django.views.generic import TemplateView, View
 from random import shuffle
 
 from index import forms
+from index.models import UserReport
 from polls.models import PollChoice, PollQuestion
 from logger.models import Student, Log
 from registration.models import Kiosk, School
@@ -434,5 +435,22 @@ class BugSplatView(LoginRequiredMixin, BaseLabDashView):
     "View for report bugs."
 
     def get(self, request):
+        "page view."
         context = self.get_context(request)
         return render(request, 'dashboard/bugsplat.html', context)
+
+    def post(self, request):
+        "form submissions."
+        context = self.get_context(request)
+
+        bugsplat = forms.BugSplatForm(request.POST)
+        if bugsplat.is_valid():
+            data = bugsplat.cleaned_data
+            data['user'] = request.user
+            UserReport(**data).save()
+            context['message'] = "A report has been submitted, thank you"
+        else:
+            context['error'] = "Something went wrong with your form. Please try again."
+
+        return render(request, 'dashboard/bugsplat.html', context)
+
