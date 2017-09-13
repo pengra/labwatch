@@ -121,16 +121,6 @@
         <input type="text" name="xml_email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
         <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
       </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="rowNameColumn">Enter the row tag name</label>
-        <input type="text" name="xml_row" class="form-control" id="rowNameColumn" aria-describedby="rowNamehelp" value="Row">
-        <small id="rowNamehelp" class="form-text text-muted">In the example, it'd be "Row" <strong>(required)</strong></small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="dataStartColumn">Enter the parent tag name</label>
-        <input type="text" name="xml_parent" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="DestinyCustomReport">
-        <small id="dataStarthelp" class="form-text text-muted">In the example, it'd be "DestinyCustomReport" <strong>(required)</strong></small>
-      </div>
     </div>
     {% else %}
       <input type="hidden" name="xml_studentid" value="districtID">
@@ -138,8 +128,6 @@
       <input type="hidden" name="xml_lname" value="nameLast">
       <input type="hidden" name="xml_grade" value="gradeLevel">
       <input type="hidden" name="xml_teacher" value="homeroom">
-      <input type="hidden" name="xml_row" value="Row">
-      <input type="hidden" name="xml_parent" value="DestinyCustomReport">
     {% endif %}
     <div class="row">
       <div class="col-12">
