@@ -178,8 +178,12 @@
         if (students[index].checked) {
           logStudentOut(students[index].id.replace('student_', ''));
           students[index].checked = false;
+          $('#selectAllButton')[0].checked = false;
+          $('#bulk-options').addClass('hidden');
         }
       })
+      // Hacky solution
+      location.reload();
     }
   
     function selectAllStudents(element) {
