@@ -26,6 +26,10 @@ class ImageCard(models.Model):
 
     school = models.ForeignKey(School, blank=True, null=True)
     image = models.URLField(unique=True)
+    source = models.URLField(unique=True, blank=True)
+
+    def __str__(self):
+        return self.source if self.source else self.image
 
 
 '''
