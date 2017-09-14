@@ -75,4 +75,3 @@ class KioskSession(models.Model):
     signout = models.OneToOneField(Log, unique=True, related_name="session_signout")
     hours = models.IntegerField(default=0)
     minutes = models.IntegerField(default=0)
-
