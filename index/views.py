@@ -99,8 +99,8 @@ class LoginView(BaseLabDashView):
 class DashboardView(LoginRequiredMixin, BaseLabDashView):
     "View for dashboard."
 
-    def get(self, request):
-        "View for dashboard."
+    def get_context(self, request):
+        "context overload"
 
         def human_friendly_time(timestamp):
             "Turn 8:32pm to '2 hours ago'."
@@ -115,12 +115,12 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             if delta < timezone.timedelta(hours=2):
                 return "Over an hour ago"
 
-            if delta < timezone.timedelta(hours=6):
+            if delta < timezone.timedelta(hours=24):
                 return "Over {} hours ago".format(delta.seconds // 3600)
 
-            return "Over 6 hours ago"
+            return "Yesterday"
 
-        context = self.get_context(request)
+        context = super().get_context(request)
 
         if context['school']:
             context['logged_in_students'] = [
@@ -139,6 +139,20 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             context['kiosk_active'] = len(
                 context['school'].kiosk_set.filter(active=True)) >= 1
 
+            context['unique_students'] = Log.objects.filter(
+                student__in=Student.objects.filter(school=context['school']),
+                timestamp__gte=datetime.now().date()
+            ).values('student').distinct()
+
+            context['all_logs'] = Log.objects.filter(
+                student__in=Student.objects.filter(school=context['school']),
+                timestamp__gte=datetime.now().date()
+            )
+        return context
+
+    def get(self, request):
+        "View for dashboard."
+        context = self.get_context(request)
         return render(request, 'dashboard/index.html', context)
 
 
@@ -587,4 +601,3 @@ def kiosk_image_json(request, auth_code):
         'image': school.school_image,
         'source': school.school_image
     })
-    
