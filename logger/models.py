@@ -40,6 +40,8 @@ class Student(models.Model):
 class Log(models.Model):
     "A timestamp on top of a card scan/name input."
 
+    # Models actually depend on these indexes now
+    # Do not change.
     SIGN_MODE = (
         ('IN', 'Sign in'),
         ('OUT', 'Sign out'),
