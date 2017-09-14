@@ -55,6 +55,15 @@
     var lastLog = -1;
     var ableToVote = false;
     
+    function updateIcon() {
+      $.ajax({
+        type: 'GET',
+        url: location.href + 'image/',
+      }).done(function (data) {
+        console.log(data)
+        $('#mainImage').attr('src', data.image)
+      })
+    }
 
     function submitAjaxOnEnter(mode, event) {
       if (event.keyCode == 13 && mode == '_box') {
@@ -76,6 +85,7 @@
           .done(function (data) {
             // Success!
             lastLog = data.log;
+            updateIcon();
             if (data.student.status_before_sign) {
               // Student logging out
               $("#name").text(' ' + data.student.fname + ', Thanks for dropping by!');
@@ -138,7 +148,7 @@
           })
           .done(function (data) {
             // Success!
-
+            
           })
           .fail(function () {
             // Fail!
@@ -179,7 +189,7 @@
   <div class="container">
     {% if kiosk.active %}
       <section class="header" style="margin-top: 10vh; text-align: center;">
-        <img src="{{school.school_image}}" />
+        <img src="{{school.school_image}}" id="mainImage" style="height: 20vh"/>
         <h2 class="title" id="instructions">Hello<span id="name"> {{school}}, Please Sign in!</span></h2>
         <div class="twelve columns">
           <input class="u-full-width" type="text" autofocus onclick="$(this).focus()" placeholder="Scan your ID or type your name. You can vote once you sign in." onkeydown="submitAjaxOnEnter('_box', event);"
