@@ -118,7 +118,7 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             if delta < timezone.timedelta(hours=24):
                 return "Over {} hours ago".format(delta.seconds // 3600)
 
-            return "Yesterday"
+            return "Over a day ago"
 
         context = super().get_context(request)
 
