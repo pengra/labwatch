@@ -4,6 +4,60 @@
 {% block overview_active %}active{% endblock %}
 
 {% block content %}
+<style>
+  .hidden {
+    display: none;
+  }
+</style>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  function logStudentOut(studentID) {
+    $.ajaxSetup({
+      headers: {"X-CSRFToken": getCookie('csrftoken')}
+    });
+
+  }
+
+  function selectAllStudents(element) {
+    if (element.checked) {
+      $('.studentSelection').map(function(index) {
+        $('.studentSelection')[index].checked = true;
+      })
+    } else {
+      $('.studentSelection').map(function(index) {
+        $('.studentSelection')[index].checked = false;
+      })
+    }
+    showBulkOptions();
+  }
+
+  function showBulkOptions() {
+    var studentSelected = false;
+    var students = $('.studentSelection');
+    students.map(function(index) {
+      studentSelected = students[index].checked || studentSelected;
+    });
+    if (studentSelected) {
+      $('#bulk-options').removeClass('hidden');
+    } else {
+      $('#bulk-options').addClass('hidden');
+    }
+  }
+</script>
 
 <section class="row placeholders">
   <div class="col-12 placeholder">
@@ -37,40 +91,44 @@
 
 <h1>Currently Logged In Students</h1>
 {% if logged_in_students %}
-  
-  <div class="table-responsive">
+<div class="table-responsive">
   <table class="table table-striped" style="margin-bottom: 2%">
     <thead>
       <tr>
+        <th><input id="selectAllButton" type="checkbox" onclick="selectAllStudents(this);"></th>
         <th>ID</th>
         <th>Name</th>
         <th>Teacher</th>
         <th>Grade</th>
         <th>Sign in time</th>
-        <th>Actions</th>
+        <th>Student Details</th>
       </tr>
     </thead>
     <tbody>
       {% for student in logged_in_students %}
       <tr>
+        <td><input type="checkbox" name="student_{{student.0.student_id}}" 
+          class="studentSelection" id="student_{{student.0.student_id}}"
+          onclick="showBulkOptions();">
+        </td>
         <td>{{student.0.student_id}}</td>
         <td>{{student.0.first_name}} {{student.0.last_name}}</td>
         <td>{{student.0.teacher}}</td>
         <td>{{student.0.grade}}</td>
         <td><span data-toggle="tooltip" data-placement="right" title="{{student.2.timestamp}}">{{ student.1 }}</span></td>
         <td>
-          <button class='btn btn-secondary'>Log out</button>
-          <button class='btn btn-primary'>Student Details</button>
+          <button class='btn btn-primary'><i class="fa fa-id-card-o" aria-hidden="true"></i> Details</button>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  <h1>Bulk Actions</h1>
+</div>
+<div id="bulk-options" class="hidden">
   <div style="margin-bottom: 2%">
-    <button class='btn btn-secondary'>Log all students out</button>
-    <button class='btn btn-secondary'>Export this list</button>
-    <button class='btn btn-secondary'>Mark students</button>
+    <button class='btn btn-danger'>Log selected students out</button>
+    <button class='btn btn-primary'>Export selected students</button>
+    <button class='btn btn-primary'>Mark selected students as...</button>
   </div>
 </div>
 {% else %}
