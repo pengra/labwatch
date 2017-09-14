@@ -9,12 +9,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.utils import timezone
-from django.shortcuts import render, redirect, get_object_or_404, Http404
+from django.shortcuts import render, redirect, get_object_or_404, Http404, HttpResponse
 from django.views.generic import TemplateView, View
 
 from defusedxml.ElementTree import parse
+import json
 from random import shuffle, choice
-
 
 from labwatch.settings import MAXUPLOADSIZE
 from index import forms
@@ -607,3 +607,29 @@ def kiosk_image_json(request, auth_code):
         'image': school.school_image,
         'source': school.school_image
     })
+
+
+class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
+    "endpoint for logging students out."
+
+    def post(self, request):
+        logout_form = forms.StudentLogOutForm(request.POST)
+        if logout_form.is_valid():
+            # Get student and mark them "signed out"
+            student = get_object_or_404(Student, logout_form.cleaned_data['student_id'])
+            student.signed_in = False
+            student.save()
+
+            Log(
+                student=student,
+                mode=Log.SIGN_MODE[1][0],
+                input_mode=Log.INPUT_MODE[4][0]
+            ).save()
+
+            return JsonResponse({'sucess': True})
+        
+        response = HttpResponse(json.dumps({'sucess': True}), content_type='application/json')
+        response.status_code = 400
+        return response
+        
+            
