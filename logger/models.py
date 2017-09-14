@@ -16,22 +16,29 @@ class Student(models.Model):
         ('GD', 'Graduated')
     )
 
-    first_name = models.CharField(max_length=255, help_text="Student First Name")
+    first_name = models.CharField(
+        max_length=255, help_text="Student First Name")
     last_name = models.CharField(max_length=255, help_text="Student Last Name")
-    nick_name = models.CharField(max_length=255, blank=True, help_text="Should the student forget his ID, he can type his name or his/her 'nickname'.")
-    student_id = models.IntegerField(unique=True, help_text="Student ID number")
-    teacher = models.CharField(max_length=255, blank=True, help_text="Student teacher")
+    nick_name = models.CharField(
+        max_length=255, blank=True, help_text="Should the student forget his ID, he can type his name or his/her 'nickname'.")
+    student_id = models.IntegerField(
+        unique=True, help_text="Student ID number")
+    teacher = models.CharField(
+        max_length=255, blank=True, help_text="Student teacher")
     grade = models.CharField(
         max_length=2, choices=YEAR_IN_SCHOOL_CHOICES, blank=True)
 
     # School association
-    school = models.ForeignKey(School, help_text="School this student attends.", null=True)
+    school = models.ForeignKey(
+        School, help_text="School this student attends.", null=True)
 
     # Potential future uses
-    email = models.EmailField(blank=True, help_text="Student can submit email if they choose to")
+    email = models.EmailField(
+        blank=True, help_text="Student can submit email if they choose to")
 
     # Used for logging
-    signed_in = models.BooleanField(default=False, help_text="Status regarding student is signed in or not")
+    signed_in = models.BooleanField(
+        default=False, help_text="Status regarding student is signed in or not")
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -48,11 +55,11 @@ class Log(models.Model):
     )
 
     INPUT_MODE = (
-        ('CARD', 'Card Scan'), #0
-        ('NAME', 'Name input'), #1
-        ('EMAL', 'Email'), #2
-        ('NICK', 'Nickname input'), #3
-        ('ADMI', 'Admin input') #4
+        ('CARD', 'Card Scan'),  # 0
+        ('NAME', 'Name input'),  # 1
+        ('EMAL', 'Email'),  # 2
+        ('NICK', 'Nickname input'),  # 3
+        ('ADMI', 'Admin input')  # 4
     )
 
     student = models.ForeignKey(Student)
@@ -71,7 +78,9 @@ class Log(models.Model):
 class KioskSession(models.Model):
     "A session of how long a student stayed in the library."
     student = models.ForeignKey(Student)
-    signin = models.OneToOneField(Log, unique=True, related_name="session_signin")
-    signout = models.OneToOneField(Log, unique=True, related_name="session_signout")
-    hours = models.IntegerField(default=0)
-    minutes = models.IntegerField(default=0)
+    signin = models.OneToOneField(
+        Log, unique=True, related_name="session_signin")
+    signout = models.OneToOneField(
+        Log, unique=True, related_name="session_signout", blank=True, null=True)
+    hours = models.IntegerField(default=0, blank=True, null=True)
+    minutes = models.IntegerField(default=0, blank=True, null=True)
