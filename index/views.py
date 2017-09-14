@@ -581,5 +581,3 @@ def kiosk_image_json(request, auth_code):
         'image': image.image,
         'source': image.source
     })
-
-
