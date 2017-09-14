@@ -14,12 +14,12 @@ from django.views.generic import TemplateView, View
 
 from datetime import datetime
 from defusedxml.ElementTree import parse
-from random import shuffle
+from random import shuffle, choice
 
 
 from labwatch.settings import MAXUPLOADSIZE
 from index import forms
-from index.models import UserReport
+from index.models import UserReport, ImageCard
 from polls.models import PollChoice, PollQuestion
 from logger.models import Student, Log
 from registration.models import Kiosk, School
@@ -571,3 +571,15 @@ class DashboardReportsView(LoginRequiredMixin, BaseLabDashView):
         "page view."
         context = self.get_context(request)
         return render(request, 'dashboard/report.html', context)
+
+
+def kiosk_image_json(request, auth_code):
+    "return a random image every time."
+    school = get_object_or_404(Kiosk, auth_code=auth_code).school
+    image = choice(ImageCard.objects.filter(school=school))
+    return JsonResponse({
+        'image': image.image,
+        'source': image.source
+    })
+
+
