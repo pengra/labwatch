@@ -80,3 +80,8 @@ class XMLFileUploadForm(forms.Form):
     xml_nickname = forms.CharField(required=False)
     xml_email = forms.CharField(required=False)
 
+
+class StudentLogOutForm(forms.Form):
+    "Form for student logouts"
+    student_id = forms.IntegerField()
+
