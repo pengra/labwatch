@@ -576,8 +576,15 @@ class DashboardReportsView(LoginRequiredMixin, BaseLabDashView):
 def kiosk_image_json(request, auth_code):
     "return a random image every time."
     school = get_object_or_404(Kiosk, auth_code=auth_code).school
-    image = choice(ImageCard.objects.filter(school=school))
+    images = ImageCard.objects.filter(school=school)
+    if images:
+        image = choice(images)
+        return JsonResponse({
+            'image': image.image,
+            'source': image.source
+        })
     return JsonResponse({
-        'image': image.image,
-        'source': image.source
+        'image': school.school_image,
+        'source': school.school_image
     })
+    
