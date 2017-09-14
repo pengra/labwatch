@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'login/$', views.LoginView.as_view(), name='login'),
     url(r'dashboard/students/upload-spreadsheet/$', views.DashboardStudentBulkView.as_view(), name='dashboard-student-bulk'),
     url(r'dashboard/students/$', views.DashboardStudentAdminView.as_view(), name='dashboard-student'),
+    url(r'dashboard/students/logout/$', views.DashboardStudentLogout.as_view(), name='dashboard-student-logout'),
     url(r'dashboard/kiosk/$', views.DashboardKioskView.as_view(), name='dashboard-kiosk'),
     url(r'dashboard/poll/$', views.DashboardPollView.as_view(), name='dashboard-poll'),
     url(r'dashboard/report/$', views.DashboardReportsView.as_view(), name='dashboard-reports'),
