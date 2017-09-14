@@ -66,3 +66,13 @@ class Log(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.student, self.mode)
+
+
+class KioskSession(models.Model):
+    "A session of how long a student stayed in the library."
+    student = models.ForeignKey(Student)
+    signin = models.OneToOneField(Log, unique=True, related_name="session_signin")
+    signout = models.OneToOneField(Log, unique=True, related_name="session_signout")
+    hours = models.IntegerField(default=0)
+    minutes = models.IntegerField(default=0)
+

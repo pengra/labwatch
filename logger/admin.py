@@ -11,3 +11,4 @@ class LogAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Log, LogAdmin)
 admin.site.register(models.Student, StudentAdmin)
+admin.site.register(models.KioskSession)
