@@ -12,9 +12,9 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.generic import TemplateView, View
 
+from datetime import datetime
 from defusedxml.ElementTree import parse
 from random import shuffle
-from time import time
 
 
 from labwatch.settings import MAXUPLOADSIZE
@@ -558,6 +558,14 @@ class BugSplatView(LoginRequiredMixin, BaseLabDashView):
 
 class DashboardReportsView(LoginRequiredMixin, BaseLabDashView):
     "View for reports."
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['head_count'] = Log.objects.filter(
+            student__in=Student.objects.filter(school=context['school']),
+            timestamp__gte=datetime.now().date()
+        ).values('student').distinct().count()
+        return context
 
     def get(self, request):
         "page view."
