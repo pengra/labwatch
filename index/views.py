@@ -12,7 +12,6 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views.generic import TemplateView, View
 
-from datetime import datetime
 from defusedxml.ElementTree import parse
 from random import shuffle, choice
 
@@ -139,14 +138,21 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             context['kiosk_active'] = len(
                 context['school'].kiosk_set.filter(active=True)) >= 1
 
-            context['unique_students'] = Log.objects.filter(
+            unique_pks = Log.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
-                timestamp__gte=datetime.now().date()
+                timestamp__gte=timezone.now().date()
             ).values('student').distinct()
+
+            context['unique_students'] = [
+                Student.objects.get(pk=log['student']) for log in unique_pks
+            ]
+
+            context['unique_students_len'] = len(context['unique_students'])
+            context['logged_in_students_len'] = len(context['logged_in_students'])
 
             context['all_logs'] = Log.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
-                timestamp__gte=datetime.now().date()
+                timestamp__gte=timezone.now().date()
             )
         return context
 
@@ -577,7 +583,7 @@ class DashboardReportsView(LoginRequiredMixin, BaseLabDashView):
         context = super().get_context(request)
         context['head_count'] = Log.objects.filter(
             student__in=Student.objects.filter(school=context['school']),
-            timestamp__gte=datetime.now().date()
+            timestamp__gte=timezone.now().date()
         ).values('student').distinct().count()
         return context
 
