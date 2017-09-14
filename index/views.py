@@ -14,6 +14,7 @@ from django.views.generic import TemplateView, View
 
 from defusedxml.ElementTree import parse
 import json
+import pytz
 from random import shuffle, choice
 
 from labwatch.settings import MAXUPLOADSIZE
@@ -140,7 +141,7 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
 
             unique_pks = Log.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
-                timestamp__gte=timezone.now().date()
+                timestamp__gte=timezone.now().date(),
             ).values('student').distinct()
 
             context['unique_students'] = [
@@ -148,7 +149,8 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             ]
 
             context['unique_students_len'] = len(context['unique_students'])
-            context['logged_in_students_len'] = len(context['logged_in_students'])
+            context['logged_in_students_len'] = len(
+                context['logged_in_students'])
 
             context['all_logs'] = Log.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
@@ -617,7 +619,8 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
         logout_form = forms.StudentLogOutForm(request.POST)
         if logout_form.is_valid():
             # Get student and mark them "signed out"
-            student = get_object_or_404(Student, student_id=logout_form.cleaned_data['student_id'])
+            student = get_object_or_404(
+                Student, student_id=logout_form.cleaned_data['student_id'])
             student.signed_in = False
             student.save()
 
@@ -628,9 +631,8 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
             ).save()
 
             return JsonResponse({'sucess': True})
-        
-        response = HttpResponse(json.dumps({'sucess': True}), content_type='application/json')
+
+        response = HttpResponse(json.dumps(
+            {'sucess': True}), content_type='application/json')
         response.status_code = 400
         return response
-        
-            
