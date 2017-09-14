@@ -84,3 +84,6 @@ class KioskSession(models.Model):
         Log, unique=True, related_name="session_signout", blank=True, null=True)
     hours = models.IntegerField(default=0, blank=True, null=True)
     minutes = models.IntegerField(default=0, blank=True, null=True)
+
+    def __str__(self):
+        return "{}'s session: {}H {}M".format(self.student, self.hours, self.minutes)
