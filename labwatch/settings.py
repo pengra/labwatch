@@ -142,6 +142,8 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # File Upload Stuff
 
+# 1KB = 1024
+# 1MB = 1048576
 # 2.5MB - 2621440
 # 5MB - 5242880
 # 10MB - 10485760
