@@ -4,9 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="labwatch is a tool used for tracking library usage">
+  <meta name="author" content="Norton Pengra (Qwergram)">
   <link rel="icon" href="/favicon.ico">
+  {% block predocument %}
+
+  {% endblock %}
 
   {% if school %}
     <title>{{school}} Library - {% block subtitle %}Overview{% endblock %}</title>
@@ -150,6 +153,8 @@
     crossorigin="anonymous"></script>
   <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+  {% block scripts %}
+  {% endblock %}
   <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip(); 
