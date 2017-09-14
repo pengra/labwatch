@@ -613,10 +613,11 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
     "endpoint for logging students out."
 
     def post(self, request):
+        "Handle student log out requests"
         logout_form = forms.StudentLogOutForm(request.POST)
         if logout_form.is_valid():
             # Get student and mark them "signed out"
-            student = get_object_or_404(Student, logout_form.cleaned_data['student_id'])
+            student = get_object_or_404(Student, student_id=logout_form.cleaned_data['student_id'])
             student.signed_in = False
             student.save()
 
