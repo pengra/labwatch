@@ -11,15 +11,22 @@
         Hey {{user|capfirst}},<br>
         Keep in mind everything you're seeing is a WIP.
         Things are subject to change without notice! We appreciate your
-        patience. If you spot a bug, please report it to us.<br>
+        patience. If you spot a bug, <a href='{% url "index:bugsplat" %}'>please report it</a> to us. 
         Thanks for your continued support.
         <br>
         The badges next to the menu options will let you know what stage in development
-        a current feature is on. The stages are <span class="badge badge-secondary">WIP</span>, 
-        <span class="badge badge-secondary">Alpha</span> , 
-        <span class="badge badge-secondary">Beta</span> ,
+        a current feature is on. The stages are 
+        <span class="badge badge-danger">disabled</span>, 
+        <span class="badge badge-warning">WIP</span>, 
+        <span class="badge badge-secondary">Alpha</span>, 
+        <span class="badge badge-secondary">Beta</span>,
         Release (no badge) and sometimes 
         <span class="badge badge-warning">maintenance</span>.
+        {% if is_tester %}
+        Additionally, because you are marked as a tester, you will occasionally see the
+        <span class="badge badge-success">Test</span> badge, signifying a feature we're
+        testing out.
+        {% endif %}
         <hr/>
         Happy Reading!
         <br/>
@@ -32,7 +39,7 @@
 {% if logged_in_students %}
   
   <div class="table-responsive">
-  <table class="table table-striped">
+  <table class="table table-striped" style="margin-bottom: 2%">
     <thead>
       <tr>
         <th>ID</th>
@@ -40,20 +47,31 @@
         <th>Teacher</th>
         <th>Grade</th>
         <th>Sign in time</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for student in logged_in_students %}
       <tr>
         <td>{{student.0.student_id}}</td>
-        <td>{{student.0.first_name}} {{student.last_name}}</td>
+        <td>{{student.0.first_name}} {{student.0.last_name}}</td>
         <td>{{student.0.teacher}}</td>
         <td>{{student.0.grade}}</td>
         <td><span data-toggle="tooltip" data-placement="right" title="{{student.2.timestamp}}">{{ student.1 }}</span></td>
+        <td>
+          <button class='btn btn-secondary'>Log out</button>
+          <button class='btn btn-primary'>Student Details</button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  <h1>Bulk Actions</h1>
+  <div style="margin-bottom: 2%">
+    <button class='btn btn-secondary'>Log all students out</button>
+    <button class='btn btn-secondary'>Export this list</button>
+    <button class='btn btn-secondary'>Mark students</button>
+  </div>
 </div>
 {% else %}
   <div class="alert alert-warning" role="alert">
