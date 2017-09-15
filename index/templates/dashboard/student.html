@@ -105,10 +105,27 @@
     <div class="container">
       <div class="row">
         <div class="col-10" style="margin-top: 2%">
-          <input type="text" id="student_search" class="form-control" placeholder="Search for a student by name, student ID or username">
+          <input type="text" id="student_search" class="form-control" placeholder="Search for a student by name, student ID or username" onkeydown="handleEnter(event);">
         </div>
         <div class="col-2" style="margin-top: 2%">
             <button type="submit" class="btn btn-primary" onclick="findStudent()">Search</button>
+        </div>
+      </div>
+      <div class="row" id="results-container">
+        <div class="table-responsive col-12">
+          <table class="table table-striped" style="margin-bottom: 2%; margin-top: 2%;">
+            <thead>
+              <tr>
+                <th>Session ID#</th>
+                <th>Student First Name</th>
+                <th>Student Last Name</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="results-table">
+              <!-- content goes here -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -354,12 +371,41 @@
     }
 
     function displayError(message) {
-  
+      
     }
   
+    function handleEnter(e) {
+      if (e.keyCode == 13) {
+        findStudent();
+      }
+    }
+
+    function updateResults(students) {
+      $('#results-container').removeClass('hidden');
+      $('#results-table').empty();
+
+      students['results'].map(function(student) {
+        var new_element = $(document.createElement('tr'))
+        
+        var studentID = document.createElement('td');
+        studentID.appendChild(document.createTextNode(student['id']));
+
+        var fname = document.createElement('td');
+        fname.appendChild(document.createTextNode(student['fname']));
+
+        var lname = document.createElement('td');
+        lname.appendChild(document.createTextNode(student['lname']));
+
+        new_element.append($(studentID));
+        new_element.append($(fname));
+        new_element.append($(lname));
+        $('#results-table').append(new_element);
+      })
+    }
+
     function findStudent() {
-      var student = $('#student_search')[0].value;
-      if (student == '') {
+      var studentID = $('#student_search')[0].value;
+      if (studentID == '') {
         displayError("You must type in a query!");
       } else {
         $.ajaxSetup({
@@ -367,17 +413,14 @@
         });
 
         $.ajax({
-        type: "POST",
-        url: '{% url "index:dashboard-student" %}',
-        data: {
-          student_id: studentID,
-          csrf_token: '{{csrf_token}}'
-        }
+          type: "POST",
+          url: '{% url "index:dashboard-student-search" %}',
+          data: {
+            search_target: studentID,
+            csrf_token: '{{csrf_token}}'
+          }
         })
-        .done(function (data) {
-          // Success!
-          $('#tr_student_' + studentID).addClass('hidden');
-        })
+        .done(function(data) {updateResults(data)})
       }
     }
   </script>
