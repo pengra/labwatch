@@ -51,6 +51,7 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3">Lab Watch Sign-up Form</h1>
+      Already have an account? <a href="{% url 'index:login' %}" >Sign in</a> instead. Engineers sign in <a href="{% url 'admin:login' %}">here</a> instead.
     </div>
   </div>
 
@@ -183,13 +184,13 @@
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#fractal').val('No Charge')} else {$('#fractal').val('Subscribe with Fractal Plan')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#fractal').val('No Charge')} else {$('#fractal').val('Subscribe with Fractal Plan')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="fractal" disabled value="Subscribe with Fractal Plan">
                     </div>
                     <div class="input-group" style="margin-top:3px">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta2').val('Thanks for helping test!')} else {$('#beta2').val('Serve as a beta Tester')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta2').val('Thanks for helping test!')} else {$('#beta2').val('Serve as a beta Tester')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta2" disabled value="Serve as a Beta Tester">
                     </div>
@@ -214,13 +215,13 @@
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#lunar').val('$120* per year')} else {$('#lunar').val('Subscribe with Lunar Plan')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#lunar').val('$120* per year')} else {$('#lunar').val('Subscribe with Lunar Plan')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="lunar" disabled value="Subscribe with Lunar Plan">
                     </div>
                     <div class="input-group" style="margin-top:3px">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta').val('Thanks for helping test!')} else {$('#beta').val('Serve as a Beta Tester')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta').val('Thanks for helping test!')} else {$('#beta').val('Serve as a Beta Tester')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta" disabled value="Serve as a Beta Tester">
                     </div>
@@ -245,13 +246,13 @@
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#orange').val('$480** per year')} else {$('#orange').val('Subscribe with Orange Plan')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#orange').val('$480** per year')} else {$('#orange').val('Subscribe with Orange Plan')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="orange" disabled value="Subscribe with Orange Plan">
                     </div>
                     <div class="input-group" style="margin-top:3px">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta3').val('Thanks for helping test!')} else {$('#beta3').val('Serve as a Beta Tester')}">
+                        <input type="checkbox" class="plan" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta3').val('Thanks for helping test!')} else {$('#beta3').val('Serve as a Beta Tester')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta3" disabled value="Serve as a Beta Tester">
                     </div>
@@ -296,7 +297,7 @@
     <hr>
 
     <footer>
-      <p>&copy; by some nerds</p>
+      <p>&copy; by the nerds @ labwatch</p>
     </footer>
   </div>
   <!-- /container -->
