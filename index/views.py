@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.temp import NamedTemporaryFile
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.utils import timezone
@@ -15,8 +16,9 @@ from django.views.generic import TemplateView, View
 from datetime import datetime as naive_datetime
 from defusedxml.ElementTree import parse
 import json
-import pytz
 from random import shuffle, choice
+from wsgiref.util import FileWrapper
+import xlsxwriter
 
 from labwatch.settings import MAXUPLOADSIZE
 from index import forms
@@ -652,17 +654,73 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
             )
             log.save()
 
-            session = KioskSession.objects.filter(signin=log)
+            session = KioskSession.objects.filter(student=student).last()
             session.signout = log
             delta = session.signout.timestamp - session.signin.timestamp
             naive_delta = naive_datetime(1,1,1) + delta
-            session.hours = naive_delta.hour + (naive_delta.day-1 * 24)
+            session.hours = naive_delta.hour
             session.minutes = naive_delta.minute
             session.save()
-
             return JsonResponse({'sucess': True})
 
         response = HttpResponse(json.dumps(
             {'sucess': True}), content_type='application/json')
         response.status_code = 400
+        return response
+
+
+class DashboardExportView(LoginRequiredMixin, BaseLabDashView):
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['sessions'] = KioskSession.objects.filter(
+            student__in=Student.objects.filter(school=context['school']),
+            signin__timestamp__startswith=timezone.now().date()
+        ).order_by('pk')
+        return context
+
+    def get(self, request):
+        context = self.get_context(request)
+        temporary_file = NamedTemporaryFile(suffix='.xlsx')
+        workbook = xlsxwriter.Workbook(temporary_file, {'in_memory': True})
+        worksheet = workbook.add_worksheet("student data")
+
+        # create headers
+        worksheet.write('A1', 'Session ID')
+        worksheet.write('B1', 'Student ID')
+        worksheet.write('C1', 'Student First Name')
+        worksheet.write('D1', 'Student Last Name')
+        worksheet.write('E1', 'Student Grade')
+        worksheet.write('F1', 'Student Teacher')
+        worksheet.write('G1', 'Sign in time')
+        worksheet.write('H1', 'Sign in method')
+        worksheet.write('I1', 'Sign out time')
+        worksheet.write('J1', 'Sign out method')
+        worksheet.write('K1', 'Total Hours Spent')
+        worksheet.write('L1', 'Total Minutes Spent')
+        worksheet.write('M1', 'Poll Answer')
+
+        for index, session in enumerate(context['sessions'], start=2):
+            worksheet.write('A{}'.format(index), session.pk)
+            worksheet.write('B{}'.format(index), session.student.student_id)
+            worksheet.write('C{}'.format(index), session.student.first_name)
+            worksheet.write('D{}'.format(index), session.student.last_name)
+            worksheet.write('E{}'.format(index), session.student.grade)
+            worksheet.write('F{}'.format(index), session.student.teacher)
+            worksheet.write('G{}'.format(index), str(session.signin.timestamp))
+            worksheet.write('H{}'.format(index), session.signin.input_mode)
+            if session.signout:
+                worksheet.write('I{}'.format(index), str(session.signout.timestamp))
+                worksheet.write('J{}'.format(index), session.signout.input_mode)
+                worksheet.write('K{}'.format(index), session.hours)
+                worksheet.write('L{}'.format(index), session.minutes)
+            if session.signin.poll_answer:
+                worksheet.write('M{}'.format(index), session.signin.poll_answer.choice_text)
+
+        workbook.close()
+
+        temporary_file.seek(0)
+
+        response = HttpResponse(temporary_file.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response['Content-Disposition'] = 'attachment; filename=export.xlsx'
         return response
