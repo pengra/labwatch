@@ -355,23 +355,23 @@ class KioskView(View):
             response['log'] = log.pk
 
             # create session
-            if log.mode == 'IN': # signing in:
+            if log.mode == 'IN':  # signing in:
                 KioskSession(
                     student=student,
                     signin=log
                 ).save()
-            else: # signing out
+            else:  # signing out
                 session = KioskSession.objects.filter(student=student).last()
                 if session:
                     session.signout = log
                     delta = session.signout.timestamp - session.signin.timestamp
-                    naive_delta = naive_datetime(1,1,1) + delta
+                    naive_delta = naive_datetime(1, 1, 1) + delta
                     session.hours = naive_delta.hour
                     session.minutes = naive_delta.minute
                     session.save()
                 else:
                     raise Http404
-            
+
             return JsonResponse(response)
 
         raise Http404
@@ -568,15 +568,6 @@ class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
         return render(request, 'dashboard/bulk.html', context)
 
 
-class DashboardStudentAdminView(LoginRequiredMixin, BaseLabDashView):
-    "View for individual student tweaking."
-
-    def get(self, request):
-        "View for individual student tweaking."
-        context = self.get_context(request)
-        return render(request, 'dashboard/studentadmin.html', context)
-
-
 class BugSplatView(LoginRequiredMixin, BaseLabDashView):
     "View for report bugs."
 
@@ -657,7 +648,7 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
             session = KioskSession.objects.filter(student=student).last()
             session.signout = log
             delta = session.signout.timestamp - session.signin.timestamp
-            naive_delta = naive_datetime(1,1,1) + delta
+            naive_delta = naive_datetime(1, 1, 1) + delta
             session.hours = naive_delta.hour
             session.minutes = naive_delta.minute
             session.save()
@@ -711,24 +702,29 @@ class DashboardExportView(LoginRequiredMixin, BaseLabDashView):
             worksheet.write('G{}'.format(index), str(session.signin.timestamp))
             worksheet.write('H{}'.format(index), session.signin.input_mode)
             if session.signout:
-                worksheet.write('I{}'.format(index), str(session.signout.timestamp))
-                worksheet.write('J{}'.format(index), session.signout.input_mode)
+                worksheet.write('I{}'.format(index), str(
+                    session.signout.timestamp))
+                worksheet.write('J{}'.format(index),
+                                session.signout.input_mode)
                 worksheet.write('K{}'.format(index), session.hours)
                 worksheet.write('L{}'.format(index), session.minutes)
             if session.signin.poll_answer:
-                worksheet.write('M{}'.format(index), session.signin.poll_answer.choice_text)
+                worksheet.write('M{}'.format(index),
+                                session.signin.poll_answer.choice_text)
 
         workbook.close()
 
         temporary_file.seek(0)
 
-        response = HttpResponse(temporary_file.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response = HttpResponse(temporary_file.read(
+        ), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response['Content-Disposition'] = 'attachment; filename=export.xlsx'
         return response
 
+
 class SignUpView(BaseLabDashView):
     "View for sign ups."
-    
+
     def get(self, request):
         "Basic view for sign up"
         context = self.get_context(request)
