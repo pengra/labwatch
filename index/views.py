@@ -107,7 +107,7 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             "Turn 8:32pm to '2 hours ago'."
             delta = timezone.now() - timestamp.timestamp
 
-            if delta < timezone.timedelta(minutes=1):
+            if delta < timezone.timedelta(minutes=2):
                 return "Just now"
 
             if delta < timezone.timedelta(minutes=60):
