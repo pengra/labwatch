@@ -41,6 +41,9 @@ class Subscription(models.Model):
     school = models.OneToOneField(School, unique=True, related_name="subscription")
     billing_cycle = models.CharField(choices=BILLING_CYCLES, max_length=5)
 
+    # plan_name = models.CharField(max_length=100)
+    # Billing: https://apply.braintreegateway.com
+
     max_student_ids = models.IntegerField()
     max_kiosks = models.IntegerField()
     max_logs = models.IntegerField()
