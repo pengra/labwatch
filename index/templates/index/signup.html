@@ -149,7 +149,7 @@
                     <span class="input-group-addon">
                     <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not understand or accept the TOS.')}">
                     </span>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not understand or accept the TOS.">
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not accept the TOS.">
                 </div>
                 <small id="schoolcode-help" class="form-text text-muted">You must accept our Terms of Service to use our service.</small>
             </div>
@@ -179,7 +179,7 @@
                         1 Sign-in Station<br/>
                         2,000,000 Logs/Month<br/>
                         Interactive Student Rewards<br/>
-                        <span class="text-success">If you sign up to be a beta tester, all limits are tripled.</span>
+                        <span class="text-success">Beta testers will enjoy increased limits.</span>
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
@@ -189,9 +189,9 @@
                     </div>
                     <div class="input-group" style="margin-top:3px">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#fractal').val('No Charge')} else {$('#fractal').val('Serve as a Beta Tester')}">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta2').val('Thanks for helping test!')} else {$('#beta2').val('Serve as a beta Tester')}">
                         </span>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="fractal" disabled value="Serve as a Beta Tester">
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta2" disabled value="Serve as a Beta Tester">
                     </div>
                 </div>
                 </div>
@@ -210,12 +210,19 @@
                         Interactive Student Rewards<br/>
                         Student Leaderboards<br/>
                         Data Analysis &amp; Intelligence<br/>
+                        <span class="text-success">Beta testers will recieve 15% off.</span>
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
                         <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#lunar').val('$120* per year')} else {$('#lunar').val('Subscribe with Lunar Plan')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="lunar" disabled value="Subscribe with Lunar Plan">
+                    </div>
+                    <div class="input-group" style="margin-top:3px">
+                        <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta').val('Thanks for helping test!')} else {$('#beta').val('Serve as a Beta Tester')}">
+                        </span>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta" disabled value="Serve as a Beta Tester">
                     </div>
                 </div>
                 </div>
@@ -225,7 +232,7 @@
                 <div class="card">
                 <img class="card-img-top" src="https://imgur.com/XV5LFiY.png" alt="Card image cap">
                 <div class="card-body">
-                    <h4 class="card-title">Orange Plan <span class="badge badge-success">$50/month</span></h4>
+                    <h4 class="card-title">Orange Plan <span class="badge badge-success">$20/month</span></h4>
                     <p class="card-text text-center">
                         2 Month Free Trial<br/>
                         Unlimited Student IDs<br/>
@@ -234,12 +241,19 @@
                         Interactive Student Rewards<br/>
                         Student Leaderboards<br/>
                         Data Analysis &amp; Intelligence<br/>
+                        <span class="text-success">Beta testers will recieve 15% off.</span>
                     </p>
                     <div class="input-group">
                         <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#orange').val('$600** per year')} else {$('#orange').val('Subscribe with Orange Plan')}">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#orange').val('$480** per year')} else {$('#orange').val('Subscribe with Orange Plan')}">
                         </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="orange" disabled value="Subscribe with Orange Plan">
+                    </div>
+                    <div class="input-group" style="margin-top:3px">
+                        <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#beta3').val('Thanks for helping test!')} else {$('#beta3').val('Serve as a Beta Tester')}">
+                        </span>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta3" disabled value="Serve as a Beta Tester">
                     </div>
                 </div>
                 </div>
@@ -269,8 +283,10 @@
                 <small id="schoolcode-help" class="form-text text-muted">
                     Disclosure:<br/>
                     Pricing depends on how much service is used. Customers who only use half the capacity of plan only pay half the plan price. <br/>
+                    Fractal plan customers will have their accounts locked when log limits are reached.<br/>
                     *Lunar plan customers will be charged an additional $1 for every billion logs and $1 for every 500 additional student IDs they use and $1.<br/>
-                    **Orange plan customers will be charged an additional $1 for every 2 billion logs after 20 billion logs and $1 for every 10,000 student IDs after 50,000 student IDs.
+                    **Orange plan customers will be charged an additional $1 for every 2 billion logs after 20 billion logs and $1 for every 10,000 student IDs after 50,000 student IDs.</br>
+                    Lunar and Orange customers can prevent additional fees by allowing LabWatch to lock their accounts when limits are reached. 
                 </small>
             </div>
         </div>
