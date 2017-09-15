@@ -670,6 +670,7 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
 
 
 class DashboardExportView(LoginRequiredMixin, BaseLabDashView):
+    "View for exporting excel files"
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -724,3 +725,15 @@ class DashboardExportView(LoginRequiredMixin, BaseLabDashView):
         response = HttpResponse(temporary_file.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response['Content-Disposition'] = 'attachment; filename=export.xlsx'
         return response
+
+class SignUpView(BaseLabDashView):
+    "View for sign ups."
+    
+    def get(self, request):
+        "Basic view for sign up"
+        context = self.get_context(request)
+
+        if context['is_authenticated']:
+            return redirect('index:index')
+
+        return render(request, 'index/signup.html')
