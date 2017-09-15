@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon.ico">
+
+  <title>LabWatch - Sign Up</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="https://getbootstrap.com/docs/4.0/examples/jumbotron/jumbotron.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="{% url 'index:index' %}">Lab Watch</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+      aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link disabled">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Help</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Lab Watch Sign-up Form</h1>
+    </div>
+  </div>
+
+  <div class="container">
+
+    {% if message %}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+    {% elif error %}
+    <div class="alert alert-danger" role="alert">
+      {{error}}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="row">
+            <div class="form-group col-lg-4 col-12">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" aria-describedby="username-help" placeholder="TheBigNerdPengra7">
+                <small id="username-help" class="form-text text-muted">A unique username to login with</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" aria-describedby="password-help" placeholder="Please don't use 'Password'">
+                <small id="password-help" class="form-text text-muted">A strong password</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="confirmpassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmpassword" aria-describedby="confirmpassword-help" placeholder="Confirm Password">
+                <small id="confirmpassword-help" class="form-text text-muted">The same password</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4 col-12">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" id="firstname" aria-describedby="firstname-help" placeholder="Norton">
+                <small id="firstname-help" class="form-text text-muted">Your first name</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" id="lastname" aria-describedby="lastname-help" placeholder="Pengra">
+                <small id="lastname-help" class="form-text text-muted">Your last name</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="norton.pengra@uw.edu">
+                <small id="email-help" class="form-text text-muted">An email address you check</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-8 col-12">
+                <label for="schoolcode">School Code</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#schoolcode').val(''); $('#schoolcode')[0].disabled = false;} else {$('#schoolcode').val('I am signing my school up for LabWatch.'); $('#schoolcode')[0].disabled = true;}">
+                    </span>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" disabled value="I am signing my school up for LabWatch.">
+                </div>
+                <small id="schoolcode-help" class="form-text text-muted">Check the box if you have a school code. If you are signing your school up for LabWatch, leave the box unchecked.</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="usergroup">You are a...</label>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Group
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="$('#category').val('Librarian')">Librarian</a>
+                            <a class="dropdown-item" href="#" onclick="$('#category').val('Teacher')">Teacher</a>
+                            <a class="dropdown-item" href="#" onclick="$('#category').val('Student')">Student</a>
+                        </div>
+                        <input type="text" class="form-control" id="category" aria-label="Text input with dropdown button" disabled>
+                    </div>
+                </div>
+                <small id="usergroup-help" class="form-text text-muted">Select one of the options</small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-12">
+                <label for="schoolcode">Enable Advanced Features?</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#techsavy').val('Advanced Features ENABLED')} else {$('#techsavy').val('Advanced Features DISABLED')}">
+                    </span>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="techsavy" disabled value="Advanced Features DISABLED">
+                </div>
+                <small id="schoolcode-help" class="form-text text-muted">Checking this box can give you access to more advanced LabWatch features.</small>
+            </div>
+            
+            <div class="form-group col-lg-4 col-12">
+                <label for="schoolcode">Accept TOS</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not understand or accept the TOS.')}">
+                    </span>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not understand or accept the TOS.">
+                </div>
+                <small id="schoolcode-help" class="form-text text-muted">You must accept our Terms of Service to use our service.</small>
+            </div>
+            
+            <div class="form-group col-lg-4 col-12">
+                <label for="schoolcode">Are you the representative of your school?</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#representative').val('I am the school representative.')} else {$('#representative').val('I am NOT the school representative.')}">
+                    </span>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="representative" disabled value="I am NOT the school representative.">
+                </div>
+                <small id="schoolcode-help" class="form-text text-muted">Checking this means we'll talk to you regarding billing and adding other librarians to your network. We'll additionally give you more administrative powers.</small>
+            </div>
+        </div>
+
+        <hr/>
+        <h2>Select a Pricing Plan</h2>
+        <div class="row" style="margin-top:3%;">
+            <div class="col-lg-4 col-12">
+                <div class="card">
+                <img class="card-img-top" src="https://imgur.com/ToDnKTJ.png" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">Fractal Plan <span class="badge badge-success">Free</span></h4>
+                    <p class="card-text text-center">
+                        500 Student IDs<br/>
+                        1 Sign-in Station<br/>
+                        2,000,000 Logs/Month<br/>
+                        Interactive Student Rewards<br/>
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#fractal').val('No Charge')} else {$('#fractal').val('Subscribe with Fractal Plan')}">
+                        </span>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="fractal" disabled value="Subscribe with Fractal Plan">
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12">
+                <div class="card">
+                <img class="card-img-top" src="https://imgur.com/0aGYDSi.png" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">Lunar Plan <span class="badge badge-success">$10/Month</span></h4>
+                    <p class="card-text text-center">
+                        1 Month Free Trial<br/>
+                        5000 Student IDs<br/>
+                        2 Sign-in Stations<br/>
+                        2 Billion Logs/Month<br/>
+                        Interactive Student Rewards<br/>
+                        Student Leaderboards<br/>
+                        Data Analysis &amp; Intelligence<br/>
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#lunar').val('$120* per year')} else {$('#lunar').val('Subscribe with Lunar Plan')}">
+                        </span>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="lunar" disabled value="Subscribe with Lunar Plan">
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-12">
+                <div class="card">
+                <img class="card-img-top" src="https://imgur.com/XV5LFiY.png" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">Orange Plan <span class="badge badge-success">$50/month</span></h4>
+                    <p class="card-text text-center">
+                        2 Month Free Trial<br/>
+                        Unlimited Student IDs<br/>
+                        5 Sign-in Stations<br/>
+                        Unlimited Logs/Month<br/>
+                        Interactive Student Rewards<br/>
+                        Student Leaderboards<br/>
+                        Data Analysis &amp; Intelligence<br/>
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#orange').val('$600** per year')} else {$('#orange').val('Subscribe with Orange Plan')}">
+                        </span>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="orange" disabled value="Subscribe with Orange Plan">
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-8 col-12">
+                <label for="schoolcode">Discount or Referral Code</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#discount').val(''); $('#discount')[0].disabled = false;} else {$('#discount').val('I don\'t have a discount code.'); $('#discount')[0].disabled = true;}">
+                    </span>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" id="discount" disabled value="I don't have a discount code.">
+                </div>
+                <small id="schoolcode-help" class="form-text text-muted">You and your referrer and will both get discounts.</small>
+            </div>
+            <div class="form-group col-lg-4 col-12">
+                <label for="schoolcode" style="color: white;">Submit</label>
+                <input type="submit" class="form-control btn btn-primary" value="Next">
+                <small id="schoolcode-help" class="form-text text-muted">Additional steps on the next page</small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <small id="schoolcode-help" class="form-text text-muted">
+                    Disclosure:<br/>
+                    Pricing depends on how much service is used. Customers who only use half the capacity of plan only pay half the plan price. <br/>
+                    *Lunar plan customers will be charged an additional $1 for every billion logs and $1 for every 500 additional student IDs they use and $1.<br/>
+                    **Orange plan customers will be charged an additional $1 for every 2 billion logs after 20 billion logs and $1 for every 10,000 student IDs after 50,000 student IDs.
+                </small>
+            </div>
+        </div>
+    </form>
+
+
+    <hr>
+
+    <footer>
+      <p>&copy; by some nerds</p>
+    </footer>
+  </div>
+  <!-- /container -->
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</body>
+
+</html>
