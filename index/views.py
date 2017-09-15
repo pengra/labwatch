@@ -768,37 +768,58 @@ class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
     def post(self, request):
         "Handle dashboard searches."
         search_form = forms.StudentSearchForm(request.POST)
+        school = self.get_context(request)
         hits = []
 
         if search_form.is_valid_card_number():
-            for student in Student.objects.filter(student_id__iexact=int(search_form.cleaned_data['search_target'])):
+            for student in Student.objects.filter(student_id__iexact=int(search_form.cleaned_data['search_target']), school=school):
                 hits.append(student.json())
 
         if search_form.is_valid_nickname():
-            for student in Student.objects.filter(nick_name__iexact=search_form.cleaned_data['search_target']):
+            for student in Student.objects.filter(nick_name__iexact=search_form.cleaned_data['search_target'], school=school):
                 hits.append(student.json())
 
         if search_form.is_valid_name():
             for student in Student.objects.filter(
                 first_name__iexact=search_form.cleaned_data['search_target'].split(' ')[0],
                 last_name__iexact=search_form.cleaned_data['search_target'].split(' ', 1)[1],
+                school=school
             ):
                 hits.append(student.json())
             
             for student in Student.objects.filter(
                 first_name__iexact=search_form.cleaned_data['search_target'],
+                school=school
             ):
                 hits.append(student.json())
 
             for student in Student.objects.filter(
                 last_name__iexact=search_form.cleaned_data['search_target'],
+                school=school
             ):
                 hits.append(student.json())
         elif search_form.is_valid_single_name():
-            for student in Student.objects.filter(last_name__iexact=search_form.cleaned_data['search_target']):
+            for student in Student.objects.filter(last_name__iexact=search_form.cleaned_data['search_target'], school=school):
                 hits.append(student.json())
         
-            for student in Student.objects.filter(first_name__iexact=search_form.cleaned_data['search_target']):
+            for student in Student.objects.filter(first_name__iexact=search_form.cleaned_data['search_target'], school=school):
                 hits.append(student.json())
 
         return JsonResponse({'results': hits})
+
+
+class DashboardStudentEdit(LoginRequiredMixin, BaseLabDashView):
+    "View for editing students"
+
+    def get(self, request, student=None):
+        "Show student edit form."
+        if student:
+            context = self.get_context(request)
+
+
+        return redirect('index:dashboard-student')
+
+    def post(self, request):
+        "Handle student edit forms."
+        context = self.get_context(request)
+        raise Http404
