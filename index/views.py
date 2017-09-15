@@ -760,3 +760,36 @@ class SignUpView(BaseLabDashView):
             return redirect('index:index')
 
         return render(request, 'index/signup.html')
+
+
+class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
+    "Handle dashboard searches."
+
+    def post(self, request):
+        "Handle dashboard searches."
+        search_form = forms.StudentSearchForm(request.POST)
+        hits = []
+
+        if search_form.is_valid_card_number():
+            for student in Student.objects.filter(student_id__iexact=int(search_form.cleaned_data['search_target'])):
+                hits.append(student.json())
+
+        if search_form.is_valid_nickname():
+            for student in Student.objects.filter(nick_name__iexact=search_form.cleaned_data['search_target']):
+                hits.append(student.json())
+
+        if search_form.is_valid_name():
+            for student in Student.objects.filter(
+                first_name__iexact=search_form.cleaned_data['search_target'].split(' ')[0],
+                last_name__iexact=search_form.cleaned_data['search_target'].split(' ', 1)[1],
+            ):
+                hits.append(student.json())
+            
+        elif search_form.is_valid_single_name():
+            for student in Student.objects.filter(last_name__iexact=search_form.cleaned_data['search_target']):
+                hits.append(student.json())
+        
+            for student in Student.objects.filter(first_name__iexact=search_form.cleaned_data['search_target']):
+                hits.append(student.json())
+
+        return JsonResponse({'results': hits})
