@@ -507,7 +507,7 @@ class DashboardStudentView(LoginRequiredMixin, BaseLabDashView):
     def get(self, request):
         "view for uploading students by excel sheet."
         context = self.get_context(request)
-        return render(request, 'dashboard/bulk.html', context)
+        return render(request, 'dashboard/student.html', context)
 
     def post(self, request):
         "view for accepting uploads."
@@ -565,7 +565,7 @@ class DashboardStudentView(LoginRequiredMixin, BaseLabDashView):
         # elif excelform.is_valid():
             # parse the Excel right here
 
-        return render(request, 'dashboard/bulk.html', context)
+        return render(request, 'dashboard/student.html', context)
 
 
 class BugSplatView(LoginRequiredMixin, BaseLabDashView):
