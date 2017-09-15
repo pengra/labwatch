@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, Http404, HttpResponse
 from django.views.generic import TemplateView, View
 
+from datetime import datetime as naive_datetime
 from defusedxml.ElementTree import parse
 import json
 import pytz
@@ -21,7 +22,7 @@ from labwatch.settings import MAXUPLOADSIZE
 from index import forms
 from index.models import UserReport, ImageCard
 from polls.models import PollChoice, PollQuestion
-from logger.models import Student, Log
+from logger.models import Student, Log, KioskSession
 from registration.models import Kiosk, School
 
 
@@ -349,6 +350,25 @@ class KioskView(View):
             )
             log.save()
             response['log'] = log.pk
+
+            # create session
+            if log.mode == 'IN': # signing in:
+                KioskSession(
+                    student=student,
+                    signin=log
+                ).save()
+            else: # signing out
+                session = KioskSession.objects.filter(student=student).last()
+                if session:
+                    session.signout = log
+                    delta = session.signout.timestamp - session.signin.timestamp
+                    naive_delta = naive_datetime(1,1,1) + delta
+                    session.hours = naive_delta.hour + (naive_delta.day-1 * 24)
+                    session.minutes = naive_delta.minute
+                    session.save()
+                else:
+                    raise Http404
+            
             return JsonResponse(response)
 
         raise Http404
@@ -624,11 +644,20 @@ class DashboardStudentLogout(LoginRequiredMixin, BaseLabDashView):
             student.signed_in = False
             student.save()
 
-            Log(
+            log = Log(
                 student=student,
                 mode=Log.SIGN_MODE[1][0],
                 input_mode=Log.INPUT_MODE[4][0]
-            ).save()
+            )
+            log.save()
+
+            session = KioskSession.objects.filter(signin=log)
+            session.signout = log
+            delta = session.signout.timestamp - session.signin.timestamp
+            naive_delta = naive_datetime(1,1,1) + delta
+            session.hours = naive_delta.hour + (naive_delta.day-1 * 24)
+            session.minutes = naive_delta.minute
+            session.save()
 
             return JsonResponse({'sucess': True})
 
