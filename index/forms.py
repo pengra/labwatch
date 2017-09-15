@@ -114,6 +114,12 @@ class StudentSearchForm(forms.Form):
         contains_period = '.' in self.cleaned_data.get('search_target', '')
         return is_valid and contains_at and contains_period
 
+    def is_valid_single_name(self):
+        "Is this just one name?"
+        is_valid = self.is_valid()
+        is_alpha = self.cleaned_data.get('search_target', '').isalpha()
+        return is_valid and is_alpha
+
     def is_valid_name(self):
         "Is this a valid name this person just typed in?"
         is_one_space_min = len(self.cleaned_data.get(
