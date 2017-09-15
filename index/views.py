@@ -156,7 +156,7 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             context['all_sessions'] = KioskSession.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
                 signin__timestamp__startswith=timezone.now().date()
-            )
+            ).order_by('pk')
             context['all_sessions_len'] = len(context['all_sessions'])
         return context
 
