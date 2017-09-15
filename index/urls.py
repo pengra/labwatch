@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'signup/$', views.SignUpView.as_view(), name='signup'),
     url(r'dashboard/students/$', views.DashboardStudentView.as_view(), name='dashboard-student'),
     url(r'dashboard/students/logout/$', views.DashboardStudentLogout.as_view(), name='dashboard-student-logout'),
+    url(r'dashboard/students/search/$', views.DashboardStudentSearch.as_view(), name='dashboard-student-search'),
     url(r'dashboard/kiosk/$', views.DashboardKioskView.as_view(), name='dashboard-kiosk'),
     url(r'dashboard/poll/$', views.DashboardPollView.as_view(), name='dashboard-poll'),
     # Dead
