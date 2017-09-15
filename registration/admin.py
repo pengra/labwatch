@@ -5,3 +5,4 @@ from registration import models
 
 admin.site.register(models.School)
 admin.site.register(models.Kiosk)
+admin.site.register(models.Subscription)
