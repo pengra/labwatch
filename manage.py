@@ -35,5 +35,9 @@ if __name__ == "__main__":
             Group('Librarian').save()
         if len(Group.objects.filter(name='Teacher')) == 0:
             Group('Teacher').save()
+        if len(Group.objects.filter(name='Tech Savy')) == 0:
+            Group('Tech Savy').save()
+        if len(Group.objects.filter(name='Tester')) == 0:
+            Group('Tester').save()
     else:
         execute_from_command_line(sys.argv)
