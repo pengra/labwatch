@@ -5,3 +5,4 @@ Django==1.11.5
 gunicorn==19.7.1
 psycopg2==2.7.1
 whitenoise==3.3.0
+XlsxWriter==0.9.9
