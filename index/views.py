@@ -501,7 +501,7 @@ class DashboardPollView(LoginRequiredMixin, BaseLabDashView):
         return render(request, 'dashboard/poll.html', context)
 
 
-class DashboardStudentBulkView(LoginRequiredMixin, BaseLabDashView):
+class DashboardStudentView(LoginRequiredMixin, BaseLabDashView):
     "view for uploading students by excel sheet."
 
     def get(self, request):
