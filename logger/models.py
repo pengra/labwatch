@@ -10,7 +10,7 @@ class Student(models.Model):
     "An object representing a student."
 
     YEAR_IN_SCHOOL_CHOICES = (
-        ('9', 'Freshman'),
+        ('09', 'Freshman'),
         ('10', 'Sophomore'),
         ('11', 'Junior'),
         ('12', 'Senior'),
