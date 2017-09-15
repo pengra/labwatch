@@ -785,6 +785,15 @@ class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
             ):
                 hits.append(student.json())
             
+            for student in Student.objects.filter(
+                first_name__iexact=search_form.cleaned_data['search_target'],
+            ):
+                hits.append(student.json())
+
+            for student in Student.objects.filter(
+                last_name__iexact=search_form.cleaned_data['search_target'],
+            ):
+                hits.append(student.json())
         elif search_form.is_valid_single_name():
             for student in Student.objects.filter(last_name__iexact=search_form.cleaned_data['search_target']):
                 hits.append(student.json())
