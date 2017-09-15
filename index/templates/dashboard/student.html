@@ -119,7 +119,7 @@
                 <th>Student ID#</th>
                 <th>Student First Name</th>
                 <th>Student Last Name</th>
-                <th>Details</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="results-table">
@@ -399,8 +399,11 @@
         var edit = document.createElement('td');
         var anchor = document.createElement('a');
         var href = document.createAttribute('href')
+        var klass = document.createAttribute('class');
+        klass.value = "btn btn-primary";
         href.value = "{% url 'index:dashboard-student-edit' %}" + student['id'];
         anchor.setAttributeNode(href)
+        anchor.setAttributeNode(klass)
         anchor.appendChild(document.createTextNode("Edit"))
         edit.appendChild(anchor)
 
