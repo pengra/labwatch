@@ -12,10 +12,6 @@
   }
 </style>
 
-<script>
-  window.history.replaceState(null, null, '?mode=create');
-</script>
-
 {% if message %}
 <div class="container">
   <div class="col-12 placeholder">
@@ -32,9 +28,10 @@
      href="#createstudent" role="tab" aria-controls="createstudent" aria-expanded="true" 
      onclick="window.history.replaceState(null, null, '?mode=create')">Create Student</a>
   </li>
-  <!-- <li class="nav-item">
-    <a class="nav-link" id="editstudent-tab" data-toggle="tab" href="#editstudent" role="tab" aria-controls="editstudent">Edit Student</a>
-  </li> -->
+  <li class="nav-item">
+    <a class="nav-link" id="editstudent-tab" data-toggle="tab" href="#editstudent" role="tab" aria-controls="editstudent"
+    onclick="window.history.replaceState(null, null, '?mode=search')">Find/Edit Student</a>
+  </li>
   <li class="nav-item">
     <a class="nav-link" id="spreadsheet-tab" data-toggle="tab" href="#spreadsheet" 
     role="tab" aria-controls="spreadsheet" onclick="window.history.replaceState(null, null, '?mode=upload')"> Upload Spreadsheet</a>
@@ -104,7 +101,18 @@
           <button type="submit" class="btn btn-primary">Submit</button>
       </form>
   </div>
-  <div class="tab-pane fade" id="editstudent" role="tabpanel" aria-labelledby="editstudent-tab">..</div>
+  <div class="tab-pane fade" id="editstudent" role="tabpanel" aria-labelledby="editstudent-tab">
+    <div class="container">
+      <div class="row">
+        <div class="col-10" style="margin-top: 2%">
+          <input type="text" id="student_search" class="form-control" placeholder="Search for a student by name, student ID or username">
+        </div>
+        <div class="col-2" style="margin-top: 2%">
+            <button type="submit" class="btn btn-primary" onclick="findStudent()">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="tab-pane fade" id="spreadsheet" role="tabpanel" aria-labelledby="spreadsheet-tab">
     {% if is_librarian %}
       <form style="margin-top: 2%;" method="post" enctype="multipart/form-data" onsubmit="$('#form_is_submitting').removeClass('hidden'); window.scrollTo(0, 0)">
@@ -324,6 +332,53 @@
       {% endif %}
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+    window.history.replaceState(null, null, '?mode=create');
+  
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie != '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
 
+    function displayError(message) {
+  
+    }
+  
+    function findStudent() {
+      var student = $('#student_search')[0].value;
+      if (student == '') {
+        displayError("You must type in a query!");
+      } else {
+        $.ajaxSetup({
+          headers: {"X-CSRFToken": getCookie('csrftoken')}
+        });
 
+        $.ajax({
+        type: "POST",
+        url: '{% url "index:dashboard-student" %}',
+        data: {
+          student_id: studentID,
+          csrf_token: '{{csrf_token}}'
+        }
+        })
+        .done(function (data) {
+          // Success!
+          $('#tr_student_' + studentID).addClass('hidden');
+        })
+      }
+    }
+  </script>
 {% endblock %}
