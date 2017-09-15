@@ -39,35 +39,35 @@
           <div class='form-group'>
               <div class="form-group">
                   <label for="studentid">Student ID #</label>
-                  <input type="text" class="form-control" id="studentid" aria-describedby="studentidhelp" placeholder="0123456">
+                  <input type="number" name="crud_studentid" class="form-control" id="studentid" aria-describedby="studentidhelp" placeholder="0123456">
                   <small id="studentidhelp" class="form-text text-muted">Student ID #</small>
               </div>
           </div>
           <div class='form-group'>
               <div class="form-group">
                   <label for="firstname">First Name</label>
-                  <input type="text" class="form-control" id="firstname" aria-describedby="firstnamehelp" placeholder="Norton">
+                  <input type="text" name="crud_fname" class="form-control" id="firstname" aria-describedby="firstnamehelp" placeholder="Norton">
                   <small id="firstnamehelp" class="form-text text-muted">Student First Name</small>
               </div>
           </div>
           <div class='form-group'>
               <div class="form-group">
                   <label for="lastname">Last Name</label>
-                  <input type="text" class="form-control" id="lastname" aria-describedby="lastnamehelp" placeholder="Pengra">
+                  <input type="text" name="crud_lastname" class="form-control" id="lastname" aria-describedby="lastnamehelp" placeholder="Pengra">
                   <small id="lastnamehelp" class="form-text text-muted">Student Last Name</small>
               </div>
           </div>
           <div class='form-group'>
               <div class="form-group">
                   <label for="nickname">Username</label>
-                  <input type="text" class="form-control" id="nickname" aria-describedby="nicknamehelp" placeholder="pengrnor000">
+                  <input type="text" name="crud_nickname" class="form-control" id="nickname" aria-describedby="nicknamehelp" placeholder="pengrnor000">
                   <small id="nicknamehelp" class="form-text text-muted">Should a student forget is ID, he can type his/her real name or username. (optional)</small>
               </div>
           </div>
           <div class='form-group'>
               <div class="form-group">
                   <label for="teacher">Teacher</label>
-                  <input type="text" class="form-control" id="teacher" aria-describedby="teacherhelp" placeholder="Stensland">
+                  <input type="text" name="crud_teacher" class="form-control" id="teacher" aria-describedby="teacherhelp" placeholder="Stensland">
                   <small id="teacherhelp" class="form-text text-muted">Student's homeroom teacher (optional)</small>
               </div>
           </div>
@@ -75,12 +75,13 @@
               <div class="form-group">
                   <label for="grade">Student Grade</label>
                   <br/>
-                  <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="grade">
+                  <select name="crud_grade" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="grade">
                       <option selected>------</option>
-                      <option value="9">Freshman</option>
+                      <option value="09">Freshman</option>
                       <option value="10">Sophmore</option>
                       <option value="11">Junior</option>
                       <option value="12">Senior</option>
+                      <option value="GD">Graduated</option>
                   </select>
                   <small id="gradehelp" class="form-text text-muted">Student's current year (optional)</small>
               </div>
@@ -88,11 +89,11 @@
           <div class='form-group'>
               <div class="form-group">
                   <label for="grade">Email</label>
-                  <input type="text" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="example@example.com">
+                  <input type="text" name="crud_email" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="example@example.com">
                   <small id="gradehelp" class="form-text text-muted">Student's email. Can be used as a sign in option. (optional)</small>
               </div>
           </div>
-          <button type="submit" class="btn btn-primary" disabled>Submit</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
       </form>
   </div>
   <div class="tab-pane fade" id="editstudent" role="tabpanel" aria-labelledby="editstudent-tab">..</div>
