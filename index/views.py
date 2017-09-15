@@ -153,10 +153,11 @@ class DashboardView(LoginRequiredMixin, BaseLabDashView):
             context['logged_in_students_len'] = len(
                 context['logged_in_students'])
 
-            context['all_logs'] = Log.objects.filter(
+            context['all_sessions'] = KioskSession.objects.filter(
                 student__in=Student.objects.filter(school=context['school']),
-                timestamp__gte=timezone.now().date()
+                signin__timestamp__startswith=timezone.now().date()
             )
+            context['all_sessions_len'] = len(context['all_sessions'])
         return context
 
     def get(self, request):
@@ -363,7 +364,7 @@ class KioskView(View):
                     session.signout = log
                     delta = session.signout.timestamp - session.signin.timestamp
                     naive_delta = naive_datetime(1,1,1) + delta
-                    session.hours = naive_delta.hour + (naive_delta.day-1 * 24)
+                    session.hours = naive_delta.hour
                     session.minutes = naive_delta.minute
                     session.save()
                 else:
