@@ -12,6 +12,10 @@
   }
 </style>
 
+<script>
+  window.history.replaceState(null, null, '?mode=create');
+</script>
+
 {% if message %}
 <div class="container">
   <div class="col-12 placeholder">
@@ -24,18 +28,22 @@
 
 <ul class="nav nav-tabs" id="admintab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="createstudent-tab" data-toggle="tab" href="#createstudent" role="tab" aria-controls="createstudent" aria-expanded="true">Create Student</a>
+    <a class="nav-link active" id="createstudent-tab" data-toggle="tab" 
+     href="#createstudent" role="tab" aria-controls="createstudent" aria-expanded="true" 
+     onclick="window.history.replaceState(null, null, '?mode=create')">Create Student</a>
   </li>
   <!-- <li class="nav-item">
     <a class="nav-link" id="editstudent-tab" data-toggle="tab" href="#editstudent" role="tab" aria-controls="editstudent">Edit Student</a>
   </li> -->
   <li class="nav-item">
-    <a class="nav-link" id="spreadsheet-tab" data-toggle="tab" href="#spreadsheet" role="tab" aria-controls="spreadsheet">Upload Spreadsheet</a>
+    <a class="nav-link" id="spreadsheet-tab" data-toggle="tab" href="#spreadsheet" 
+    role="tab" aria-controls="spreadsheet" onclick="window.history.replaceState(null, null, '?mode=upload')"> Upload Spreadsheet</a>
   </li>
 </ul>
 <div class="tab-content" id="admintabs">
   <div class="tab-pane fade show active" id="createstudent" role="tabpanel" aria-labelledby="createstudent-tab">
-      <form class="col-12" style="padding-bottom: 2%; padding-top: 2%;">
+      <form class="col-12" style="padding-bottom: 2%; padding-top: 2%;" method="post">
+          {% csrf_token %}
           <div class='form-group'>
               <div class="form-group">
                   <label for="studentid">Student ID #</label>
