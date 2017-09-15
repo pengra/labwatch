@@ -768,7 +768,7 @@ class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
     def post(self, request):
         "Handle dashboard searches."
         search_form = forms.StudentSearchForm(request.POST)
-        school = self.get_context(request)
+        school = self.get_context(request)['school']
         hits = []
 
         if search_form.is_valid_card_number():
