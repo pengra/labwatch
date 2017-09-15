@@ -7,7 +7,8 @@ urlpatterns = [
     url(r'dashboard/students/$', views.DashboardStudentView.as_view(), name='dashboard-student'),
     url(r'dashboard/students/logout/$', views.DashboardStudentLogout.as_view(), name='dashboard-student-logout'),
     url(r'dashboard/students/search/$', views.DashboardStudentSearch.as_view(), name='dashboard-student-search'),
-    url(r'dashboard/students/edit/(?P<student>[0-9]+)$', views.DashboardStudentEdit.as_view(), name='dashboard-student-edit'),
+    url(r'dashboard/students/edit/$', views.DashboardStudentEdit.as_view(), name='dashboard-student-edit'),
+    url(r'dashboard/students/edit/(?P<student>[0-9]+)/$', views.DashboardStudentEdit.as_view(), name='dashboard-student-edit'),
     url(r'dashboard/kiosk/$', views.DashboardKioskView.as_view(), name='dashboard-kiosk'),
     url(r'dashboard/poll/$', views.DashboardPollView.as_view(), name='dashboard-poll'),
     # Dead
