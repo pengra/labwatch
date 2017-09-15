@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from polls.models import PollChoice
 from registration.models import School
 
@@ -66,7 +67,8 @@ class Log(models.Model):
     mode = models.CharField(max_length=3, choices=SIGN_MODE)
     input_mode = models.CharField(
         max_length=4, choices=INPUT_MODE, default=INPUT_MODE[0][0])
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # https://stackoverflow.com/questions/11262828/how-django-time-zone-works-with-model-fields-auto-now-add#answer-32411560
+    timestamp = models.DateTimeField(default=timezone.now)
 
     # poll add on
     poll_answer = models.ForeignKey(PollChoice, blank=True, null=True)
