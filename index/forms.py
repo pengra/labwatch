@@ -88,7 +88,7 @@ class StudentLogOutForm(forms.Form):
 
 class StudentCreationForm(forms.Form):
     "Form for creating students."
-    crud_studentid = forms.IntegerForm()
+    crud_studentid = forms.IntegerField()
     crud_fname = forms.CharField()
     crud_lastname = forms.CharField()
     crud_nickname = forms.CharField(required=False)
