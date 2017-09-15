@@ -44,6 +44,22 @@ class Student(models.Model):
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
+    def json(self, hide=True):
+        if hide:
+            return {
+                "fname": self.first_name,
+                "lname": self.last_name,
+                "id": self.student_id
+            }
+        return {
+            "fname": self.first_name,
+            "lname": self.last_name,
+            "id": self.student_id,
+            "uname": self.nick_name,
+            "teacher": self.teacher,
+            "grade": self.grade,
+            "email": self.email
+        }
 
 class Log(models.Model):
     "A timestamp on top of a card scan/name input."
