@@ -12,8 +12,6 @@
   }
 </style>
 
-<h1>Upload Student Spreadsheet</h1>
-
 {% if message %}
 <div class="container">
   <div class="col-12 placeholder">
@@ -24,52 +22,126 @@
 </div>
 {% endif %}
 
-{% if is_librarian %}
-<form class="container" method="post" enctype="multipart/form-data" onsubmit="$('#form_is_submitting').removeClass('hidden'); window.scrollTo(0, 0)">
-
-  <div class="col-12 placeholder hidden" id="form_is_submitting">
-      <div class="alert alert-danger" role="alert">
-        <img src="https://imgur.com/BY76d3S.png" height="100px" style="padding: 0">
-        Form is submitting. This can take up to a minute. <strong>Do not refresh the page.</strong>
-      </div>
+<ul class="nav nav-tabs" id="admintab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="createstudent-tab" data-toggle="tab" href="#createstudent" role="tab" aria-controls="createstudent" aria-expanded="true">Create Student</a>
+  </li>
+  <!-- <li class="nav-item">
+    <a class="nav-link" id="editstudent-tab" data-toggle="tab" href="#editstudent" role="tab" aria-controls="editstudent">Edit Student</a>
+  </li> -->
+  <li class="nav-item">
+    <a class="nav-link" id="spreadsheet-tab" data-toggle="tab" href="#spreadsheet" role="tab" aria-controls="spreadsheet">Upload Spreadsheet</a>
+  </li>
+</ul>
+<div class="tab-content" id="admintabs">
+  <div class="tab-pane fade show active" id="createstudent" role="tabpanel" aria-labelledby="createstudent-tab">
+      <form class="col-12" style="padding-bottom: 2%; padding-top: 2%;">
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="studentid">Student ID #</label>
+                  <input type="text" class="form-control" id="studentid" aria-describedby="studentidhelp" placeholder="0123456">
+                  <small id="studentidhelp" class="form-text text-muted">Student ID #</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="firstname">First Name</label>
+                  <input type="text" class="form-control" id="firstname" aria-describedby="firstnamehelp" placeholder="Norton">
+                  <small id="firstnamehelp" class="form-text text-muted">Student First Name</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="lastname">Last Name</label>
+                  <input type="text" class="form-control" id="lastname" aria-describedby="lastnamehelp" placeholder="Pengra">
+                  <small id="lastnamehelp" class="form-text text-muted">Student Last Name</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="nickname">Username</label>
+                  <input type="text" class="form-control" id="nickname" aria-describedby="nicknamehelp" placeholder="pengrnor000">
+                  <small id="nicknamehelp" class="form-text text-muted">Should a student forget is ID, he can type his/her real name or username. (optional)</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="teacher">Teacher</label>
+                  <input type="text" class="form-control" id="teacher" aria-describedby="teacherhelp" placeholder="Stensland">
+                  <small id="teacherhelp" class="form-text text-muted">Student's homeroom teacher (optional)</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="grade">Student Grade</label>
+                  <br/>
+                  <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="grade">
+                      <option selected>------</option>
+                      <option value="9">Freshman</option>
+                      <option value="10">Sophmore</option>
+                      <option value="11">Junior</option>
+                      <option value="12">Senior</option>
+                  </select>
+                  <small id="gradehelp" class="form-text text-muted">Student's current year (optional)</small>
+              </div>
+          </div>
+          <div class='form-group'>
+              <div class="form-group">
+                  <label for="grade">Email</label>
+                  <input type="text" class="form-control" id="grade" aria-describedby="gradehelp" placeholder="example@example.com">
+                  <small id="gradehelp" class="form-text text-muted">Student's email. Can be used as a sign in option. (optional)</small>
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary" disabled>Submit</button>
+      </form>
   </div>
-
-  <div class="col-12 placeholder">
-    <div class="alert alert-warning" role="alert">
-      This process will result in a long loading page! 
-      The labwatch team is working hard to improve this system.
-    </div>
-  </div>
-
-  {% csrf_token %}
-  <div class="col-12">
-    <h4>Upload any file: 
-      <i class="fa fa-file-excel-o" aria-hidden="true"></i> 
-      <i class="fa fa-file-code-o" aria-hidden="true"></i>
-    </h4>
-    <div class="input-group">
-      <label class="input-group-btn">
-        <span class="btn btn-primary" style="height: 100%;">
-          Browse&hellip; <input type="file" id="fileUploadInput" style="display: none;"
-          onchange="formChanged(this);" name="spreadsheet"
-          >
-        </span>
-      </label>
-      <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
-    </div>
-    <span class="help-block" id="instructions">
-      Currently accepts XML (Microsoft Excel files coming soon!)<!--  and Microsoft Excel files -->.
-    </span>
-  </div>
-
-  <!-- XML Upload -->
-  <div id="xml-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
-    {% if is_techsavy or is_engineer %}
-    <div class="alert alert-info">
-      You are seeing these options because you have the "Tech Savy" badge. Note that all
-      values are case sensitive.
-    </div>
-    <pre>
+  <div class="tab-pane fade" id="editstudent" role="tabpanel" aria-labelledby="editstudent-tab">..</div>
+  <div class="tab-pane fade" id="spreadsheet" role="tabpanel" aria-labelledby="spreadsheet-tab">
+    {% if is_librarian %}
+      <form style="margin-top: 2%;" method="post" enctype="multipart/form-data" onsubmit="$('#form_is_submitting').removeClass('hidden'); window.scrollTo(0, 0)">
+        <div class="col-12 placeholder hidden" id="form_is_submitting">
+            <div class="alert alert-danger" role="alert">
+              <img src="https://imgur.com/BY76d3S.png" height="100px" style="padding: 0">
+              Form is submitting. This can take up to a minute. <strong>Do not refresh the page.</strong>
+            </div>
+        </div>
+      
+        <div class="col-12 placeholder">
+          <div class="alert alert-warning" role="alert">
+            This process will result in a long loading page! 
+            The labwatch team is working hard to improve this system.
+          </div>
+        </div>
+      
+        {% csrf_token %}
+        <div class="col-12">
+          <h4>Upload any file: 
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i> 
+            <i class="fa fa-file-code-o" aria-hidden="true"></i>
+          </h4>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-primary" style="height: 100%;">
+                Browse&hellip; <input type="file" id="fileUploadInput" style="display: none;"
+                onchange="formChanged(this);" name="spreadsheet"
+                >
+              </span>
+            </label>
+            <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
+          </div>
+          <span class="help-block" id="instructions">
+            Currently accepts XML (Microsoft Excel files coming soon!)<!--  and Microsoft Excel files -->.
+          </span>
+        </div>
+      
+        <!-- XML Upload -->
+        <div id="xml-upload" class="col-12 hidden" style="margin-top: 2%; margin-bottom: 5%;">
+          {% if is_techsavy or is_engineer %}
+          <div class="alert alert-info">
+            You are seeing these options because you have the "Tech Savy" badge. Note that all
+            values are case sensitive.
+          </div>
+          <pre>
 &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;DestinyCustomReport&gt;
   &lt;Row&gt;
@@ -80,166 +152,169 @@
     &lt;gradeLevel&gt;&lt;![CDATA[09]]&gt;&lt;/gradeLevel&gt;
     &lt;homeroom&gt;&lt;![CDATA[StenslandT]]&gt;&lt;/homeroom&gt;
   &lt;/Row&gt;
-    </pre>
-    <div class="row">
-      <div class="col-12">
-        <h2>Great! A few more details are required before continuing...</h2>
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentIDColumn">Enter the tag name containing student IDs</label>
-        <input type="text" name="xml_studentid" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp" value="districtID">
-        <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "districtID" <strong>(required)</strong></small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentFirstNameColumn">Enter the tag name containing Student First Names</label>
-        <input type="text" name="xml_fname" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" value="nameFirst">
-        <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "nameFirst" <strong>(required)</strong></small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentLastNamesColumn">Enter the tag name containing Student Last Names</label>
-        <input type="text" name="xml_lname" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" value="nameLast">
-        <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "nameLast" <strong>(required)</strong></small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="gradeLevelColumn">Enter the tag name containing Student Grade level</label>
-        <input type="text" name="xml_grade" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" value="gradeLevel">
-        <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "gradeLevel" (optional)</small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="homeroomColumn">Enter the tag name containing Student's Teacher</label>
-        <input type="text" name="xml_teacher" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" value="homeroom">
-        <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "homeroom" (optional)</small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="nicknameColumn">Enter the tag name containing Student's username</label>
-        <input type="text" name="xml_nickname" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
-        <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="emailColumn">Enter the tag name containing Student Email</label>
-        <input type="text" name="xml_email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
-        <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
-      </div>
-    </div>
-    {% else %}
-      <input type="hidden" name="xml_studentid" value="districtID">
-      <input type="hidden" name="xml_fname" value="nameFirst">
-      <input type="hidden" name="xml_lname" value="nameLast">
-      <input type="hidden" name="xml_grade" value="gradeLevel">
-      <input type="hidden" name="xml_teacher" value="homeroom">
-    {% endif %}
-    <div class="row">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Upload XML Page <i class="fa fa-file-code-o" aria-hidden="true"></i> </button>
-      </div>
-    </div>
+          </pre>
+          <div class="row">
+            <div class="col-12">
+              <h2>Great! A few more details are required before continuing...</h2>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentIDColumn">Enter the tag name containing student IDs</label>
+              <input type="text" name="xml_studentid" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp" value="districtID">
+              <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "districtID" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentFirstNameColumn">Enter the tag name containing Student First Names</label>
+              <input type="text" name="xml_fname" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" value="nameFirst">
+              <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "nameFirst" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentLastNamesColumn">Enter the tag name containing Student Last Names</label>
+              <input type="text" name="xml_lname" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" value="nameLast">
+              <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "nameLast" <strong>(required)</strong></small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="gradeLevelColumn">Enter the tag name containing Student Grade level</label>
+              <input type="text" name="xml_grade" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" value="gradeLevel">
+              <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "gradeLevel" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="homeroomColumn">Enter the tag name containing Student's Teacher</label>
+              <input type="text" name="xml_teacher" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" value="homeroom">
+              <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "homeroom" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="nicknameColumn">Enter the tag name containing Student's username</label>
+              <input type="text" name="xml_nickname" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
+              <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="emailColumn">Enter the tag name containing Student Email</label>
+              <input type="text" name="xml_email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
+              <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+          </div>
+          {% else %}
+            <input type="hidden" name="xml_studentid" value="districtID">
+            <input type="hidden" name="xml_fname" value="nameFirst">
+            <input type="hidden" name="xml_lname" value="nameLast">
+            <input type="hidden" name="xml_grade" value="gradeLevel">
+            <input type="hidden" name="xml_teacher" value="homeroom">
+          {% endif %}
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Upload XML Page <i class="fa fa-file-code-o" aria-hidden="true"></i> </button>
+            </div>
+          </div>
+        </div>
+      
+      
+        <!-- Excel Upload -->
+        <div id="excel-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
+          <div class="row">
+            <div class="col-12">
+              <h2>Great! A few more details are required before continuing...</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-lg-6">
+                <img src="https://imgur.com/KSLwHmn.png" width="100%">
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentIDColumn">Enter the Column Letter of Student IDs</label>
+              <input type="text" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp">
+              <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "A" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentFirstNameColumn">Enter the Column Letter of Student First Names</label>
+              <input type="text" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp">
+              <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "B" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentLastNamesColumn">Enter the Column Letter of Student Last Names</label>
+              <input type="text" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp">
+              <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "C" <strong>(required)</strong></small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="gradeLevelColumn">Enter the Column Letter of Student Grade level</label>
+              <input type="text" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp">
+              <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "D" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="homeroomColumn">Enter the Column Letter of Student's Teacher</label>
+              <input type="text" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp">
+              <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "E" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="nicknameColumn">Enter the Column Letter of Student's username</label>
+              <input type="text" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
+              <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="emailColumn">Enter the Column Letter of Student Email</label>
+              <input type="text" class="form-control" id="emailColumn" aria-describedby="emailhelp">
+              <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="dataStartColumn">Enter the <strong>row</strong> number of where data begins</label>
+              <input type="number" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="1">
+              <small id="dataStarthelp" class="form-text text-muted">Regardin the example sheet, because there's data headers on line 1, the data begins on line 2 <strong>(required)</strong></small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Upload Spreadsheet <i class="fa fa-file-excel-o" aria-hidden="true"></i> </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      
+      <script>
+      function formChanged(self) {
+        var file = $(self)[0].files[0];
+        $('#fileUploadText').val(file.name);
+        if (file.name.endsWith('.xml')) {
+          // XML file
+          $('#instructions').removeClass('text-danger')
+          $('#excel-upload').addClass('hidden');
+          $('#xml-upload').removeClass('hidden');
+        // } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+        //   // Excel file
+        //   $('#instructions').removeClass('text-danger')
+        //   $('#excel-upload').removeClass('hidden');
+        //   $('#xml-upload').addClass('hidden');
+        } else {
+          $('#instructions').addClass('text-danger')
+          $('#excel-upload').addClass('hidden');
+          $('#xml-upload').addClass('hidden');
+        }
+      }
+      </script>
+      {% else %}
+      <section class="row placeholders">
+        <div class="col-12 placeholder">
+          <div class="alert alert-danger" role="alert">
+            You need to be a librarian to manipulate to access this page!
+          </div>
+        </div>
+      </section>
+        
+      {% endif %}
   </div>
+</div>
 
-
-  <!-- Excel Upload -->
-  <div id="excel-upload" class="container hidden" style="margin-top: 2%; margin-bottom: 5%;">
-    <div class="row">
-      <div class="col-12">
-        <h2>Great! A few more details are required before continuing...</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-lg-6">
-          <img src="https://imgur.com/KSLwHmn.png" width="100%">
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentIDColumn">Enter the Column Letter of Student IDs</label>
-        <input type="text" class="form-control" id="studentIDColumn" aria-describedby="studentIDhelp">
-        <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "A" <strong>(required)</strong></small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentFirstNameColumn">Enter the Column Letter of Student First Names</label>
-        <input type="text" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp">
-        <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "B" <strong>(required)</strong></small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="studentLastNamesColumn">Enter the Column Letter of Student Last Names</label>
-        <input type="text" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp">
-        <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "C" <strong>(required)</strong></small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="gradeLevelColumn">Enter the Column Letter of Student Grade level</label>
-        <input type="text" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp">
-        <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "D" (optional)</small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="homeroomColumn">Enter the Column Letter of Student's Teacher</label>
-        <input type="text" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp">
-        <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "E" (optional)</small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="nicknameColumn">Enter the Column Letter of Student's username</label>
-        <input type="text" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
-        <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="emailColumn">Enter the Column Letter of Student Email</label>
-        <input type="text" class="form-control" id="emailColumn" aria-describedby="emailhelp">
-        <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
-      </div>
-      <div class="form-group col-xs-12 col-lg-4">
-        <label for="dataStartColumn">Enter the <strong>row</strong> number of where data begins</label>
-        <input type="number" class="form-control" id="dataStartColumn" aria-describedby="dataStarthelp" value="1">
-        <small id="dataStarthelp" class="form-text text-muted">Regardin the example sheet, because there's data headers on line 1, the data begins on line 2 <strong>(required)</strong></small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Upload Spreadsheet <i class="fa fa-file-excel-o" aria-hidden="true"></i> </button>
-      </div>
-    </div>
-  </div>
-</form>
-
-<script>
-function formChanged(self) {
-  var file = $(self)[0].files[0];
-  $('#fileUploadText').val(file.name);
-  if (file.name.endsWith('.xml')) {
-    // XML file
-    $('#instructions').removeClass('text-danger')
-    $('#excel-upload').addClass('hidden');
-    $('#xml-upload').removeClass('hidden');
-  // } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-  //   // Excel file
-  //   $('#instructions').removeClass('text-danger')
-  //   $('#excel-upload').removeClass('hidden');
-  //   $('#xml-upload').addClass('hidden');
-  } else {
-    $('#instructions').addClass('text-danger')
-    $('#excel-upload').addClass('hidden');
-    $('#xml-upload').addClass('hidden');
-  }
-}
-</script>
-{% else %}
-<section class="row placeholders">
-  <div class="col-12 placeholder">
-    <div class="alert alert-danger" role="alert">
-      You need to be a librarian to manipulate to access this page!
-    </div>
-  </div>
-</section>
-  
-{% endif %}
 
 {% endblock %}
