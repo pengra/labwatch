@@ -428,6 +428,46 @@
 <script>
     window.history.replaceState(null, null, '?mode=create');
   
+    function saveStudent() {
+      $.ajaxSetup({
+        headers: {"X-CSRFToken": getCookie('csrftoken')}
+      });
+      
+      var form_input_grade = $('input#grade')[0].value;
+      var grade = "";
+      if (form_input_grade == 'Graduated') {
+        var grade = "GD";
+      } else if (form_input_grade == 'Freshman') {
+        var grade = "09";
+      } else if (form_input_grade == 'Sophmore') {
+        var grade = "10";
+      } else if (form_input_grade == 'Junior') {
+        var grade = "11";
+      } else if (form_input_grade == 'Senior') {
+        var grade = "12";
+      } 
+
+      $.ajax({
+        type: "POST",
+        url: '{% url "index:dashboard-student-edit" %}' + recipient + '/',
+        data: {
+          csrf_token: '{{csrf_token}}',
+          request_type: '_edit',
+          edit_pk: $('input#edit_pk').val(data.pk),
+          edit_studentid: $('input#edit_studentid')[0].value,
+          edit_firstname: $('input#edit_firstname')[0].value,
+          edit_lastname: $('input#edit_lastname')[0].value,
+          edit_nickname: $('input#edit_nickname')[0].value,
+          edit_teacher: $('input#edit_teacher')[0].value,
+          edit_email: $('input#edit_email')[0].value,
+          edit_grade: grade,
+        }
+      })
+      .done(function(data) {
+        updateModal(data)}
+      )
+    }
+
     function updateModal(data) {
       $('input#edit_pk').val(data.pk);
       $('input#edit_studentid').val(data.id);
@@ -463,7 +503,7 @@
         url: '{% url "index:dashboard-student-edit" %}' + recipient + '/',
         data: {
           csrf_token: '{{csrf_token}}',
-          request_type: '_all'
+          request_type: '_read_all'
         }
       })
       .done(function(data) {
