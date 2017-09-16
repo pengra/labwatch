@@ -408,6 +408,7 @@
         </form>
       </div>
       <div class="modal-footer">
+        <span class="text-success hidden" id="okay" style="margin-right: 2%;"><i class="fa fa-check" aria-hidden="true"></i> Saved! </span>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <!-- <div class="dropdown">
             <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -428,6 +429,13 @@
 <script>
     window.history.replaceState(null, null, '?mode=create');
   
+    function displayOkay() {
+      $('#okay').removeClass('hidden');
+      setTimeout(function() {
+        $('#okay').addClass('hidden');
+      }, 2000)
+    }
+
     function saveStudent() {
       $.ajaxSetup({
         headers: {"X-CSRFToken": getCookie('csrftoken')}
@@ -464,8 +472,9 @@
         }
       })
       .done(function(data) {
-        updateModal(data)}
-      )
+        updateModal(data);
+        displayOkay();
+      })
     }
 
     function updateModal(data) {
