@@ -108,10 +108,10 @@
                     <label for="schoolcode">School Code</label>
                     <div class="input-group">
                         <span class="input-group-addon">
-                    <input name="schoolcode_checkbox" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#schoolcode').val(''); $('#schoolcode')[0].disabled = false;} else {$('#schoolcode').val('I am signing my school up for LabWatch.'); $('#schoolcode')[0].disabled = true;}">
+                    <input name="schoolcode_checkbox" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#schoolcode').val(''); $('#schoolcode')[0].disabled = false;} else {$('#schoolcode').val('I do not have a school code.'); $('#schoolcode')[0].disabled = true;}">
                     </span>
                         <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" disabled
-                            value="I am signing my school up for LabWatch.">
+                            value="I do not have a school code.">
                     </div>
                     <small id="schoolcode-help" class="form-text text-muted">Check the box if you have a school code. If you are signing your school up for LabWatch, leave the box unchecked.</small>
                 </div>
@@ -261,10 +261,14 @@
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+                <div class="col-12" style="margin-top: 1%;">
+                    <small class="form-text text-muted">Payment details will be collected at a later time. Plans can be changed at any time.</small>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-top: 2%;">
                 <div class="form-group col-lg-8 col-12">
                     <label for="schoolcode">Discount or Referral Code</label>
                     <div class="input-group">
