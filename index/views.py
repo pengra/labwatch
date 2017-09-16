@@ -815,8 +815,10 @@ class SignUpView(BaseLabDashView):
                     group.user_set.add(new_user)
                     group.save()
             
+                login(request, new_user)
                 return redirect('index:dashboard')
 
+            
             context['errors'] = errors
             context['values'] = signup_form.cleaned_data
             return render(request, 'index/signup.html', context)
