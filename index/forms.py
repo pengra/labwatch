@@ -155,7 +155,7 @@ class SignUpForm(forms.Form):
     last_name = forms.CharField()
     email = forms.EmailField()
 
-    schoolcode = forms.CharField(required=False)
+    schoolcode = forms.CharField()
     group = forms.CharField()
 
     advanced_features = forms.BooleanField(required=False)
