@@ -362,12 +362,47 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="form-control-label">Student ID:</label>
+            <input type="text" class="form-control" id="studentid">
           </div>
           <div class="form-group">
-            <label for="message-text" class="form-control-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="recipient-name" class="form-control-label">Student First Name:</label>
+            <input type="text" class="form-control" id="firstname">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Student Last Name:</label>
+            <input type="text" class="form-control" id="lastname">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Student Nick Name:</label>
+            <input type="text" class="form-control" id="nickname">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Student Teacher:</label>
+            <input type="text" class="form-control" id="nickname">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Student Grade:</label>
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Grade
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('--------')">--------</a>
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Freshman')">Freshman</a>
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Sophmore')">Sophmore</a>
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Junior')">Junior</a>
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Senior')">Senior</a>
+                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Graduated')">Graduated</a>
+                    </div>
+                    <input type="text" class="form-control" id="grade" aria-label="Text input with dropdown button" disabled>
+                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Email:</label>
+            <input type="email" class="form-control" id="email">
           </div>
         </form>
       </div>
@@ -384,6 +419,28 @@
 <script>
     window.history.replaceState(null, null, '?mode=create');
   
+    $('#editStudentModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('student') // Extract info from data-* attributes
+      $.ajaxSetup({
+        headers: {"X-CSRFToken": getCookie('csrftoken')}
+      });
+
+      // $.ajax({
+      //   type: "POST",
+      //   url: '{% url "index:dashboard-student-edit" %}' + studentID + '/',
+      //   data: {
+      //     search_target: studentID,
+      //     csrf_token: '{{csrf_token}}'
+      //   }
+      // })
+      // .done(function(data) {updateResults(data)})
+      var modal = $(this)
+      modal.find('.modal-title').text('Editing Student #' + recipient)
+      modal.find('.modal-body #studentid').val(recipient)
+    })
+
+
     function getCookie(name) {
       var cookieValue = null;
       if (document.cookie && document.cookie != '') {
