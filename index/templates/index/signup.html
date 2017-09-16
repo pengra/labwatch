@@ -68,6 +68,7 @@
         {% endif %}
 
         <form method="POST">
+            {% csrf_token %}
             <div class="row">
                 <div class="form-group col-lg-4 col-12">
                     <label for="username">Username</label>
@@ -127,7 +128,7 @@
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Teacher')">Teacher</a>
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Student')">Student</a>
                             </div>
-                            <input name="group" type="text" class="form-control" id="category" value="----------" aria-label="Text input with dropdown button" disabled>
+                            <input name="group" type="text" class="form-control" id="category" aria-label="Text input with dropdown button" readonly>
                         </div>
                     </div>
                     <small id="usergroup-help" class="form-text text-muted">Select one of the options</small>
@@ -184,14 +185,14 @@
                             </p>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                        <input type="checkbox" id="fractal_plan" class="plan" aria-label="Checkbox for following text input" 
+                        <input name="fractal_plan" type="checkbox" id="fractal_plan" class="plan" aria-label="Checkbox for following text input" 
                         onclick="lockTextBox(this, '#fractal', 'No Charge', 'Subscribe with Fractal Plan', true, true, '#fractal_plan_beta'); uncheckOthers('#lunar_plan', '#orange_plan')" checked>
                         </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="fractal" disabled value="No Charge">
                             </div>
                             <div class="input-group" style="margin-top:3px">
                                 <span class="input-group-addon">
-                        <input type="checkbox" id="fractal_plan_beta" class="plan" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)">
+                        <input name="fractal_plan_beta" type="checkbox" id="fractal_plan_beta" class="plan" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)">
                         </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta" disabled value="Serve as a Beta Tester">
                             </div>
@@ -216,14 +217,14 @@
                             </p>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" id="lunar_plan" class="plan" aria-label="Checkbox for following text input" 
+                                    <input type="checkbox" name="lunar_plan" id="lunar_plan" class="plan" aria-label="Checkbox for following text input" 
                                     onclick="lockTextBox(this, '#lunar', '$120* per year', 'Subscribe with Lunar Plan.', true, true, '#lunar_plan_beta'); uncheckOthers('#fractal_plan', '#orange_plan')">
                                 </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="lunar" disabled value="Subscribe with Lunar Plan">
                             </div>
                             <div class="input-group" style="margin-top:3px">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" id="lunar_plan_beta" class="plan" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta2', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)" disabled>
+                                    <input type="checkbox" name="lunar_plan_beta" id="lunar_plan_beta" class="plan" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta2', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)" disabled>
                                 </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta2" disabled value="Serve as a Beta Tester">
                             </div>
@@ -248,14 +249,14 @@
                             </p>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                        <input type="checkbox" class="plan" id="orange_plan" aria-label="Checkbox for following text input" 
+                        <input type="checkbox" class="plan" name="orange_plan" id="orange_plan" aria-label="Checkbox for following text input" 
                         onclick="lockTextBox(this, '#orange', '$480** per year', 'Subscribe with Orange Plan.', true, true, '#orange_plan_beta'); uncheckOthers('#lunar_plan', '#fractal_plan')">
                         </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="orange" disabled value="Subscribe with Orange Plan">
                             </div>
                             <div class="input-group" style="margin-top:3px">
                                 <span class="input-group-addon">
-                        <input type="checkbox" class="plan" id="orange_plan_beta" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta3', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)" disabled>
+                        <input type="checkbox" class="plan" name="orange_plan_beta" id="orange_plan_beta" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#beta3', 'Thanks for helping test!', 'Serve as a Beta Tester.', true, true, null)" disabled>
                         </span>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" id="beta3" disabled value="Serve as a Beta Tester">
                             </div>
