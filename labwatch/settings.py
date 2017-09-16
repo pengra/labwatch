@@ -25,7 +25,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'def a secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
-
 IS_BETA = os.getenv('BETA', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
@@ -133,8 +132,6 @@ USE_L10N = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
-
-
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # File Upload Stuff
