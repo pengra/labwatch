@@ -82,7 +82,7 @@
         {% if school %}
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'index:dashboard' %}">{{school}} Overview <span class="badge badge-secondary">Alpha</span></a>
+            <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'index:dashboard' %}">{{school}} Overview <span class="badge badge-warning">Beta</span></a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link {% block reports_active %}{% endblock %}" href="{% url 'index:dashboard-reports' %}">Analytics &amp; Reports <span class="badge badge-warning">WIP</span></a>
@@ -92,14 +92,14 @@
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link {% block bulk_active %}{% endblock %}" href="{% url 'index:dashboard-student' %}">Student Administration <span class="badge badge-secondary">Alpha</span></a>
+            <a class="nav-link {% block bulk_active %}{% endblock %}" href="{% url 'index:dashboard-student' %}">Student Administration <span class="badge badge-warning">Beta</span></a>
             <!-- Page for allowing teacher to upload a batch of students -->
           </li>
         </ul>
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link {% block poll_active %}{% endblock %}" href="{% url 'index:dashboard-poll' %}">Poll Management <span class="badge badge-secondary">Alpha</span></a>
+            <a class="nav-link {% block poll_active %}{% endblock %}" href="{% url 'index:dashboard-poll' %}">Poll Management <span class="badge badge-warning">Beta</span></a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link {% block poll_image %}{% endblock %}" href="#">Kiosk Image <span class="badge badge-danger">disabled</span></a>
@@ -108,7 +108,7 @@
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link {% block kiosk_active %}{% endblock %}" href="{% url 'index:dashboard-kiosk' %}">Kiosk Administration <span class="badge badge-secondary">Alpha</span></a>
+            <a class="nav-link {% block kiosk_active %}{% endblock %}" href="{% url 'index:dashboard-kiosk' %}">Kiosk Administration <span class="badge badge-warning">Beta</span></a>
           </li>
         </ul>
         {% else %}
