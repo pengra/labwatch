@@ -5,6 +5,7 @@ all forms and views. These are all the generic views.
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.temp import NamedTemporaryFile
 from django.db import IntegrityError
@@ -760,6 +761,58 @@ class SignUpView(BaseLabDashView):
             return redirect('index:index')
 
         return render(request, 'index/signup.html')
+
+    def post(self, request):
+        "Fill out form."
+        context = self.get_context(request)
+        if context['is_authenticated']:
+            return redirect('index:index')
+
+        signup_form = forms.SignUpForm(request.POST)
+        if signup_form.is_valid() and signup_form.cleaned_data['password'] == signup_form.cleaned_data['confirm_password']:
+            # Create the user and assign correct groups
+
+            # do checks here first
+
+            try:
+                new_user = User.objects.create_user(
+                    username=signup_form.cleaned_data['username'],
+                    email=signup_form.cleaned_data['email'],
+                    password=signup_form.cleaned_data['password'],
+                    first_name=signup_form.cleaned_data['first_name'],
+                    last_name=signup_form.cleaned_data['last_name'],
+                )
+                new_user.save()
+            except IntegrityError:
+                # need to tell the user the form didn't work
+                raise Http404
+            
+            try:
+                group = Group.objects.get(name=signup_form.cleaned_data['group'])
+                group.user_set.add(new_user)
+                group.save()
+            except ObjectDoesNotExist:
+                # need to tell the user the form didn't work because
+                raise Http404
+            
+            try:
+                school = School.objects.get(auth_code=signup_form.cleaned_data['schoolcode'])
+                school.teachers.add(new_user)    
+                school.save()
+            except (KeyError, ObjectDoesNotExist):
+                # invalid school code
+                raise Http404
+
+            if signup_form.cleaned_data.get('advanced_features'):
+                group = Group.objects.get(name="Tech Savy")
+                group.user_set.add(new_user)
+                group.save()
+            
+            # Hard coded, but should be swapped
+
+
+
+        return JsonResponse(signup_form.errors)
 
 
 class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):

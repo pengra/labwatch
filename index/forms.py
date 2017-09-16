@@ -162,5 +162,4 @@ class SignUpForm(forms.Form):
     accept_tos = forms.BooleanField()
     # primary_contact = forms.BooleanField(required=False)
 
-    
     discount_code = forms.CharField(required=False)
