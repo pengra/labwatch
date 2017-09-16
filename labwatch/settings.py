@@ -150,3 +150,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # 250MB - 214958080
 # 500MB - 429916160
 MAXUPLOADSIZE = 2621440
+
+
+# Groups
+DEFAULT_GROUPS = ['Librarian', 'Teacher']
