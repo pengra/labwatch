@@ -81,7 +81,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="confirmpassword">Confirm Password</label>
-                    <input name="confirmpassword" type="password" class="form-control" id="confirmpassword" aria-describedby="confirmpassword-help"
+                    <input name="confirm_password" type="password" class="form-control" id="confirmpassword" aria-describedby="confirmpassword-help"
                         placeholder="Confirm Password">
                     <small id="confirmpassword-help" class="form-text text-muted">The same password</small>
                 </div>
@@ -89,12 +89,12 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-12">
                     <label for="firstname">First Name</label>
-                    <input name="firstname" type="text" class="form-control" id="firstname" aria-describedby="firstname-help" placeholder="Norton">
+                    <input name="first_name" type="text" class="form-control" id="firstname" aria-describedby="firstname-help" placeholder="Norton">
                     <small id="firstname-help" class="form-text text-muted">Your first name</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="lastname">Last Name</label>
-                    <input name="lastname" type="text" class="form-control" id="lastname" aria-describedby="lastname-help" placeholder="Pengra">
+                    <input name="last_name" type="text" class="form-control" id="lastname" aria-describedby="lastname-help" placeholder="Pengra">
                     <small id="lastname-help" class="form-text text-muted">Your last name</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
@@ -120,14 +120,14 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Group
-                        </button>
+                                Group
+                            </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Librarian')">Librarian</a>
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Teacher')">Teacher</a>
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Student')">Student</a>
                             </div>
-                            <input type="text" class="form-control" id="category" aria-label="Text input with dropdown button" disabled>
+                            <input name="group" type="text" class="form-control" id="category" value="----------" aria-label="Text input with dropdown button" disabled>
                         </div>
                     </div>
                     <small id="usergroup-help" class="form-text text-muted">Select one of the options</small>
@@ -139,7 +139,7 @@
                     <label for="schoolcode">Enable Advanced Features?</label>
                     <div class="input-group">
                         <span class="input-group-addon">
-                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#techsavy').val('Advanced Features ENABLED')} else {$('#techsavy').val('Advanced Features DISABLED')}">
+                    <input name="advanced_features" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#techsavy').val('Advanced Features ENABLED')} else {$('#techsavy').val('Advanced Features DISABLED')}">
                     </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="techsavy" disabled value="Advanced Features DISABLED">
                     </div>
@@ -150,7 +150,7 @@
                     <label for="schoolcode">Accept TOS</label>
                     <div class="input-group">
                         <span class="input-group-addon">
-                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not accept the TOS.')}">
+                    <input name="accept_tos" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not accept the TOS.')}">
                     </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not accept the TOS.">
                     </div>
@@ -161,7 +161,7 @@
                     <label for="schoolcode">Are you the representative of your school?</label>
                     <div class="input-group">
                         <span class="input-group-addon">
-                    <input type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#representative').val('I am the school representative.')} else {$('#representative').val('I am NOT the school representative.')}">
+                    <input name="primary_contact" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#representative').val('I am the school representative.')} else {$('#representative').val('I am NOT the school representative.')}">
                     </span>
                         <input type="text" class="form-control" aria-label="Text input with checkbox" id="representative" disabled value="I am NOT the school representative.">
                     </div>
@@ -270,19 +270,19 @@
 
             <div class="row" style="margin-top: 2%;">
                 <div class="form-group col-lg-8 col-12">
-                    <label for="schoolcode">Discount or Referral Code</label>
+                    <label for="discount">Discount or Referral Code</label>
                     <div class="input-group">
                         <span class="input-group-addon">
                     <input type="checkbox" aria-label="Checkbox for following text input" onclick="lockTextBox(this, '#discount', '', 'I don\'t have a discount code.', false, true)">
                     </span>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="discount" disabled value="I don't have a discount code.">
+                        <input type="text" name="discount_code" class="form-control" aria-label="Text input with checkbox" id="discount" disabled value="I don't have a discount code.">
                     </div>
-                    <small id="schoolcode-help" class="form-text text-muted">You and your referrer and will both get discounts.</small>
+                    <small id="discount-help" class="form-text text-muted">You and your referrer and will both get discounts.</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
-                    <label for="schoolcode" style="color: white;">Submit</label>
+                    <label for="submit" style="color: white;">Submit</label>
                     <input type="submit" class="form-control btn btn-primary" value="Next">
-                    <small id="schoolcode-help" class="form-text text-muted">Additional steps on the next page</small>
+                    <small id="submit-help" class="form-text text-muted">Additional steps on the next page</small>
                 </div>
             </div>
 

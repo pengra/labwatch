@@ -144,3 +144,29 @@ class StudentEditForm(forms.Form):
     edit_teacher = forms.CharField(required=False)
     edit_grade = forms.CharField(required=False)
     edit_email = forms.EmailField(required=False)
+
+
+class SignUpForm(forms.Form):
+    "Form for new customers."
+    username = forms.CharField()
+    password = forms.CharField()
+    confirm_password = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
+
+    schoolcode = forms.CharField()
+    group = forms.CharField()
+
+    advanced_features = forms.BooleanField()
+    accept_tos = forms.BooleanField()
+    primary_contact = forms.CharField()
+
+    fractal_plan = forms.BooleanField()
+    fractal_plan_beta = forms.BooleanField()
+    lunar_plan = forms.BooleanField()
+    lunar_plan_beta = forms.BooleanField()
+    orange_plan = forms.BooleanField()
+    orange_plan_beta = forms.BooleanField()
+
+    discount_code = forms.CharField()
