@@ -363,23 +363,23 @@
         <form>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student ID:</label>
-            <input type="text" class="form-control" id="studentid">
+            <input type="text" class="form-control" id="edit_studentid">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student First Name:</label>
-            <input type="text" class="form-control" id="firstname">
+            <input type="text" class="form-control" id="edit_firstname">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Last Name:</label>
-            <input type="text" class="form-control" id="lastname">
+            <input type="text" class="form-control" id="edit_lastname">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Nick Name:</label>
-            <input type="text" class="form-control" id="nickname">
+            <input type="text" class="form-control" id="edit_nickname">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Teacher:</label>
-            <input type="text" class="form-control" id="teacher">
+            <input type="text" class="form-control" id="edit_teacher">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Grade:</label>
@@ -402,8 +402,9 @@
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Email:</label>
-            <input type="email" class="form-control" id="email">
+            <input type="email" class="form-control" id="edit_email">
           </div>
+          <input type="hidden" id="edit_pk">
         </form>
       </div>
       <div class="modal-footer">
@@ -414,7 +415,6 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item text-danger">Delete</a>
-                <!-- <a class="dropdown-item text-danger" href="#">Reset Kiosk Code</a> -->
             </div>
         </div>
         <button type="button" class="btn btn-primary">Save Student</button>
@@ -429,12 +429,13 @@
     window.history.replaceState(null, null, '?mode=create');
   
     function updateModal(data) {
-      $('input#studentid').val(data.id);
-      $('input#firstname').val(data.fname);
-      $('input#lastname').val(data.lname);
-      $('input#nickname').val(data.uname);
-      $('input#teacher').val(data.teacher);
-      $('input#email').val(data.email);
+      $('input#edit_pk').val(data.pk);
+      $('input#edit_studentid').val(data.id);
+      $('input#edit_firstname').val(data.fname);
+      $('input#edit_lastname').val(data.lname);
+      $('input#edit_nickname').val(data.uname);
+      $('input#edit_teacher').val(data.teacher);
+      $('input#edit_email').val(data.email);
       if (data.grade == 'GD') {
         $('input#grade').val("Graduated");
       } else if (data.grade == '09') {
@@ -448,7 +449,6 @@
       } else if (data.grade == '') {
         $('input#grade').val("--------");
       }
-      console.log(data);
     }
 
     $('#editStudentModal').on('show.bs.modal', function (event) {
@@ -471,7 +471,7 @@
       )
       var modal = $(this)
       modal.find('.modal-title').text('Editing Student #' + recipient)
-      modal.find('.modal-body #studentid').val(recipient)
+      modal.find('.modal-body #edit_studentid').val(recipient)
     })
 
 
