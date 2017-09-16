@@ -24,10 +24,16 @@
         <div class="inner">
             <nav>
                 <ul>
-                    <li><a href="#intro">Welcome</a></li>
-                    <li><a href="#one">Who we are</a></li>
-                    <li><a href="#two">What we do</a></li>
-                    <li><a href="#three">Get in touch</a></li>
+                    <li><a href="#intro">LabWatch</a></li>
+                    <li><a href="#one">How it works</a></li>
+                    <!-- <li><a href="#two">Features</a></li> -->
+                    <!-- <li><a href="#three">Get in touch</a></li> -->
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'index:dashboard' %}">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="#" onclick="location.href='{% url 'index:login' %}'">Login</a></li>
+                        <li><a href="#" onclick="location.href='{% url 'index:signup' %}'">Sign up</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
@@ -39,11 +45,12 @@
         <!-- Intro -->
         <section id="intro" class="wrapper style1 fullscreen fade-up">
             <div class="inner">
-                <h1>Hyperspace</h1>
-                <p>Just another fine responsive site template designed by <a href="http://html5up.net">HTML5 UP</a><br /> and
-                    released for free under the <a href="http://html5up.net/license">Creative Commons</a>.</p>
+                <h1>LabWatch</h1>
+                <p>A Webapp built to help high schools track their library usage.</p>
                 <ul class="actions">
-                    <li><a href="#one" class="button scrolly">Learn more</a></li>
+                    <li>
+                        <a href="#one" class="button scrolly">How it Works</a>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -51,53 +58,47 @@
         <!-- One -->
         <section id="one" class="wrapper style2 spotlights">
             <section>
-                <a href="#" class="image"><img src="images/pic01.jpg" alt="" data-position="center center" /></a>
+                <a href="#" class="image"><img src="https://imgur.com/JGsc4ST.jpg" alt="" data-position="center center" /></a>
                 <div class="content">
                     <div class="inner">
-                        <h2>Sed ipsum dolor</h2>
-                        <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
-                            quis. Aliquam dapibus.</p>
+                        <h2>Set up a kiosk</h2>
+                        <p>Set up a kiosk for students to login at</p>
                         <ul class="actions">
-                            <li><a href="#" class="button">Learn more</a></li>
+                            <!-- <li><a href="#" class="button">Learn more</a></li> -->
                         </ul>
                     </div>
                 </div>
             </section>
             <section>
-                <a href="#" class="image"><img src="images/pic02.jpg" alt="" data-position="top center" /></a>
+                <a href="#" class="image"><img src="https://imgur.com/7QWK519.jpg" alt="" data-position="top center" /></a>
                 <div class="content">
                     <div class="inner">
-                        <h2>Feugiat consequat</h2>
-                        <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
-                            quis. Aliquam dapibus.</p>
+                        <h2>Upload students to your account</h2>
+                        <p>Upload a database containing all the students you would like to track</p>
                         <ul class="actions">
-                            <li><a href="#" class="button">Learn more</a></li>
+                            <!-- <li><a href="#" class="button">Learn more</a></li> -->
                         </ul>
                     </div>
                 </div>
             </section>
             <section>
-                <a href="#" class="image"><img src="images/pic03.jpg" alt="" data-position="25% 25%" /></a>
+                <a href="#" class="image"><img src="https://imgur.com/nC6BVzo.jpg" alt="" data-position="25% 25%" /></a>
                 <div class="content">
                     <div class="inner">
-                        <h2>Ultricies aliquam</h2>
-                        <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
-                            quis. Aliquam dapibus.</p>
+                        <h2>Get regular reports</h2>
+                        <p>View or download daily reports of library usage</p>
                         <ul class="actions">
-                            <li><a href="#" class="button">Learn more</a></li>
+                            <!-- <li><a href="#" class="button">Learn more</a></li> -->
                         </ul>
                     </div>
                 </div>
             </section>
         </section>
 
-        <!-- Two -->
+        <!-- Two --
         <section id="two" class="wrapper style3 fade-up">
             <div class="inner">
-                <h2>What we do</h2>
-                <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
-                    quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit
-                    quis lorem.</p>
+                <h2>Additional Features</h2>
                 <div class="features">
                     <section>
                         <span class="icon major fa-code"></span>
@@ -142,13 +143,11 @@
             </div>
         </section>
 
-        <!-- Three -->
+        <!-- Three --
         <section id="three" class="wrapper style1 fade-up">
             <div class="inner">
                 <h2>Get in touch</h2>
-                <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
-                    quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit
-                    quis lorem.</p>
+                <p>We are currently in closed Beta, once our service is ready we'll notify you with a school code.</p>
                 <div class="split style1">
                     <section>
                         <form method="post" action="#">
@@ -200,15 +199,16 @@
                 </div>
             </div>
         </section>
-
+    -->
     </div>
 
     <!-- Footer -->
     <footer id="footer" class="wrapper style1-alt">
         <div class="inner">
             <ul class="menu">
-                <li>&copy; Untitled. All rights reserved.</li>
+                <li>&copy; Norton Pengra</li>
                 <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                <li>Powered by: Django/Python with love</li>
             </ul>
         </div>
     </footer>
