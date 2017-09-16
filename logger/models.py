@@ -58,7 +58,8 @@ class Student(models.Model):
             "uname": self.nick_name,
             "teacher": self.teacher,
             "grade": self.grade,
-            "email": self.email
+            "email": self.email,
+            "pk": self.pk
         }
 
 class Log(models.Model):
