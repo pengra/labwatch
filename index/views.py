@@ -813,9 +813,23 @@ class DashboardStudentEdit(LoginRequiredMixin, BaseLabDashView):
 
     def post(self, request, student=None):
         "Handle student edit forms."
-        if student:
+        if student and request.POST.get('request_type') == '_read_all':
             context = self.get_context(request)
             student = get_object_or_404(Student, school=context['school'], student_id=int(student))
             return JsonResponse(student.json(False))
+        elif student and request.POST.get('request_type') == '_edit':
+            edit_form = forms.StudentEditForm(request.POST)
+            if edit_form.is_valid():
+                content = edit_form.cleaned_data
+                student = get_object_or_404(Student, school=context['school'], pk=content['edit_pk'])
+                student.student_id = content['edit_studentid']
+                student.first_name = content['edit_firstname']
+                student.last_name = content['edit_lastname']
+                student.nick_name = content['edit_nickname']
+                student.teacher = content['edit_teacher']
+                student.grade = content['edit_grade']
+                student.email = content['edit_email']
+                student.save()
+                return Json(student.json(False))
 
         raise Http404
