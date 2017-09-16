@@ -379,7 +379,7 @@
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Teacher:</label>
-            <input type="text" class="form-control" id="nickname">
+            <input type="text" class="form-control" id="teacher">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Student Grade:</label>
@@ -389,12 +389,12 @@
                     Grade
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('--------')">--------</a>
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Freshman')">Freshman</a>
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Sophmore')">Sophmore</a>
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Junior')">Junior</a>
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Senior')">Senior</a>
-                        <a class="dropdown-item" href="#" onclick="$('#grade').val('Graduated')">Graduated</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('--------')">--------</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('Freshman')">Freshman</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('Sophmore')">Sophmore</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('Junior')">Junior</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('Senior')">Senior</a>
+                        <a class="dropdown-item" href="#" onclick="$('input#grade').val('Graduated')">Graduated</a>
                     </div>
                     <input type="text" class="form-control" id="grade" aria-label="Text input with dropdown button" disabled>
                 </div>
@@ -419,6 +419,29 @@
 <script>
     window.history.replaceState(null, null, '?mode=create');
   
+    function updateModal(data) {
+      $('input#studentid').val(data.id);
+      $('input#firstname').val(data.fname);
+      $('input#lastname').val(data.lname);
+      $('input#nickname').val(data.uname);
+      $('input#teacher').val(data.teacher);
+      $('input#email').val(data.email);
+      if (data.grade == 'GD') {
+        $('input#grade').val("Graduated");
+      } else if (data.grade == '09') {
+        $('input#grade').val("Freshman");
+      } else if (data.grade == '10') {
+        $('input#grade').val("Sophmore");
+      } else if (data.grade == '11') {
+        $('input#grade').val("Junior");
+      } else if (data.grade == '12') {
+        $('input#grade').val("Senior");
+      } else if (data.grade == '') {
+        $('input#grade').val("--------");
+      }
+      console.log(data);
+    }
+
     $('#editStudentModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
       var recipient = button.data('student') // Extract info from data-* attributes
@@ -426,15 +449,17 @@
         headers: {"X-CSRFToken": getCookie('csrftoken')}
       });
 
-      // $.ajax({
-      //   type: "POST",
-      //   url: '{% url "index:dashboard-student-edit" %}' + studentID + '/',
-      //   data: {
-      //     search_target: studentID,
-      //     csrf_token: '{{csrf_token}}'
-      //   }
-      // })
-      // .done(function(data) {updateResults(data)})
+      $.ajax({
+        type: "POST",
+        url: '{% url "index:dashboard-student-edit" %}' + recipient + '/',
+        data: {
+          csrf_token: '{{csrf_token}}',
+          request_type: '_all'
+        }
+      })
+      .done(function(data) {
+        updateModal(data)}
+      )
       var modal = $(this)
       modal.find('.modal-title').text('Editing Student #' + recipient)
       modal.find('.modal-body #studentid').val(recipient)
