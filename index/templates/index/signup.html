@@ -51,7 +51,10 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3">Lab Watch Sign-up Form</h1>
-            Already have an account? <a href="{% url 'index:login' %}">Sign in</a> instead. Engineers sign in <a href="{% url 'admin:login' %}">here</a>            instead.
+            <p>
+                Already have an account? <a href="{% url 'index:login' %}">Sign in</a> instead. Engineers sign in <a href="{% url 'admin:login' %}">here</a> instead.<br/>
+                Because LabWatch is in early beta stages, we are only inviting a few select schools.
+            </p>
         </div>
     </div>
 
@@ -106,15 +109,16 @@
             </div>
             <div class="row">
                 <div class="form-group col-lg-8 col-12">
-                    <label for="schoolcode">School Code</label>
+                    <!-- <label for="schoolcode">School Code</label>
                     <div class="input-group">
                         <span class="input-group-addon">
                     <input name="schoolcode_checkbox" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#schoolcode').val(''); $('#schoolcode')[0].disabled = false;} else {$('#schoolcode').val('I do not have a school code.'); $('#schoolcode')[0].disabled = true;}">
-                    </span>
+                    </span> --
                         <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" disabled
                             value="I do not have a school code.">
-                    </div>
-                    <small id="schoolcode-help" class="form-text text-muted">Check the box if you have a school code. If you are signing your school up for LabWatch, leave the box unchecked.</small>
+                    <!-- </div> -->
+                    <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" placeholder="abc123">
+                    <small id="schoolcode-help" class="form-text text-muted">A Labwatch representative or your school should've given you a school code.</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="usergroup">You are a...</label>
