@@ -155,18 +155,18 @@ class SignUpForm(forms.Form):
     last_name = forms.CharField()
     email = forms.EmailField()
 
-    schoolcode = forms.CharField()
+    schoolcode = forms.CharField(required=False)
     group = forms.CharField()
 
-    advanced_features = forms.BooleanField()
+    advanced_features = forms.BooleanField(required=False)
     accept_tos = forms.BooleanField()
-    primary_contact = forms.CharField()
+    primary_contact = forms.BooleanField(required=False)
 
-    fractal_plan = forms.BooleanField()
-    fractal_plan_beta = forms.BooleanField()
-    lunar_plan = forms.BooleanField()
-    lunar_plan_beta = forms.BooleanField()
-    orange_plan = forms.BooleanField()
-    orange_plan_beta = forms.BooleanField()
+    fractal_plan = forms.BooleanField(required=False)
+    fractal_plan_beta = forms.BooleanField(required=False)
+    lunar_plan = forms.BooleanField(required=False)
+    lunar_plan_beta = forms.BooleanField(required=False)
+    orange_plan = forms.BooleanField(required=False)
+    orange_plan_beta = forms.BooleanField(required=False)
 
-    discount_code = forms.CharField()
+    discount_code = forms.CharField(required=False)
