@@ -132,3 +132,15 @@ class StudentSearchForm(forms.Form):
         is_text = self.cleaned_data.get('search_target', '1').replace(
             ' ', '').replace('-', '').isalpha()
         return is_valid and is_text
+
+
+class StudentEditForm(forms.Form):
+    "Form for editing students."
+    edit_pk = forms.IntegerField()
+    edit_studentid = forms.IntegerField()
+    edit_firstname = forms.CharField()
+    edit_lastname = forms.CharField()
+    edit_nickname = forms.CharField(required=False)
+    edit_teacher = forms.CharField(required=False)
+    edit_grade = forms.CharField(required=False)
+    edit_email = forms.EmailField(required=False)
