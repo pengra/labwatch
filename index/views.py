@@ -811,15 +811,11 @@ class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
 class DashboardStudentEdit(LoginRequiredMixin, BaseLabDashView):
     "View for editing students"
 
-    def get(self, request, student=None):
-        "Show student edit form."
+    def post(self, request, student=None):
+        "Handle student edit forms."
         if student:
             context = self.get_context(request)
+            student = get_object_or_404(Student, school=context['school'], student_id=int(student))
+            return JsonResponse(student.json(False))
 
-
-        return redirect('index:dashboard-student')
-
-    def post(self, request):
-        "Handle student edit forms."
-        context = self.get_context(request)
         raise Http404
