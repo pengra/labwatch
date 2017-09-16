@@ -75,65 +75,127 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-12">
                     <label for="username">Username</label>
-                    <input name="username" type="text" class="form-control" id="username" aria-describedby="username-help" placeholder="TheBigNerdPengra7">
+                    {% if errors.username %}
+                    <input name="username" type="text" class="form-control is-invalid" id="username" aria-describedby="username-help" placeholder="TheBigNerdPengra7">
+                    <div class="invalid-feedback">
+                        {{errors.username.0}}
+                    </div>
+                    {% else %}
+                    <input name="username" type="text" class="form-control" id="username" aria-describedby="username-help" placeholder="TheBigNerdPengra7" value="{{values.username}}">
+                    {% endif %}
                     <small id="username-help" class="form-text text-muted">A unique username to login with</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="password">Password</label>
-                    <input name="password" type="password" class="form-control" id="password" aria-describedby="password-help" placeholder="Please don't use 'Password'">
+                    {% if errors.password %}
+                        <input name="password" type="password" class="form-control is-invalid" id="password" aria-describedby="password-help" placeholder="Please don't use 'Password'">
+                        <div class="invalid-feedback">
+                            {{errors.password.0}}
+                        </div>
+                    {% else %}
+                        <input name="password" type="password" class="form-control" id="password" aria-describedby="password-help" placeholder="Please don't use 'Password'" value="{{values.password}}">
+                    {% endif %}
                     <small id="password-help" class="form-text text-muted">A strong password</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="confirmpassword">Confirm Password</label>
+                    {% if errors.confirm_password %}
+                    <input name="confirm_password" type="password" class="form-control is-invalid" id="confirmpassword" aria-describedby="confirmpassword-help"
+                    placeholder="Confirm Password">
+                    <div class="invalid-feedback">
+                        {{errors.confirm_password.0}}
+                    </div>
+                    {% else %}
                     <input name="confirm_password" type="password" class="form-control" id="confirmpassword" aria-describedby="confirmpassword-help"
-                        placeholder="Confirm Password">
+                        placeholder="Confirm Password" value="{{values.confirm_password}}">
+                    {% endif %}
                     <small id="confirmpassword-help" class="form-text text-muted">The same password</small>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-4 col-12">
                     <label for="firstname">First Name</label>
-                    <input name="first_name" type="text" class="form-control" id="firstname" aria-describedby="firstname-help" placeholder="Norton">
+                    {% if errors.first_name %}
+                    <input name="first_name" type="text" class="form-control is-invalid" id="firstname" aria-describedby="firstname-help" placeholder="Norton">
+                    <div class="invalid-feedback">
+                        {{errors.first_name.0}}
+                    </div>
+                    {% else %}
+                    <input name="first_name" type="text" class="form-control" id="firstname" aria-describedby="firstname-help" placeholder="Norton" value="{{values.first_name}}">
+                    {% endif %}
                     <small id="firstname-help" class="form-text text-muted">Your first name</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="lastname">Last Name</label>
-                    <input name="last_name" type="text" class="form-control" id="lastname" aria-describedby="lastname-help" placeholder="Pengra">
+                    {% if errors.last_name %}
+                    <input name="last_name" type="text" class="form-control is-invalid" id="lastname" aria-describedby="lastname-help" placeholder="Pengra">
+                    <div class="invalid-feedback">
+                        {{errors.last_name.0}}
+                    </div>
+                    {% else %}
+                    <input name="last_name" type="text" class="form-control" id="lastname" aria-describedby="lastname-help" placeholder="Pengra" value="{{values.last_name}}">
+                    {% endif %}
                     <small id="lastname-help" class="form-text text-muted">Your last name</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="email">Email Address</label>
-                    <input name="email" type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="norton.pengra@uw.edu">
+                    {% if errors.email %}
+                    <input name="email" type="email" class="form-control is-invalid" id="email" aria-describedby="email-help" placeholder="norton.pengra@uw.edu">
+                    <div class="invalid-feedback">
+                        {{errors.email.0}}
+                    </div>
+                    {% else %}
+                    <input name="email" type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="norton.pengra@uw.edu" value="{{values.email}}">
+                    {% endif %}
                     <small id="email-help" class="form-text text-muted">An email address you check</small>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-8 col-12">
-                    <!-- <label for="schoolcode">School Code</label>
-                    <div class="input-group">
+                    <label for="schoolcode">School Code</label>
+                    <!-- <div class="input-group">
                         <span class="input-group-addon">
                     <input name="schoolcode_checkbox" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#schoolcode').val(''); $('#schoolcode')[0].disabled = false;} else {$('#schoolcode').val('I do not have a school code.'); $('#schoolcode')[0].disabled = true;}">
                     </span> --
                         <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" disabled
                             value="I do not have a school code.">
                     <!-- </div> -->
-                    <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" placeholder="abc123">
+                    {% if errors.schoolcode %}
+                    <input name="schoolcode" type="text" class="form-control is-invalid" aria-label="Text input with checkbox" id="schoolcode" placeholder="abc123">
+                    <div class="invalid-feedback">
+                        {{errors.schoolcode.0}}
+                    </div>
+                    {% else %}
+                    <input name="schoolcode" type="text" class="form-control" aria-label="Text input with checkbox" id="schoolcode" placeholder="abc123" value="{{values.schoolcode}}">
+                    {% endif %}
                     <small id="schoolcode-help" class="form-text text-muted">A Labwatch representative or your school should've given you a school code.</small>
                 </div>
                 <div class="form-group col-lg-4 col-12">
                     <label for="usergroup">You are a...</label>
                     <div class="input-group">
                         <div class="input-group-btn">
+                            {% if errors.group %}
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Group
+                            </button>
+                            {% else %}
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Group
                             </button>
+                            {% endif %}
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Librarian')">Librarian</a>
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Teacher')">Teacher</a>
                                 <a class="dropdown-item" href="#" onclick="$('#category').val('Student')">Student</a>
                             </div>
-                            <input name="group" type="text" class="form-control" id="category" aria-label="Text input with dropdown button" readonly>
+                            {% if errors.group %}
+                            <input name="group" type="text" class="form-control is-invalid" id="category" aria-label="Text input with dropdown button" readonly>
+                            
+                            {% else %}
+                            <input name="group" type="text" class="form-control" id="category" aria-label="Text input with dropdown button" value="{{values.group}}" readonly>
+                            {% endif %}
                         </div>
+                        <div></div>
                     </div>
                     <small id="usergroup-help" class="form-text text-muted">Select one of the options</small>
                 </div>
@@ -152,12 +214,22 @@
                 </div>
 
                 <div class="form-group col-lg-4 col-12">
-                    <label for="schoolcode">Accept TOS</label>
+                    <label for="schoolcode">Accept Terms of Service</label>
                     <div class="input-group">
                         <span class="input-group-addon">
+                    {% if values.accept_tos %}
+                    <input name="accept_tos" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not accept the TOS.')}" checked>
+                    {% else %}
                     <input name="accept_tos" type="checkbox" aria-label="Checkbox for following text input" onclick="if ($(this)[0].checked) {$('#accepttos').val('I understand and accept the TOS.')} else {$('#accepttos').val('I do not accept the TOS.')}">
+                    {% endif %}
                     </span>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not accept the TOS.">
+                        {% if errors.accept_tos %}
+                            <input type="text" class="form-control is-invalid" aria-label="Text input with checkbox" id="accepttos" disabled value="You must accept the TOS.">
+                        {% elif values.accept_tos %}
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I understand and accept the TOS.">
+                        {% else %}
+                            <input type="text" class="form-control" aria-label="Text input with checkbox" id="accepttos" disabled value="I do not accept the TOS.">
+                        {% endif %}
                     </div>
                     <small id="schoolcode-help" class="form-text text-muted">You must accept our Terms of Service to use our service.</small>
                 </div>

@@ -21,7 +21,7 @@ from random import shuffle, choice
 from wsgiref.util import FileWrapper
 import xlsxwriter
 
-from labwatch.settings import MAXUPLOADSIZE
+from labwatch.settings import MAXUPLOADSIZE, DEFAULT_GROUPS
 from index import forms
 from index.models import UserReport, ImageCard
 from polls.models import PollChoice, PollQuestion
@@ -765,16 +765,34 @@ class SignUpView(BaseLabDashView):
     def post(self, request):
         "Fill out form."
         context = self.get_context(request)
+
+        errors = {}
+
         if context['is_authenticated']:
             return redirect('index:index')
 
         signup_form = forms.SignUpForm(request.POST)
-        if signup_form.is_valid() and signup_form.cleaned_data['password'] == signup_form.cleaned_data['confirm_password']:
+        if signup_form.is_valid():
             # Create the user and assign correct groups
 
-            # do checks here first
+            if User.objects.filter(username=signup_form.cleaned_data['username']):
+                errors['username'] = ['This username is already taken']
 
-            try:
+            if User.objects.filter(email=signup_form.cleaned_data['email']):
+                errors['email'] = ['This email is already in use']
+
+            if signup_form.cleaned_data['password'] != signup_form.cleaned_data['confirm_password']:
+                errors['password'] = ['Passwords do not match']
+                errors['confirm_password'] = ['Passwords do not match']
+
+            if len(Group.objects.filter(name=signup_form.cleaned_data['group'])) != 1 or signup_form.cleaned_data['group'] not in DEFAULT_GROUPS:
+                errors['group'] = ['Invalid group']
+            
+            if len(School.objects.filter(auth_code=signup_form.cleaned_data['schoolcode'])) != 1:
+                errors['schoolcode'] = ['Invalid school code']
+
+            if len(errors) == 0:
+
                 new_user = User.objects.create_user(
                     username=signup_form.cleaned_data['username'],
                     email=signup_form.cleaned_data['email'],
@@ -783,36 +801,28 @@ class SignUpView(BaseLabDashView):
                     last_name=signup_form.cleaned_data['last_name'],
                 )
                 new_user.save()
-            except IntegrityError:
-                # need to tell the user the form didn't work
-                raise Http404
-            
-            try:
+                
                 group = Group.objects.get(name=signup_form.cleaned_data['group'])
                 group.user_set.add(new_user)
                 group.save()
-            except ObjectDoesNotExist:
-                # need to tell the user the form didn't work because
-                raise Http404
-            
-            try:
+                
                 school = School.objects.get(auth_code=signup_form.cleaned_data['schoolcode'])
                 school.teachers.add(new_user)    
                 school.save()
-            except (KeyError, ObjectDoesNotExist):
-                # invalid school code
-                raise Http404
 
-            if signup_form.cleaned_data.get('advanced_features'):
-                group = Group.objects.get(name="Tech Savy")
-                group.user_set.add(new_user)
-                group.save()
+                if signup_form.cleaned_data.get('advanced_features'):
+                    group = Group.objects.get(name="Tech Savy")
+                    group.user_set.add(new_user)
+                    group.save()
             
-            # Hard coded, but should be swapped
+            context['errors'] = errors
+            context['values'] = signup_form.cleaned_data
+            return render(request, 'index/signup.html', context)
 
-
-
-        return JsonResponse(signup_form.errors)
+        print(dict(signup_form.errors))
+        context['errors'] = signup_form.errors
+        context['values'] = signup_form.data
+        return render(request, 'index/signup.html', context)
 
 
 class DashboardStudentSearch(LoginRequiredMixin, BaseLabDashView):
