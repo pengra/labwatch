@@ -12,6 +12,7 @@ class KioskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url',
             'name',
+            'school',
             'auth_code',
             'active',
             'poll'
