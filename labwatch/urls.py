@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include, static
 from django.contrib import admin
 from labwatch import settings
-import index.urls
 
 
 urlpatterns = [
