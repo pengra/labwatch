@@ -1,0 +1,2 @@
+from baselabwatch.serializers.user import UserSerializer
+from baselabwatch.serializers.profile import ProfileSerializer
