@@ -1,0 +1,1 @@
+from baselabwatch.views.index import IndexView
