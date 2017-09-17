@@ -19,6 +19,9 @@ class Profile(models.Model):
     techsavy = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.user
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     "Create a profile when a user is created"
