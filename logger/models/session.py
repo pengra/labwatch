@@ -26,4 +26,4 @@ class StudentSession(models.Model):
     sign_out_timestamp = models.DateTimeField()
 
     def __str__(self):
-        return "{}: {}".format(self.student, self.mode)
+        return "{}".format(self.student)
