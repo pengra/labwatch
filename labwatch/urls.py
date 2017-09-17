@@ -16,10 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include, static
 from django.contrib import admin
 from labwatch import settings
-
+from baselabwatch import urls
 
 urlpatterns = [
     url(r'^staff/', admin.site.urls),
+    url(r'^', include(urls))
 ] 
 
 if settings.DEBUG:
