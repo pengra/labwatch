@@ -10,9 +10,10 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'username', 
             'email', 
             'is_staff',
-            'profile.school',
-            'profile.engineer',
-            'profile.librarian',
-            'profile.tech_savy',
-            'profile.beta_tester'
+            # 'profile',
+            # 'profile.school',
+            # 'profile.engineer',
+            # 'profile.librarian',
+            # 'profile.tech_savy',
+            # 'profile.beta_tester'
         )
