@@ -21,7 +21,6 @@ import index.urls
 
 urlpatterns = [
     url(r'^staff/', admin.site.urls),
-    url(r'^', include(index.urls, namespace='index')),
 ] 
 
 if settings.DEBUG:
