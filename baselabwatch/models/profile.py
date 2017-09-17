@@ -12,11 +12,11 @@ from baselabwatch.models.school import School
 class Profile(models.Model):
     "Profile data for each user."
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.ForeignKey(School, blank=True, related_name='teachers')
+    school = models.ForeignKey(School, null=True, blank=True, related_name='teachers')
 
-    engineer = models.BooleanField()
-    librarian = models.BooleanField()
-    techsavy = models.BooleanField()
+    engineer = models.BooleanField(default=False)
+    librarian = models.BooleanField(default=False)
+    techsavy = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=True)
 
 @receiver(post_save, sender=User)
