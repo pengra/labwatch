@@ -1,2 +1,6 @@
 from baselabwatch.serializers.user import UserSerializer
 from baselabwatch.serializers.profile import ProfileSerializer
+from baselabwatch.serializers.school import SchoolSerializer
+from baselabwatch.serializers.student import StudentSerializer
+from baselabwatch.serializers.subscription import SubscriptionSerializer
+from baselabwatch.serializers.userreport import UserReportSerializer
