@@ -3,7 +3,6 @@ from django.db import models
 class PollQuestion(models.Model):
     "A question model for asking students questions."
     question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.question_text
