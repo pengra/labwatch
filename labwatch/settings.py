@@ -33,7 +33,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -112,6 +111,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Restframework
+# http://www.django-rest-framework.org/
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
