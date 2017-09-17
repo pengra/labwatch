@@ -16,14 +16,16 @@ Including another URLconf
 from django.conf.urls import url, include, static
 from django.contrib import admin
 from labwatch import settings
+from baselabwatch.views import IndexView
 import baselabwatch.urls
 import logger.urls
 
 urlpatterns = [
+    url(r'^$', IndexView.as_view()),
     url(r'^staff/', admin.site.urls),
-    url(r'^base/', include(baselabwatch.urls)),
-    url(r'^logger/', include(logger.urls)),
-    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^base/', include(baselabwatch.urls, namespace='base')),
+    url(r'^logger/', include(logger.urls, namespace='logger')),
+    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] 
 
 if settings.DEBUG:
