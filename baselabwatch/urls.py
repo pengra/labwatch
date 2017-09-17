@@ -1,9 +1,10 @@
 from django.conf.urls import url, include
 from rest_framework import routers
-from baselabwatch.api.profile import ProfileViewset
+from baselabwatch.api import UserViewSet, ProfileViewSet
 
 router = routers.DefaultRouter()
-router.register(r'users', ProfileViewset)
+router.register(r'users', UserViewSet)
+router.register(r'profiles', ProfileViewSet)
 
 urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
