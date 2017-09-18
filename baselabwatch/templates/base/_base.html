@@ -93,12 +93,16 @@
       document.getElementById('title-nav-bar')
     );
 
-    ReactDOM.render(
-      <MainContent 
-        leftLinks={leftNavBarLinks}
-      />,
-      document.getElementById('website-content')
-    )
+    try {
+      ReactDOM.render(
+        <MainContent 
+          leftLinks={leftNavBarLinks}
+        />,
+        document.getElementById('website-content')
+      )
+    } catch (ReferenceError) {
+      console.error("Missing MainContent class for '{{current_app}}'. Make sure the Django Template is setup correctly.")
+    }
 
     // ReactDOM.render(
     //   <LeftNavBar 
