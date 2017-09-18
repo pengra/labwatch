@@ -2,11 +2,8 @@ const leftNavBarLinks = [
     "School", "Students", "Profile"
 ]
 
-class MainContent extends React.Component {
-  constructor() {
-    super();
-  }
-  render() {
-    return (<div><h1>Coming soon!</h1></div>)
+class MainContent extends LabWatchWebsite {
+  renderMainPage() {
+    return (<div><h1>Here we go!</h1></div>)
   }
 }
