@@ -86,19 +86,19 @@
     
     // Render zone
     ReactDOM.render(
-      <MainContent 
-        leftLinks={leftNavBarLinks}
-      />,
-      document.getElementById('website-content')
-    )
-    
-    ReactDOM.render(
       <TitleNavBar 
         links={titleLinks} 
         currentApp={currentApp}
       />,
       document.getElementById('title-nav-bar')
     );
+
+    ReactDOM.render(
+      <MainContent 
+        leftLinks={leftNavBarLinks}
+      />,
+      document.getElementById('website-content')
+    )
 
     // ReactDOM.render(
     //   <LeftNavBar 
