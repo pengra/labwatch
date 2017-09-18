@@ -66,7 +66,10 @@
   <script src="{% static 'react/react-dom.js' %}"></script>
   <script src="{% static 'babel/babel.min.js' %}"></script>
   
-  <script src="{% static 'base/jsx/base.jsx' %}" type="text/babel"></script>
+  <script src="{% static 'base/jsx/navigation.jsx' %}" type="text/babel"></script>
+  <script src="{% static 'base/jsx/tabs.jsx' %}" type="text/babel"></script>
+  <script src="{% static 'base/jsx/main.jsx' %}" type="text/babel"></script>
+  
   
   {% if current_app == "baselabwatch" %}
     <script src="{% static 'base/jsx/baselabwatch.jsx' %}" type="text/babel"></script>
@@ -93,29 +96,17 @@
       document.getElementById('title-nav-bar')
     );
 
-    try {
+    // try {
       ReactDOM.render(
         <MainContent 
           leftLinks={leftNavBarLinks}
         />,
         document.getElementById('website-content')
       )
-    } catch (ReferenceError) {
-      console.error("Missing MainContent class for '{{current_app}}'. Make sure the Django Template is setup correctly.")
-    }
+    // } catch (ReferenceError) {
+    //   console.error("Missing MainContent class for '{{current_app}}'. Make sure the Django Template is setup correctly.")
+    // }
 
-    // ReactDOM.render(
-    //   <LeftNavBar 
-    //     links={leftNavBarLinks} 
-    //   />,
-    //   document.getElementById('left-nav-bar')
-    // )
-
-    // ReactDOM.render(
-    //   <MainContent />,
-    //   document.getElementById('main-content-pane')
-    // )
-  
   </script>
   {% endautoescape %}
 
