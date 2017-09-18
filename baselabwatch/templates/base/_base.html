@@ -42,7 +42,12 @@
       </button>
 
     <div class="collapse navbar-collapse" id="title-nav-bar">
-      <ul class="navbar-nav mr-auto" id="title-nav-bar-list"></ul>
+      <ul class="navbar-nav mr-auto" id="title-nav-bar-list">
+          <li class="nav-item">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+        <!-- Title links -->
+      </ul>
     </div>
   </nav>
 
@@ -73,12 +78,28 @@
   <script src="{% static 'react/react.js' %}"></script>
   <script src="{% static 'react/react-dom.js' %}"></script>
   <script src="{% static 'babel/babel.min.js' %}"></script>
-
+  
+  <script src="{% static 'base/jsx/base.jsx' %}" type="text/babel"></script>
+  
   {% block scripts %}
     <!-- scripts for the end of the document -->
   {% endblock %}
+
+  <!-- Apply dom renders here to pass in vals -->
+  {% autoescape off %}
+  <script type="text/babel">
   
-  <script src="{% static 'base/jsx/base.jsx' %}" type="text/babel"></script>
+    // Django -> ReactJS
+    const titleLinks = {{title_links}};
+    
+    // Render zone
+    ReactDOM.render(
+      <TitleNavBar links={titleLinks}/>,
+      document.getElementById('title-nav-bar')
+    );
+  
+  </script>
+  {% endautoescape %}
 
   <script type="text/javascript">
     $(document).ready(function(){
