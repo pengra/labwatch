@@ -106,14 +106,13 @@ class LabWatchWebsite extends React.Component {
       currentPage: 0
     }
 
-    this.handleClick = this.handleLeftNavClick.bind(this);
+    this.handleLeftNavClick = this.handleLeftNavClick.bind(this);
     this.renderMainPage = this.renderMainPage.bind(this);
   }
   handleLeftNavClick(id) {
     this.setState({
       currentPage: id
     })
-    render();
   }
   renderMainPage() {
     return (<div><h1>Loading Page...</h1></div>)
