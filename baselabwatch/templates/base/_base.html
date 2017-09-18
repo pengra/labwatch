@@ -55,7 +55,7 @@
     
     <div class="row">
       
-      <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+      <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar" id="left-nav-bar">
         <ul class="nav nav-pills flex-column" id="left-nav-bar-list">
           <!-- <li class="nav-item">
             <a class="nav-link active" href="#">Home</a>
@@ -81,6 +81,10 @@
   
   <script src="{% static 'base/jsx/base.jsx' %}" type="text/babel"></script>
   
+  {% if current_app == "baselabwatch" %}
+    <script src="{% static 'base/jsx/baselabwatch.jsx' %}" type="text/babel"></script>
+  {% endif %}
+
   {% block scripts %}
     <!-- scripts for the end of the document -->
   {% endblock %}
@@ -89,7 +93,7 @@
   {% autoescape off %}
   <script type="text/babel">
   
-    // Django -> ReactJS
+    // Django Data -> ReactJS Data
     const titleLinks = {{title_links}};
     const currentApp = "{{current_app}}"
     
@@ -98,6 +102,11 @@
       <TitleNavBar links={titleLinks} currentApp={currentApp}/>,
       document.getElementById('title-nav-bar')
     );
+
+    ReactDOM.render(
+      <LeftNavBar links={leftNavBarLinks} activeIndex={0}/>,
+      document.getElementById('left-nav-bar')
+    )
   
   </script>
   {% endautoescape %}
