@@ -20,10 +20,11 @@ from baselabwatch.views import IndexView
 import baselabwatch.urls
 import logger.urls
 
+# namespaces must match app names
 urlpatterns = [
     url(r'^$', IndexView.as_view()),
     url(r'^staff/', admin.site.urls),
-    url(r'^base/', include(baselabwatch.urls, namespace='base')),
+    url(r'^base/', include(baselabwatch.urls, namespace='baselabwatch')),
     url(r'^logger/', include(logger.urls, namespace='logger')),
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] 
