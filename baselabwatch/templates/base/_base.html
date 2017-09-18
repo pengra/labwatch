@@ -44,27 +44,14 @@
     <div class="collapse navbar-collapse" id="title-nav-bar">
       <ul class="navbar-nav mr-auto" id="title-nav-bar-list">
           <li class="nav-item">
-              <a class="nav-link disabled">Loading...</a>
-            </li>
+            <a class="nav-link disabled">Loading...</a>
+          </li>
         <!-- Title links -->
       </ul>
     </div>
   </nav>
 
-  <div class="container-fluid">
-    
-    <div class="row" id="website-content">
-      
-      <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar" id="left-nav-bar">
-        <ul class="nav nav-pills flex-column" id="left-nav-bar-list">
-          <li class="nav-item">
-            <a class="nav-link disabled">Loading...</a>
-          </li>
-        </ul>
-      </nav>
-      <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main" id="main-content-pane">
-      </main>
-    </div>
+  <div class="container-fluid" id="website-content">
     
   </div>
 
@@ -79,7 +66,7 @@
   <script src="{% static 'react/react-dom.js' %}"></script>
   <script src="{% static 'babel/babel.min.js' %}"></script>
   
-  <script src="{% static 'base/jsx/navigation.jsx' %}" type="text/babel"></script>
+  <script src="{% static 'base/jsx/base.jsx' %}" type="text/babel"></script>
   
   {% if current_app == "baselabwatch" %}
     <script src="{% static 'base/jsx/baselabwatch.jsx' %}" type="text/babel"></script>
@@ -99,6 +86,13 @@
     
     // Render zone
     ReactDOM.render(
+      <MainContent 
+        leftLinks={leftNavBarLinks}
+      />,
+      document.getElementById('website-content')
+    )
+    
+    ReactDOM.render(
       <TitleNavBar 
         links={titleLinks} 
         currentApp={currentApp}
@@ -106,17 +100,17 @@
       document.getElementById('title-nav-bar')
     );
 
-    ReactDOM.render(
-      <LeftNavBar 
-        links={leftNavBarLinks} 
-      />,
-      document.getElementById('left-nav-bar')
-    )
+    // ReactDOM.render(
+    //   <LeftNavBar 
+    //     links={leftNavBarLinks} 
+    //   />,
+    //   document.getElementById('left-nav-bar')
+    // )
 
-    ReactDOM.render(
-      <MainContent />,
-      document.getElementById('main-content-pane')
-    )
+    // ReactDOM.render(
+    //   <MainContent />,
+    //   document.getElementById('main-content-pane')
+    // )
   
   </script>
   {% endautoescape %}
