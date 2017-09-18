@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 from baselabwatch import api
+from baselabwatch import views
+
 
 router = routers.DefaultRouter()
 router.register(r'users', api.UserViewSet)
@@ -12,5 +14,7 @@ router.register(r'reports', api.UserReportViewSet)
 
 
 urlpatterns = [
-    url(r'^api/v1/', include(router.urls)),
+    url(r'$', views.DashboardBase.as_view(), name='index'),
+    url(r'^api/v1/', include(router.urls, namespace='api')),
+
 ]
