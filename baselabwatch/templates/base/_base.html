@@ -91,10 +91,11 @@
   
     // Django -> ReactJS
     const titleLinks = {{title_links}};
+    const currentApp = "{{current_app}}"
     
     // Render zone
     ReactDOM.render(
-      <TitleNavBar links={titleLinks}/>,
+      <TitleNavBar links={titleLinks} currentApp={currentApp}/>,
       document.getElementById('title-nav-bar')
     );
   
