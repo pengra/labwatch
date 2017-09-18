@@ -35,6 +35,11 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
+USER_APPS = [
+    'baselabwatch',
+    'logger'
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,9 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'baselabwatch',
-    'logger'
-]
+] + USER_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'labwatch.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -88,11 +90,9 @@ DATABASES = {
     }
 }
 
-# Set up database for Heroku
 if not DEBUG:
-    db_from_env = dj_database_url.config(conn_max_age=500)  
-    DATABASES['default'].update(db_from_env)
-
+    # Set up database for Heroku
+    DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -127,6 +127,7 @@ REST_FRAMEWORK = {
 LANGUAGE_CODE = 'en-us'
 
 USE_TZ = True
+
 TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
@@ -137,7 +138,9 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # File Upload Stuff
@@ -153,7 +156,3 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # 250MB - 214958080
 # 500MB - 429916160
 MAXUPLOADSIZE = 2621440
-
-
-# Groups
-DEFAULT_GROUPS = ['Librarian', 'Teacher']
