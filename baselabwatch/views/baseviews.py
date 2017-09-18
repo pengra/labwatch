@@ -6,14 +6,16 @@ contexts relating to user:
 """
 
 from django.views.generic import View, TemplateView 
-from baselabwatch.util import get_title_links
+from baselabwatch.util import get_app_metadata
 
 class DashboardBase(TemplateView):
     template_name = 'base/_base.html'
+    current_app = 'baselabwatch'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['title_links'] = str(get_title_links())
+        context['title_links'] = str(get_app_metadata())
+        context['current_app'] = self.current_app
         return context
 
     def post(self, request, *args, **kwargs):
