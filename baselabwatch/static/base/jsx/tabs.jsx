@@ -62,11 +62,7 @@ class TabButton extends React.Component {
       <li className="nav-item">
         <a 
           className={hrefClass} 
-          id={tabId} 
           role="tab" 
-          aria-controls={tabId}
-          aria-expanded={() => {this.props.active.toString()}}
-          data-toggle="tab"
           href="#"
           onClick={() => {this.props.handleTabClick(this.props.id)}}
         >{this.props.title}</a>
@@ -96,7 +92,6 @@ class TabContent extends React.Component {
     // id : tab id
     // activeTab : active tab
   render() {
-    const tabId = "tab-" + this.props.id;
     const divClass = this.props.activeTab === this.props.id ? "tab-pane fade show active" : "tab-pane fade"
     return (
       <div className={divClass}>
