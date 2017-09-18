@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
-USER_APPS = [
+LABWATCH_APPS = [
     'baselabwatch',
     'logger'
 ]
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-] + USER_APPS
+] + LABWATCH_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
