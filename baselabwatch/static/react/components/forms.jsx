@@ -1,18 +1,47 @@
 
 class Form extends React.Component {
   // props:
-    // data : [["label", ""]]  
-    // ajax : api data (formatted for $.ajax()) 
-    // id : so you can have a $('#id').submit();
+    // url : url to OPTIONS to find form contents
   // Assumes you're using AJAX for form submission
   constructor() {
     super();
-    this.ajaxSuccess = this.ajaxSuccess.bind();
-    this.ajaxFail = this.ajaxFail.bind();
+
+    this.state = {
+      form: "loading form..."
+    }
+
+    this.ajaxSuccess = this.ajaxSuccess.bind(this);
+    this.ajaxFail = this.ajaxFail.bind(this);
+    this.getFormData = this.getFormData.bind(this);
+    this.loadForm = this.loadForm.bind(this);
   }
+  
+  // ajax/form submission
   ajaxSuccess() {}
   ajaxFail() {}
+  
+  // loading form
+  componentDidMount() {
+    this.getFormData();
+  }
+  loadForm(data) {
+    console.log(data)
+    this.setState({
+      form: data
+    });
+  }
+  getFormData() {
+    $.ajax({
+      method: 'OPTIONS',
+      url: this.props.url
+    })
+    .done((data) => this.loadForm(data));
+  }
 
+  // rendering
+  render() {
+    return (<div>{this.state.form}</div>)
+  }
 }
 
 class FormGroup extends React.Component {
