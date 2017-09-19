@@ -12,6 +12,6 @@ router.register(r'imagecards', api.ImageCardViewSet)
 
 
 urlpatterns = [
-    url(r'$', views.LogDashView.as_view(), name='index'),
+    url(r'^$', views.LogDashView.as_view(), name='index'),
     url(r'^api/v1/', include(router.urls)),
 ]
