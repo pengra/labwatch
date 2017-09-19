@@ -12,7 +12,7 @@ class MainContent extends LabWatchWebsite {
   }
   renderSchoolPage() {
     const example = [
-      ["Settings", <div>content</div>],
+      ["Settings", <Form url="http://127.0.0.1:8000/base/api/v1/profiles/" />],
       ["Limits", <div>morecontent</div>],
       ["Payment", <div>morecontent2</div>],
     ];
