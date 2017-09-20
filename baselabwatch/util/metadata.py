@@ -35,12 +35,14 @@ class ReactMetadata(SimpleMetadata):
     })
 
     def get_serializer_info(self, serializer):
+        self._reactjs_current_serializer = serializer
         meta_data = super().get_serializer_info(serializer)
         # meta_data['hi'] = True (places it on the outside )
         return meta_data
 
 
     def get_field_info(self, field):
+        # need to get what field name this is
         field_info = super().get_field_info(field)
-        field_info['hi'] = True
+        field_info['intercepted'] = True
         return field_info
