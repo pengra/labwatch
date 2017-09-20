@@ -7,7 +7,7 @@ class Form extends React.Component {
 
     this.state = {
       form: "loading form...",
-      formData: {}
+      formData: []
     }
 
     this.ajaxSuccess = this.ajaxSuccess.bind(this);
@@ -25,8 +25,10 @@ class Form extends React.Component {
   ajaxSubmit() {}
 
   // inputUpdate
-  handleInputUpdate(inputForm) {
-
+  handleInputUpdate(id, newValue) {
+    let newFormData = this.state.formData;
+    newFormData[id].value = newValue;
+    this.setState({formData: newFormData});
   }
 
   // loading form
@@ -37,13 +39,20 @@ class Form extends React.Component {
     const thisForm = formOptions.actions;
     let formRender = [];
     if ('POST' in thisForm) {
-      for (let key in thisForm) {
+      for (let key in thisForm.POST) {
+        console.log(thisForm.POST[key])
+        this.setState({
+          formData: [...this.state.formData, {value: null}]
+        })
         formRender.push(
-          <FormGroup 
-            type={thisForm[key].type}
-            required={thisForm[key].required}
-            disabled={thisForm[key].read_only}
-            label={thisForm[key].label}
+          <VerticalFormGroup 
+            type={thisForm.POST[key].type}
+            required={thisForm.POST[key].required}
+            disabled={thisForm.POST[key].read_only}
+            label={thisForm.POST[key].label}
+            onInputChange={this.handleInputUpdate}
+            value={this.state[key].value}
+            id={key}
             key={key}
           />
         )
@@ -72,11 +81,13 @@ class Form extends React.Component {
 
 // Read:
 // https://facebook.github.io/react/docs/forms.html
-class FormGroup extends React.Component {
+class VerticalFormGroup extends React.Component {
   // props:
     // type : string representation of one of the inputs defined below
     // label : what is this form?
+    // onInputChange : method to call when something changes
     // invalidFeedback : error message if they left it blank
+    // id : id of this form group
   // Input Specific Props:
     // name : name of form
     // placeholder : placeholder of content
@@ -93,7 +104,26 @@ class FormGroup extends React.Component {
   constructor() {
     super()
   }
+  handleChange() {
+    this.props.onInputChange(id, newValue)
+  }
+  render() {
+    const formGroupID = "form-group-id-" + this.props.id;
+    return (
+      <div className="form-group">
+        <label for={formGroupID}>{this.props.label}</label>
+        <input 
+          type={type} 
+          className="form-control" 
+          id={formGroupID} 
+          placeholder={this.props.placeholder}
+          
+        />
+      </div>
+    )
+  }
 }
+
 
 class _FormGroup extends React.Component {
   // props:
