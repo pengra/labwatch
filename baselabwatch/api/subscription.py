@@ -9,4 +9,4 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = (IsAdminUser,)
-    renderer_classes = [JSONRenderer]
+    # renderer_classes = [JSONRenderer]

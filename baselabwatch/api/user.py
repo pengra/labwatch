@@ -9,4 +9,4 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAdminUser,)
-    renderer_classes = [JSONRenderer]
+    # renderer_classes = [JSONRenderer]
