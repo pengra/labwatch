@@ -55,7 +55,7 @@ class Form extends React.Component {
               disabled={thisForm.POST[key].read_only}
               readOnly={thisForm.POST[key].react_meta.read_only}
               label={thisForm.POST[key].label}
-              mutedLabel={thisForm.POST[key].secondary_label}
+              mutedLabel={thisForm.POST[key].react_meta.secondary_label}
               onInputChange={this.handleInputUpdate}
               value={this.state.formData[index].value}
               id={index}
@@ -144,6 +144,13 @@ class VerticalFormGroup extends React.Component {
       read_only = true
     }
 
+    // secondary label
+    let mutedLabel = "";
+    if (this.props.mutedLabel) {
+      mutedLabel = <small className="text-muted form-text">{this.props.mutedLabel}</small>
+    }
+
+
     return (
       <div className={divWrapperClass}>
         {label}
@@ -158,6 +165,7 @@ class VerticalFormGroup extends React.Component {
           value={this.props.value || ""}
           onChange={this.handleInputChange}
         />
+        {mutedLabel}
       </div>
     )
   }
