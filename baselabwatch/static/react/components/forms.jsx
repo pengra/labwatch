@@ -13,7 +13,7 @@ class Form extends React.Component {
     this.ajaxSuccess = this.ajaxSuccess.bind(this);
     this.ajaxFail = this.ajaxFail.bind(this);
     this.ajaxSubmit = this.ajaxSubmit.bind(this);
-    this.handleInputUpdate = this.handleInputUpdate(this);
+    this.handleInputUpdate = this.handleInputUpdate.bind(this);
     this.getFormData = this.getFormData.bind(this);
     this.loadForm = this.loadForm.bind(this);
   }
@@ -39,6 +39,7 @@ class Form extends React.Component {
     const thisForm = formOptions.actions;
     let formRender = [];
     if ('POST' in thisForm) {
+      let index = 0;
       for (let key in thisForm.POST) {
         console.log(thisForm.POST[key])
         this.setState({
@@ -51,11 +52,12 @@ class Form extends React.Component {
             disabled={thisForm.POST[key].read_only}
             label={thisForm.POST[key].label}
             onInputChange={this.handleInputUpdate}
-            value={this.state[key].value}
-            id={key}
-            key={key}
+            value={this.state.formData[index].value}
+            id={index}
+            key={index}
           />
         )
+        index++;
       }
     } else {
       formRender = <div>Form has no POST method!</div>
