@@ -29,6 +29,7 @@ class Form extends React.Component {
     let newFormData = this.state.formData;
     newFormData[id].value = newValue;
     this.setState({formData: newFormData});
+    console.log(newFormData);
   }
 
   // loading form
@@ -41,28 +42,33 @@ class Form extends React.Component {
     if ('POST' in thisForm) {
       let index = 0;
       for (let key in thisForm.POST) {
-        console.log(thisForm.POST[key])
-        this.setState({
-          formData: [...this.state.formData, {value: null}]
-        })
-        formRender.push(
-          <VerticalFormGroup 
-            type={thisForm.POST[key].type}
-            required={thisForm.POST[key].required}
-            disabled={thisForm.POST[key].read_only}
-            label={thisForm.POST[key].label}
-            onInputChange={this.handleInputUpdate}
-            value={this.state.formData[index].value}
-            id={index}
-            key={index}
-          />
-        )
-        index++;
+        if (!key.startsWith('_')) {
+          this.setState({
+            formData: [...this.state.formData, {value: null}]
+          })
+          console.log(thisForm.POST[key])
+          formRender.push(
+            <VerticalFormGroup 
+              type={thisForm.POST[key].type}
+              hidden={thisForm.POST[key].react_meta.hidden}
+              required={thisForm.POST[key].required}
+              disabled={thisForm.POST[key].read_only}
+              readOnly={thisForm.POST[key].react_meta.read_only}
+              label={thisForm.POST[key].label}
+              mutedLabel={thisForm.POST[key].secondary_label}
+              onInputChange={this.handleInputUpdate}
+              value={this.state.formData[index].value}
+              id={index}
+              key={index}
+              name={key}
+            />
+          )
+          index++;
+        }
       }
     } else {
       formRender = <div>Form has no POST method!</div>
     }
-    console.log(formOptions)
     this.setState({
       form: formRender
     });
@@ -90,6 +96,7 @@ class VerticalFormGroup extends React.Component {
     // onInputChange : method to call when something changes
     // invalidFeedback : error message if they left it blank
     // id : id of this form group
+    // hidden : hide form?
   // Input Specific Props:
     // name : name of form
     // placeholder : placeholder of content
@@ -102,24 +109,54 @@ class VerticalFormGroup extends React.Component {
     // validationLevel : 0 = fail 1 = success 2 = nothing 
     // required?
     // disabled?
-    // readonly?
+    // readonly? (if readonly and disabled are true, displays as readonly and is disabled)
   constructor() {
     super()
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
-  handleChange() {
-    this.props.onInputChange(id, newValue)
+  handleInputChange(event) {
+    let newValue;
+    if (this.props.type === 'checkbox') {
+      newValue = event.target.checked;
+    } else {
+      throw InputInvalidException(this.props.type);
+    }
+    this.props.onInputChange(this.props.id, newValue)
   }
   render() {
     const formGroupID = "form-group-id-" + this.props.id;
+    const divWrapperClass = this.props.hidden ? "hidden" : "form-group";
+    const label = this.props.hidden ? "" : 
+      <label htmlFor={formGroupID}>{this.props.label}</label>;
+    const inputType = this.props.hidden ? "hidden" : this.props.type;
+
+    let inputClassName = "form-control";
+
+    // figure out disabled vs readonly
+    let disabled = false;
+    let read_only = false;
+    if (this.props.disabled && this.props.readOnly) {
+      inputClassName = "form-control-plaintext";
+      disabled = true;
+    } else if (this.props.disabled) {
+      disabled = true;
+    } else if (this.props.readOnly) {
+      read_only = true
+    }
+
     return (
-      <div className="form-group">
-        <label for={formGroupID}>{this.props.label}</label>
+      <div className={divWrapperClass}>
+        {label}
         <input 
-          type={type} 
-          className="form-control" 
+          type={inputType} 
+          className={inputClassName}
+          name={this.props.name} 
           id={formGroupID} 
           placeholder={this.props.placeholder}
-          
+          disabled={disabled}
+          readOnly={read_only}
+          value={this.props.value || ""}
+          onChange={this.handleInputChange}
         />
       </div>
     )
