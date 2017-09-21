@@ -24,7 +24,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'user': {
                 'hidden': True
             },
-            'school': {},
+            'school': {
+                'read_only': True
+            },
             'engineer': {
                 'hidden': True
             },
@@ -35,7 +37,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
                 'hidden': True
             },
             'beta_tester': {
-                'label': "You'll get access to new but potentially buggy features."
+                'secondary_label': "You'll get access to new but potentially buggy features."
             },
         }
         fields = tuple(react_data.keys())
