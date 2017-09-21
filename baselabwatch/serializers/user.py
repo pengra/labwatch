@@ -1,11 +1,14 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from baselabwatch.models import Profile
+from baselabwatch.util.urls import URLResolution
 
+resolution = URLResolution(Profile)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
-    profile = serializers.HyperlinkedRelatedField(source="profile.pk", view_name='profile-detail', queryset=Profile.objects.all())
+    url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('user-detail'))
+    profile = serializers.HyperlinkedRelatedField(source="profile.pk", view_name=resolution.resolve('profile-detail'), queryset=Profile.objects.all())
 
     class Meta:
         model = User
