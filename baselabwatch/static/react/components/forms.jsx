@@ -33,7 +33,6 @@ class Form extends React.Component {
     let newFormData = this.state.formData;
     newFormData[id].value = newValue;
     this.setState({formData: newFormData});
-    console.log(newFormData);
   }
 
   // loading form
@@ -42,7 +41,6 @@ class Form extends React.Component {
   }
   updateFormDataState(name, stateKey, stateValue) {
     if (!(this.state.getRetrieved || this.state.optionsRetrieved)) {
-      console.log(this.state.formData)
       let newFormData = this.state.formData;
       if (!(data in newFormData)) {
         this.state.formData[name] = {};
@@ -65,15 +63,9 @@ class Form extends React.Component {
           this.updateFormDataState(key, "value", null);
           formRender.push(
             <VerticalFormGroup 
-              type={thisForm.PUT[key].type}
-              hidden={thisForm.PUT[key].react_meta.hidden}
-              required={thisForm.PUT[key].required}
-              disabled={thisForm.PUT[key].read_only}
-              readOnly={thisForm.PUT[key].react_meta.read_only}
-              label={thisForm.PUT[key].label}
-              mutedLabel={thisForm.PUT[key].react_meta.secondary_label}
               onInputChange={this.handleInputUpdate}
-              value={this.state.formData[key].value}
+              formData={this.state.formData[key]}
+              optionsData={thisForm.PUT[key]}
               id={index}
               key={index}
               name={key}
@@ -91,7 +83,6 @@ class Form extends React.Component {
     });
   }
   populateForm(formContents) {
-    console.log(formContents);
     for (let key in formContents) {
       this.updateFormDataState(key, "value", formContents[key]);
     }
@@ -121,189 +112,120 @@ class Form extends React.Component {
 // Read:
 // https://facebook.github.io/react/docs/forms.html
 class VerticalFormGroup extends React.Component {
-  // props:
-    // type : string representation of one of the inputs defined below
-    // label : what is this form?
+  // props: (left alone since django generation)
     // onInputChange : method to call when something changes
-    // invalidFeedback : error message if they left it blank
+    // formData={this.state.formData[key]}
+    // optionsData={thisForm.PUT[key]}
     // id : id of this form group
-    // hidden : hide form?
-  // Input Specific Props:
-    // name : name of form
-    // placeholder : placeholder of content
-    // type : type of form
-      // if type == select: 
-        // options: [["human friendly name", value] ... ]
-        // value: default value (non human friendly name)
-        // multiple: true/false (multiple select?)
-    // value : value of content
-    // validationLevel : 0 = fail 1 = success 2 = nothing 
-    // required?
-    // disabled?
-    // readonly? (if readonly and disabled are true, displays as readonly and is disabled)
+    // key={index}
+    // name={key}
+  // optionsData properties:
+    // optionsData.type : string representation of one of the inputs defined below
+    // optionsData.name : name of form
+    // optionsData.required : input required?
+    // optionsData.read_only : REMAP TO TO DISABLED
+    // optionsData.react_data : style/remap properties:
+      // optionsData.label : label of this input
+      // optionsData.react_data.label : override current label with this label
+      // optionsData.react_data.invalidFeedback : error message if they left it blank
+      // optionsData.react_data.hidden : hide form?
+      // optionsData.react_data.placeholder : placeholder of content
+      // optionsData.react_data.read_only : is it readonly? (if readonly and disabled are true, displays as readonly and is disabled)
+      // optionsData.react_data.secondary_label : bottom text below form
+  // formData:
+    // formData.value : value of content
+    // formData.validationLevel : 0 = fail 1 = success 2 = nothing 
   constructor() {
     super()
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.state = {
+      "formGroupID": "none",
+      "divWrapperClass": "hidden",
+      "label": null,
+      "type": "hidden",
+      "inputClass": "hidden",
+      "disabled": true,
+      "required": false,
+      "name": "none",
+      "value": "",
+      "validationLevel": 2,
+      "inputClass": "hidden"
+    }
   }
-  handleInputChange(event) {
+  componentDidMount = () => {
+    this.applyOptionsData();
+    this.applyReactData();
+  }
+  applyOptionsData = () => {
+    const optionsData = this.props.optionsData;
+    const formData = this.props.formData;
+    const formID = "form-group-id-" + this.props.id;
+
+    this.setState({
+      "formGroupID": formID,
+      "divWrapperClass": "form-group",
+      "label": <label htmlFor={formID}>{optionsData.label}</label>,
+      "type": optionsData.type,
+      "inputClass": "form-control",
+      "disabled": optionsData.read_only,
+      "required": optionsData.required,
+      "name": optionsData.name,
+      "value": (formData.value || ""),
+      "validationLevel": (formData.validationLevel || 2),
+      "inputClass": "form-control"
+    })
+  }
+  applyReactData = () => {
+    const reactData = this.props.optionsData.react_meta;
+    this.setState({
+      "placeholder": (reactData.placeholder || ""),
+      "readonly": (reactData.read_only || null),
+      "secondaryLabel": (reactData.secondary_label || null),
+      "invalidFeedback": (reactData.invalidFeedback || null),
+      "hidden": (reactData.hidden || false),
+      "inputClass": "form-control" + (reactData.read_only ? "-plaintext" : "")
+    });
+
+    // label
+    if (reactData.label) {
+      this.setState({
+        "label": (<label htmlFor={this.state.formGroupID}>{reactData.label}</label> || this.state.label),
+      })
+    }
+
+    // hidden
+    if (reactData.hidden) {
+      this.setState({
+        "type": "hidden",
+        "divWrapperClass": "hidden",
+        "label": null,
+      })
+    }
+  }
+  handleInputChange = (event) => {
     let newValue;
     if (this.props.type === 'checkbox') {
       newValue = event.target.checked;
     } else {
-      throw InputInvalidException(this.props.type);
+      throw "Invalid input type";
     }
     this.props.onInputChange(this.props.id, newValue)
   }
-  render() {
-    const formGroupID = "form-group-id-" + this.props.id;
-    const divWrapperClass = this.props.hidden ? "hidden" : "form-group";
-    const label = this.props.hidden ? "" : 
-      <label htmlFor={formGroupID}>{this.props.label}</label>;
-    const inputType = this.props.hidden ? "hidden" : this.props.type;
-
-    let inputClassName = "form-control";
-
-    // figure out disabled vs readonly
-    let disabled = false;
-    let read_only = false;
-    if (this.props.disabled && this.props.readOnly) {
-      inputClassName = "form-control-plaintext";
-      disabled = true;
-    } else if (this.props.disabled) {
-      disabled = true;
-    } else if (this.props.readOnly) {
-      read_only = true
-    }
-
-    // secondary label
-    let mutedLabel = "";
-    if (this.props.mutedLabel) {
-      mutedLabel = <small className="text-muted form-text">{this.props.mutedLabel}</small>
-    }
-
-
+  render = () => {
     return (
-      <div className={divWrapperClass}>
-        {label}
+      <div className={this.state.divWrapperClass}>
+        {this.state.label}
         <input 
-          type={inputType} 
-          className={inputClassName}
-          name={this.props.name} 
-          id={formGroupID} 
-          placeholder={this.props.placeholder}
-          disabled={disabled}
-          readOnly={read_only}
-          value={this.props.value || ""}
+          type={this.state.type} 
+          className={this.state.inputClass}
+          name={this.state.name} 
+          id={this.state.formGroupID} 
+          placeholder={this.state.placeholder}
+          disabled={this.state.disabled}
+          readOnly={this.state.readonly}
+          value={this.state.value}
           onChange={this.handleInputChange}
         />
-        {mutedLabel}
-      </div>
-    )
-  }
-}
-
-
-class _FormGroup extends React.Component {
-  // props:
-    // type : string representation of one of the inputs defined below
-    // label : what is this form?
-    // invalidFeedback : error message if they left it blank
-  // Input Specific Props:
-    // name : name of form
-    // placeholder : placeholder of content
-    // type : type of form
-      // if type == select: 
-        // options: [["human friendly name", value] ... ]
-        // value: default value (non human friendly name)
-        // multiple: true/false (multiple select?)
-    // value : value of content
-    // validationLevel : 0 = fail 1 = success 2 = nothing 
-    // required?
-    // disabled?
-    // readonly?
-  constructor() {
-    super();
-    this.commonInputBuild = this.commonInputBuild.bind(this);
-    this.textInput = this.textInput.bind(this);
-    this.selectInput = this.selectInput.bind(this);
-  }
-  commonInputBuild() {
-    // cover text/number/password
-    let inputClass = "form-control";
-    
-    if (this.props.validationLevel === 0) {
-      inputClass += " is-invalid";
-    } else if (this.props.validationLevel === 1) {
-      inputClass += " is-valid";
-    }
-
-    return <input 
-      className={inputClass}
-      type={this.props.type} 
-      required={this.props.required}
-      disabled={this.props.disabled}
-      readOnly={this.props.readonly}
-      value={this.props.value}
-      placeholder={this.props.placeholder}
-    />
-  }
-  textInput() {
-    return commonInputBuild();
-  }
-  selectInput() {
-    const renderChoices = this.props.options.map((item, index) => <option key={index} value={item[1]}>{item[0]}</option>)
-    return (
-      <select 
-        className="form-control" 
-        multiple={this.props.multiple}
-        required={this.props.required}
-        disabled={this.props.disabled}
-        readonly={this.props.readonly}
-        value={this.props.value}
-        name={this.props.name}
-      >
-        {renderChoices}
-      </select>
-    )
-  }
-  textAreaInput() {
-    return (
-      <textarea 
-        className="form-control"
-        required={this.props.required || false}
-        disabled={this.props.disabled || false}
-        readonly={this.props.readonly || false}
-        placeholder={this.props.placeholder || ""}
-        name={this.props.name}
-      >
-        {this.props.value || ""}
-      </textarea>
-    )
-  }
-  checkboxInput() {
-    return (
-      <div className="form-check">
-        <input 
-          type="checkbox" 
-          required={this.props.required || false}
-          disabled={this.props.disabled || false}
-          readonly={this.props.readonly || false}
-          placeholder={this.props.placeholder || ""}
-          name={this.props.name}
-        />
-      </div>
-    )
-  }
-  render() {
-    return (
-      <div className="form-group row">
-        <label className="col-sm-2 col-form-label">{this.props.label}</label>
-        <div className="col-sm-10">
-          {this.commonInputBuild()}
-          <div className="invalid-feedback">
-            {this.props.invalidFeedback || "Invalid value."}
-          </div>
-        </div>
+        {this.state.secondaryLabel}
       </div>
     )
   }
