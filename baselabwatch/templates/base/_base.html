@@ -89,7 +89,8 @@
     // Django Data -> ReactJS Data
     const titleLinks = {{title_links}};
     const currentApp = "{{current_app}}"
-    const schoolID = {{school_id}};
+    const schoolID = {{request.user.profile.school.pk}};
+    const profileID = {{request.user.profile.pk}}
     
     // Render zone
     ReactDOM.render(

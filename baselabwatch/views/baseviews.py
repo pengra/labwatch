@@ -16,7 +16,6 @@ class DashboardBase(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         context['title_links'] = str(get_app_metadata())
         context['current_app'] = self.current_app
-        context['school_id'] = self.request.user.profile.school.pk
         return context
 
     def post(self, request, *args, **kwargs):
