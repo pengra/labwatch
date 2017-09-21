@@ -33,6 +33,8 @@ class MainContent extends LabWatchWebsite {
   renderProfilePage() {
     return (<div>
       <h1>Edit your Profile</h1>
+      <Form url={"http://127.0.0.1:8000/base/api/v1/profiles/" + profileID} />
+      <Form url={"http://127.0.0.1:8000/base/api/v1/users/" + userID} />
     </div>)
   }
   renderMainPage() {
