@@ -55,5 +55,8 @@ class ReactMetadata(SimpleMetadata):
     def get_field_info(self, field, field_name):
         # need to get what field name this is
         field_info = super().get_field_info(field)
-        field_info['react_meta'] = field.parent.Meta.react_data[field_name]
+        try:
+            field_info['react_meta'] = field.parent.Meta.react_data[field_name]
+        except (AttributeError, KeyError):
+            field_info['react_meta'] = {}
         return field_info
