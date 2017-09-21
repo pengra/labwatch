@@ -7,7 +7,9 @@ class Form extends React.Component {
 
     this.state = {
       form: "loading form...",
-      formData: []
+      formData: {},
+      optionsRetrieved: false,
+      getRetrieved: false
     }
 
     this.ajaxSuccess = this.ajaxSuccess.bind(this);
@@ -15,7 +17,9 @@ class Form extends React.Component {
     this.ajaxSubmit = this.ajaxSubmit.bind(this);
     this.handleInputUpdate = this.handleInputUpdate.bind(this);
     this.getFormData = this.getFormData.bind(this);
+    this.populateForm = this.populateForm.bind(this);
     this.loadForm = this.loadForm.bind(this);
+    this.updateFormDataState = this.updateFormDataState.bind(this);
   }
   
   // ajax/form submission
@@ -36,28 +40,40 @@ class Form extends React.Component {
   componentDidMount() {
     this.getFormData();
   }
+  updateFormDataState(name, stateKey, stateValue) {
+    if (!(this.state.getRetrieved || this.state.optionsRetrieved)) {
+      console.log(this.state.formData)
+      let newFormData = this.state.formData;
+      if (!(data in newFormData)) {
+        this.state.formData[name] = {};
+      }
+      let data = this.state.formData[name];
+      data[stateKey] = stateValue;
+      newFormData[name] = data;
+      this.setState({
+        formData: newFormData
+      });
+    }
+  }
   loadForm(formOptions) {
     const thisForm = formOptions.actions;
     let formRender = [];
-    if ('POST' in thisForm) {
+    if ('PUT' in thisForm) {
       let index = 0;
-      for (let key in thisForm.POST) {
+      for (let key in thisForm.PUT) {
         if (!key.startsWith('_')) {
-          this.setState({
-            formData: [...this.state.formData, {value: null}]
-          })
-          console.log(thisForm.POST[key])
+          this.updateFormDataState(key, "value", null);
           formRender.push(
             <VerticalFormGroup 
-              type={thisForm.POST[key].type}
-              hidden={thisForm.POST[key].react_meta.hidden}
-              required={thisForm.POST[key].required}
-              disabled={thisForm.POST[key].read_only}
-              readOnly={thisForm.POST[key].react_meta.read_only}
-              label={thisForm.POST[key].label}
-              mutedLabel={thisForm.POST[key].react_meta.secondary_label}
+              type={thisForm.PUT[key].type}
+              hidden={thisForm.PUT[key].react_meta.hidden}
+              required={thisForm.PUT[key].required}
+              disabled={thisForm.PUT[key].read_only}
+              readOnly={thisForm.PUT[key].react_meta.read_only}
+              label={thisForm.PUT[key].label}
+              mutedLabel={thisForm.PUT[key].react_meta.secondary_label}
               onInputChange={this.handleInputUpdate}
-              value={this.state.formData[index].value}
+              value={this.state.formData[key].value}
               id={index}
               key={index}
               name={key}
@@ -67,11 +83,21 @@ class Form extends React.Component {
         }
       }
     } else {
-      formRender = <div>Form has no POST method!</div>
+      formRender = <div>Form has no PUT method!</div>
     }
     this.setState({
-      form: formRender
+      form: formRender,
+      optionsRetrieved: true
     });
+  }
+  populateForm(formContents) {
+    console.log(formContents);
+    for (let key in formContents) {
+      this.updateFormDataState(key, "value", formContents[key]);
+    }
+    this.setState({
+      getRetrieved: true
+    })
   }
   getFormData() {
     $.ajax({
@@ -79,6 +105,11 @@ class Form extends React.Component {
       url: this.props.url
     })
     .done((data) => this.loadForm(data));
+    $.ajax({
+      method: 'GET',
+      url: this.props.url
+    })
+    .done((data) => this.populateForm(data))
   }
 
   // rendering
