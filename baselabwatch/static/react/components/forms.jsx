@@ -1,6 +1,7 @@
 class Form extends React.Component {
   // props:
     // url : url to OPTIONS to find form contents
+    // ajax : use ajax?
   // Assumes you're using AJAX for form submission
   constructor() {
     super();
@@ -29,10 +30,8 @@ class Form extends React.Component {
   ajaxSubmit() {}
 
   // inputUpdate
-  handleInputUpdate(id, newValue) {
-    let newFormData = this.state.formData;
-    newFormData[id].value = newValue;
-    this.setState({formData: newFormData});
+  handleInputUpdate(name, newValue) {
+    this.updateFormDataState(name, "value", newValue);
   }
 
   // loading form
@@ -69,6 +68,7 @@ class Form extends React.Component {
               id={index}
               key={index}
               name={key}
+              value={this.state.formData[key].value}
             />
           )
           index++;
@@ -105,13 +105,21 @@ class Form extends React.Component {
 
   // rendering
   render() {
-    return (<form>{this.state.form}</form>)
+    if (this.props.ajax) {
+      return (<div className="ajax-form">{this.state.form}</div>);
+    } else {
+      return (<form>{this.state.form}</form>);
+    }
   }
 }
 
 // Read:
 // https://facebook.github.io/react/docs/forms.html
 class VerticalFormGroup extends React.Component {
+  // TODO: figure out how to retrieve state from Form as properties
+  // Most likely just just have props=seperate components and read from
+  // them here directly.
+
   // props: (left alone since django generation)
     // onInputChange : method to call when something changes
     // formData={this.state.formData[key]}
@@ -169,7 +177,6 @@ class VerticalFormGroup extends React.Component {
       "disabled": optionsData.read_only,
       "required": optionsData.required,
       "name": optionsData.name,
-      "value": (formData.value || ""),
       "validationLevel": (formData.validationLevel || 2),
       "inputClass": "form-control"
     })
@@ -203,12 +210,15 @@ class VerticalFormGroup extends React.Component {
   }
   handleInputChange = (event) => {
     let newValue;
-    if (this.props.type === 'checkbox') {
+    if (this.state.type === 'checkbox') {
       newValue = event.target.checked;
+    } else if (this.state.type === 'text') {
+      // TODO: fix this. Can't type
+      newValue = event.target.value;
     } else {
       throw "Invalid input type";
     }
-    this.props.onInputChange(this.props.id, newValue)
+    this.props.onInputChange(this.props.name, newValue)
   }
   render = () => {
     return (
@@ -222,7 +232,7 @@ class VerticalFormGroup extends React.Component {
           placeholder={this.state.placeholder}
           disabled={this.state.disabled}
           readOnly={this.state.readonly}
-          value={this.state.value}
+          value={this.props.value || ""}
           onChange={this.handleInputChange}
         />
         {this.state.secondaryLabel}
