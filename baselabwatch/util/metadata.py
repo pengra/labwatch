@@ -1,3 +1,4 @@
+from labwatch.settings import DEBUG
 from rest_framework import serializers
 from rest_framework.metadata import (
     SimpleMetadata, ClassLookupDict,
@@ -35,14 +36,25 @@ class ReactMetadata(SimpleMetadata):
     })
 
     def get_serializer_info(self, serializer):
-        self._reactjs_current_serializer = serializer
-        meta_data = super().get_serializer_info(serializer)
-        # meta_data['hi'] = True (places it on the outside )
+        """
+        Given an instance of a serializer, return a dictionary of metadata
+        about its fields.
+        """
+        if hasattr(serializer, 'child'):
+            # If this is a `ListSerializer` then we want to examine the
+            # underlying child serializer instance instead.
+            serializer = serializer.child
+        meta_data = OrderedDict([
+            (field_name, self.get_field_info(field, field_name))
+            for field_name, field in serializer.fields.items()
+        ])
+        meta_data['_debug'] = DEBUG
         return meta_data
 
 
-    def get_field_info(self, field):
+    def get_field_info(self, field, field_name):
         # need to get what field name this is
         field_info = super().get_field_info(field)
         field_info['intercepted'] = True
+        field_info['react_meta'] = field.parent.Meta.react_data[field_name]
         return field_info
