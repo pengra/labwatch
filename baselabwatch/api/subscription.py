@@ -10,3 +10,6 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     serializer_class = SubscriptionSerializer
     permission_classes = (IsAdminUser,)
     # renderer_classes = [JSONRenderer]
+
+    def perform_create(self, serializer):
+        serializer.save(school=self.request.user.profile.school)
