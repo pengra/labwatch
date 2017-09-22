@@ -13,7 +13,7 @@ class MainContent extends LabWatchWebsite {
   renderSchoolPage() {
     const schoolPageContent = [
       ["Settings", 
-        <main>
+        <main className="tab-content">
           <div className="row">
             <div className="col-12">
               <h2>School Administration</h2>
@@ -27,7 +27,7 @@ class MainContent extends LabWatchWebsite {
         </main>
       ],
       ["Limits", 
-      <main>
+      <main className="tab-content">
         <div className="row">
           <div className="col-12">
             <h2>Subscription Administration</h2>
@@ -40,7 +40,25 @@ class MainContent extends LabWatchWebsite {
         </div>
       </main>
       ],
-      ["Payment", <div>morecontent2</div>],
+      ["Payment", 
+      <main className="tab-content">
+        <div className="row tab-header">
+          <div className="col-12">
+            <h2>Payment <span className="badge badge-success">Free Beta</span></h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <div className="alert alert-primary">
+              <h4 className="alert-heading">Free Beta!</h4>
+              LabWatch is currently a free beta. We believe it'd be unfair to charge
+              schools for a service that still has bugs. All participating schools are
+              granted <strong>unlimited</strong> resources at no cost. Schools will be notified
+              ahead of time when the free beta comes to an end. 
+            </div>
+          </div>
+        </div>
+      </main>],
     ];
     return (<div>
       <TabbedPage tabs={schoolPageContent} />
