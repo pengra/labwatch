@@ -1,10 +1,12 @@
 from baselabwatch.models import Subscription, School
 from rest_framework import serializers
+from baselabwatch.util.urls import URLResolution
 
+resolution = URLResolution(Subscription)
 
 class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
-    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name='school-detail', queryset=School.objects.all())
+    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), queryset=School.objects.all())
 
     class Meta:
         model = Subscription
@@ -18,6 +20,6 @@ class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
             'max_logs',
             'student_rewards',
             'data_intel',
-            'precentage_discount',
+            'percentage_discount',
             'numeric_discount'
         )
