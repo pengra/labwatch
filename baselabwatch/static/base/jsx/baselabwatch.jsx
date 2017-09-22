@@ -11,13 +11,39 @@ class MainContent extends LabWatchWebsite {
     this.renderProfilePage = this.renderProfilePage.bind(this);
   }
   renderSchoolPage() {
-    const example = [
-      ["Settings", <Form url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID} />],
-      ["Limits", <div>morecontent</div>],
+    const schoolPageContent = [
+      ["Settings", 
+        <main>
+          <div className="row">
+            <div className="col-12">
+              <h2>School Administration</h2>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <Form url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID} />
+            </div>
+          </div>
+        </main>
+      ],
+      ["Limits", 
+      <main>
+        <div className="row">
+          <div className="col-12">
+            <h2>Subscription Administration</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <Form url={"http://127.0.0.1:8000/base/api/v1/subscriptions/" + subscriptionID} />
+          </div>
+        </div>
+      </main>
+      ],
       ["Payment", <div>morecontent2</div>],
     ];
     return (<div>
-      <TabbedPage tabs={example} />
+      <TabbedPage tabs={schoolPageContent} />
     </div>)
   }
   renderStudentsPage() {
