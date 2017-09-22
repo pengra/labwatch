@@ -21,7 +21,8 @@ class SchoolSerializer(serializers.HyperlinkedModelSerializer):
             },
             'name': {},
             'primary_contact': {
-                'display': '{primary_contact.first_name} {primary_contact.last_name}: {primary_contact.email}'
+                'display': '{primary_contact.first_name} {primary_contact.last_name}: {primary_contact.email}',
+                'read_only': True
             },
             'auth_code': {},
             'school_image': {},
