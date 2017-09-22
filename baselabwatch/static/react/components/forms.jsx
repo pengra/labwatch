@@ -161,7 +161,7 @@ class VerticalFormGroup extends React.Component {
       "disabled": ((reactData.read_only && optionsData.read_only) ? false : optionsData.read_only),
       "required": optionsData.required,
       "name": optionsData.name,
-      "value": (reactData.display || formData.value),
+      "value": (reactData.display ? reactData.display : formData.value),
       "validationLevel": (formData.validationLevel || reactData.invalidFeedback || 2),
       "hidden": (reactData.hidden || false),
       "placeholder": (reactData.placeholder || ""),
