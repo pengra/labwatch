@@ -160,7 +160,7 @@ class VerticalFormGroup extends React.Component {
       "disabled": optionsData.read_only,
       "required": optionsData.required,
       "name": optionsData.name,
-      "value": "",
+      "value": formData.value,
       "validationLevel": (formData.validationLevel || reactData.invalidFeedback || 2),
       "hidden": (reactData.hidden || false),
       "placeholder": (reactData.placeholder || ""),
@@ -173,7 +173,7 @@ class VerticalFormGroup extends React.Component {
   }
   handleInputChange = (event) => {
     let newValue;
-    if (this.state.type === 'checkbox') {
+    if (this.otherprops.type === 'checkbox') {
       newValue = event.target.checked;
     } else if (this.otherprops.type === 'text') {
       // TODO: fix this. Can't type
@@ -198,7 +198,7 @@ class VerticalFormGroup extends React.Component {
           value={this.otherprops.value || ""}
           onChange={this.handleInputChange}
         />
-        {this.props.secondaryLabel}
+        {this.otherprops.secondaryLabel}
       </div>
     )
   }
