@@ -2,29 +2,38 @@ const leftNavBarLinks = [
   "School", "Students", "Profile"
 ]
 
+class SchoolPageContent extends React.Component {
+  handleSubmit = (event) => {
+
+  }
+  render = () => {
+    return (
+      <main className="tab-content">
+        <div className="row">
+          <div className="col-12">
+            <h2>School Administration</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <form onSubmit={this.handleSubmit}>
+            </form>
+          </div>
+        </div>
+      </main>
+    )
+  }
+}
+
 class MainContent extends LabWatchWebsite {
   constructor() {
     super();
 
-    this.renderSchoolPage = this.renderSchoolPage.bind(this);
-    this.renderStudentsPage = this.renderStudentsPage.bind(this);
-    this.renderProfilePage = this.renderProfilePage.bind(this);
   }
-  renderSchoolPage() {
+  renderSchoolPage = () => {
     const schoolPageContent = [
       ["Settings", 
-        <main className="tab-content">
-          <div className="row">
-            <div className="col-12">
-              <h2>School Administration</h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <Form url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID} />
-            </div>
-          </div>
-        </main>
+        
       ],
       ["Limits", 
       <main className="tab-content">
@@ -64,7 +73,7 @@ class MainContent extends LabWatchWebsite {
       <TabbedPage tabs={schoolPageContent} />
     </div>)
   }
-  renderStudentsPage() {
+  renderStudentsPage = () => {
     const example = [
       ["Create", <div>content</div>],
       ["Find/Edit", <div>morecontent</div>],
@@ -74,14 +83,14 @@ class MainContent extends LabWatchWebsite {
       <TabbedPage tabs={example} />
     </div>)
   }
-  renderProfilePage() {
+  renderProfilePage = () => {
     return (<div>
       <h1>Edit your Profile</h1>
       <Form url={"http://127.0.0.1:8000/base/api/v1/profiles/" + profileID} />
       <Form url={"http://127.0.0.1:8000/base/api/v1/users/" + userID} />
     </div>)
   }
-  renderMainPage() {
+  renderMainPage = () => {
     if (this.state.currentPage === 0) {
       return this.renderSchoolPage();
     } else if (this.state.currentPage === 1) {
