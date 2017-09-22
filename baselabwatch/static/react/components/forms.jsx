@@ -17,7 +17,6 @@ class Form extends React.Component {
     this.ajaxFail = this.ajaxFail.bind(this);
     this.ajaxSubmit = this.ajaxSubmit.bind(this);
     this.handleInputUpdate = this.handleInputUpdate.bind(this);
-    this.getFormData = this.getFormData.bind(this);
     this.populateForm = this.populateForm.bind(this);
     this.loadForm = this.loadForm.bind(this);
     this.updateFormDataState = this.updateFormDataState.bind(this);
@@ -36,21 +35,30 @@ class Form extends React.Component {
 
   // loading form
   componentDidMount() {
-    this.getFormData();
+    $.ajax({
+      method: 'GET',
+      url: this.props.url
+    })
+    .done((data) => this.populateForm(data));
+    $.ajax({
+      method: 'OPTIONS',
+      url: this.props.url
+    })
+    .done((data) => {
+      this.loadForm(data);
+    });
   }
   updateFormDataState(name, stateKey, stateValue) {
-    if (!(this.state.getRetrieved || this.state.optionsRetrieved)) {
-      let newFormData = this.state.formData;
-      if (!(data in newFormData)) {
-        this.state.formData[name] = {};
-      }
-      let data = this.state.formData[name];
-      data[stateKey] = stateValue;
-      newFormData[name] = data;
-      this.setState({
-        formData: newFormData
-      });
+    let newFormData = this.state.formData;
+    if (!(data in newFormData)) {
+      this.state.formData[name] = {};
     }
+    let data = this.state.formData[name];
+    data[stateKey] = stateValue;
+    newFormData[name] = data;
+    this.setState({
+      formData: newFormData
+    });
   }
   loadForm(formOptions) {
     const thisForm = formOptions.actions;
@@ -59,11 +67,10 @@ class Form extends React.Component {
       let index = 0;
       for (let key in thisForm.PUT) {
         if (!key.startsWith('_')) {
-          this.updateFormDataState(key, "value", null);
           formRender.push(
             <VerticalFormGroup 
               onInputChange={this.handleInputUpdate}
-              formData={this.state.formData[key]}
+              formData={this.state.formData[key] || {}}
               optionsData={thisForm.PUT[key]}
               id={index}
               key={index}
@@ -88,18 +95,6 @@ class Form extends React.Component {
     this.setState({
       getRetrieved: true
     })
-  }
-  getFormData() {
-    $.ajax({
-      method: 'OPTIONS',
-      url: this.props.url
-    })
-    .done((data) => this.loadForm(data));
-    $.ajax({
-      method: 'GET',
-      url: this.props.url
-    })
-    .done((data) => this.populateForm(data))
   }
 
   // rendering
@@ -155,7 +150,7 @@ class VerticalFormGroup extends React.Component {
     this.otherprops = {
       "divWrapperClass": (hidden ? "hiden" : "form-group"),
       "formGroupID": formID,
-      "label": formData.value,
+      "label": (formData.value || ""),
       "type": (hidden ? "hidden" : optionsData.type),
       "inputClass": ("form-control" + (reactData.read_only ? " form-control-plaintext" : "")),
       "disabled": ((reactData.read_only && optionsData.read_only) ? false : optionsData.read_only),
