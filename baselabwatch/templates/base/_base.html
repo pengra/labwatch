@@ -92,7 +92,11 @@
     const schoolID = {{request.user.profile.school.pk}};
     const profileID = {{request.user.profile.pk}};
     const userID = {{request.user.pk}};
-    const subscriptionID = {{request.user.school.subscription.pk}};
+    {% if request.user.profile.school.subscription %}
+      const subscriptionID = {{request.user.profile.school.subscription.pk}};
+    {% else %}
+      const subscriptionID = null;
+    {% endif %}
     
     // Render zone
     ReactDOM.render(
