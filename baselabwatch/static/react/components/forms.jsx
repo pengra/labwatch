@@ -68,7 +68,6 @@ class Form extends React.Component {
               id={index}
               key={index}
               name={key}
-              value={this.state.formData[key].value}
             />
           )
           index++;
@@ -152,12 +151,12 @@ class VerticalFormGroup extends React.Component {
     const formID = "form-group-id-" + this.props.id;
     const hidden = reactData.hidden || false;
 
-    this.props = {
+    this.otherprops = {
       "divWrapperClass": (hidden ? "hiden" : "form-group"),
       "formGroupID": formID,
-      "label": null,
+      "label": formData.value,
       "type": (hidden ? "hidden" : optionsData.type),
-      "inputClass": "form-control" + (reactData.read_only ? "-plaintext" : ""),
+      "inputClass": ("form-control" + (reactData.read_only ? "-plaintext" : "")),
       "disabled": optionsData.read_only,
       "required": optionsData.required,
       "name": optionsData.name,
@@ -168,7 +167,7 @@ class VerticalFormGroup extends React.Component {
       "readonly": (reactData.read_only || null),
       "secondaryLabel": (reactData.secondary_label || null),
       "label": reactData.hidden ? null : (reactData.label ? 
-        <label htmlFor={this.state.formGroupID}>{reactData.label}</label> : 
+        <label htmlFor={formID}>{reactData.label}</label> : 
         <label htmlFor={formID}>{optionsData.label}</label>),
     }
   }
@@ -176,27 +175,27 @@ class VerticalFormGroup extends React.Component {
     let newValue;
     if (this.state.type === 'checkbox') {
       newValue = event.target.checked;
-    } else if (this.props.type === 'text') {
+    } else if (this.otherprops.type === 'text') {
       // TODO: fix this. Can't type
       newValue = event.target.value;
     } else {
       throw "Invalid input type";
     }
-    this.props.onInputChange(this.props.name, newValue)
+    this.otherprops.onInputChange(this.otherprops.name, newValue)
   }
   render = () => {
     return (
-      <div className={this.props.divWrapperClass}>
-        {this.props.label}
+      <div className={this.otherprops.divWrapperClass}>
+        {this.otherprops.label}
         <input 
-          type={this.props.type} 
-          className={this.props.inputClass}
-          name={this.props.name} 
-          id={this.props.formGroupID} 
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          readOnly={this.props.readonly}
-          value={this.props.value || ""}
+          type={this.otherprops.type} 
+          className={this.otherprops.inputClass}
+          name={this.otherprops.name} 
+          id={this.otherprops.formGroupID} 
+          placeholder={this.otherprops.placeholder}
+          disabled={this.otherprops.disabled}
+          readOnly={this.otherprops.readonly}
+          value={this.otherprops.value || ""}
           onChange={this.handleInputChange}
         />
         {this.props.secondaryLabel}
