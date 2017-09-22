@@ -6,7 +6,8 @@ resolution = URLResolution(Subscription)
 
 class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
-    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), queryset=School.objects.all())
+    url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve("subscription-detail"))
+    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), read_only=True)
 
     class Meta:
         model = Subscription
