@@ -39,13 +39,15 @@ class Form extends React.Component {
       method: 'GET',
       url: this.props.url
     })
-    .done((data) => this.populateForm(data));
-    $.ajax({
-      method: 'OPTIONS',
-      url: this.props.url
-    })
     .done((data) => {
-      this.loadForm(data);
+      this.populateForm(data);
+      $.ajax({
+        method: 'OPTIONS',
+        url: this.props.url
+      })
+      .done((data) => {
+        this.loadForm(data);
+      });
     });
   }
   updateFormDataState(name, stateKey, stateValue) {
@@ -95,6 +97,7 @@ class Form extends React.Component {
     this.setState({
       getRetrieved: true
     })
+    this.render();
   }
 
   // rendering
