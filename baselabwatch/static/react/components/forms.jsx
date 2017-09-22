@@ -143,69 +143,33 @@ class VerticalFormGroup extends React.Component {
   // formData:
     // formData.value : value of content
     // formData.validationLevel : 0 = fail 1 = success 2 = nothing 
-  constructor() {
-    super()
-    this.state = {
-      "formGroupID": "none",
-      "divWrapperClass": "hidden",
-      "label": null,
-      "type": "hidden",
-      "inputClass": "hidden",
-      "disabled": true,
-      "required": false,
-      "name": "none",
-      "value": "",
-      "validationLevel": 2,
-      "inputClass": "hidden"
-    }
-  }
-  componentDidMount = () => {
-    this.applyOptionsData();
-    this.applyReactData();
-  }
-  applyOptionsData = () => {
+  constructor(props) {
+    super(props)
+    
     const optionsData = this.props.optionsData;
+    const reactData = optionsData.react_meta;
     const formData = this.props.formData;
     const formID = "form-group-id-" + this.props.id;
+    const hidden = reactData.hidden || false;
 
-    this.setState({
+    this.props = {
+      "divWrapperClass": (hidden ? "hiden" : "form-group"),
       "formGroupID": formID,
-      "divWrapperClass": "form-group",
-      "label": <label htmlFor={formID}>{optionsData.label}</label>,
-      "type": optionsData.type,
-      "inputClass": "form-control",
+      "label": null,
+      "type": (hidden ? "hidden" : optionsData.type),
+      "inputClass": "form-control" + (reactData.read_only ? "-plaintext" : ""),
       "disabled": optionsData.read_only,
       "required": optionsData.required,
       "name": optionsData.name,
-      "validationLevel": (formData.validationLevel || 2),
-      "inputClass": "form-control"
-    })
-  }
-  applyReactData = () => {
-    const reactData = this.props.optionsData.react_meta;
-    this.setState({
+      "value": "",
+      "validationLevel": (formData.validationLevel || reactData.invalidFeedback || 2),
+      "hidden": (reactData.hidden || false),
       "placeholder": (reactData.placeholder || ""),
       "readonly": (reactData.read_only || null),
       "secondaryLabel": (reactData.secondary_label || null),
-      "invalidFeedback": (reactData.invalidFeedback || null),
-      "hidden": (reactData.hidden || false),
-      "inputClass": "form-control" + (reactData.read_only ? "-plaintext" : "")
-    });
-
-    // label
-    if (reactData.label) {
-      this.setState({
-        "label": (<label htmlFor={this.state.formGroupID}>{reactData.label}</label> || this.state.label),
-      })
-    }
-
-    // hidden
-    if (reactData.hidden) {
-      this.setState({
-        "type": "hidden",
-        "divWrapperClass": "hidden",
-        "label": null,
-      })
+      "label": reactData.hidden ? null : (reactData.label ? 
+        <label htmlFor={this.state.formGroupID}>{reactData.label}</label> : 
+        <label htmlFor={formID}>{optionsData.label}</label>),
     }
   }
   handleInputChange = (event) => {
