@@ -90,8 +90,9 @@
     const titleLinks = {{title_links}};
     const currentApp = "{{current_app}}"
     const schoolID = {{request.user.profile.school.pk}};
-    const profileID = {{request.user.profile.pk}}
-    const userID = {{request.user.pk}}
+    const profileID = {{request.user.profile.pk}};
+    const userID = {{request.user.pk}};
+    const subscriptionID = {{request.user.school.subscription.pk}};
     
     // Render zone
     ReactDOM.render(
