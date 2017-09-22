@@ -131,14 +131,15 @@ class VerticalFormGroup extends React.Component {
     // optionsData.name : name of form
     // optionsData.required : input required?
     // optionsData.read_only : REMAP TO TO DISABLED
+    // optionsData.label : label of this input
     // optionsData.react_data : style/remap properties:
-      // optionsData.label : label of this input
       // optionsData.react_data.label : override current label with this label
       // optionsData.react_data.invalidFeedback : error message if they left it blank
       // optionsData.react_data.hidden : hide form?
       // optionsData.react_data.placeholder : placeholder of content
       // optionsData.react_data.read_only : is it readonly? (if readonly and disabled are true, displays as readonly and is disabled)
       // optionsData.react_data.secondary_label : bottom text below form
+      // optionsData.react_data.display : what to display instead of value
   // formData:
     // formData.value : value of content
     // formData.validationLevel : 0 = fail 1 = success 2 = nothing 
@@ -160,7 +161,7 @@ class VerticalFormGroup extends React.Component {
       "disabled": optionsData.read_only,
       "required": optionsData.required,
       "name": optionsData.name,
-      "value": formData.value,
+      "value": (reactData.display || formData.value),
       "validationLevel": (formData.validationLevel || reactData.invalidFeedback || 2),
       "hidden": (reactData.hidden || false),
       "placeholder": (reactData.placeholder || ""),
