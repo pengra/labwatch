@@ -176,7 +176,7 @@ class VerticalFormGroup extends React.Component {
     let newValue;
     if (this.state.type === 'checkbox') {
       newValue = event.target.checked;
-    } else if (this.state.type === 'text') {
+    } else if (this.props.type === 'text') {
       // TODO: fix this. Can't type
       newValue = event.target.value;
     } else {
@@ -186,20 +186,20 @@ class VerticalFormGroup extends React.Component {
   }
   render = () => {
     return (
-      <div className={this.state.divWrapperClass}>
-        {this.state.label}
+      <div className={this.props.divWrapperClass}>
+        {this.props.label}
         <input 
-          type={this.state.type} 
-          className={this.state.inputClass}
-          name={this.state.name} 
-          id={this.state.formGroupID} 
-          placeholder={this.state.placeholder}
-          disabled={this.state.disabled}
-          readOnly={this.state.readonly}
+          type={this.props.type} 
+          className={this.props.inputClass}
+          name={this.props.name} 
+          id={this.props.formGroupID} 
+          placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
+          readOnly={this.props.readonly}
           value={this.props.value || ""}
           onChange={this.handleInputChange}
         />
-        {this.state.secondaryLabel}
+        {this.props.secondaryLabel}
       </div>
     )
   }
