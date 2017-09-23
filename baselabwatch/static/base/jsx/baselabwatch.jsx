@@ -7,9 +7,10 @@ class SchoolAdminForm extends Form {
   renderForm = () => {
     const formData = this.state.formData;
     let proceed = true;
-    Object.keys(formData).map((k, i) => {proceed = ("options" in formData[k] && proceed)})
     const length = Object.keys(formData).length;
-    console.log(formData);
+
+    Object.keys(formData).map((k, i) => {proceed = ("options" in formData[k] && proceed)})
+
     if (proceed && length > 0) {
       return (
       <div>
