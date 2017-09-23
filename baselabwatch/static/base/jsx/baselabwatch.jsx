@@ -5,6 +5,9 @@ const leftNavBarLinks = [
 class SchoolAdminForm extends Form {
   // Overload methods:
   handleSubmit = (event) => {}
+  onChange = (event) => {
+    this.updateFormDataState(event.target.name, "value", event.target.value)
+  }
   renderForm = () => {
     const formData = this.state.formData;
     let formRender = ['name'];
@@ -12,13 +15,16 @@ class SchoolAdminForm extends Form {
     for (let field in formRender) {
       const fieldName = formRender[field];
       if (fieldName in formData) {
-        formRender[field] = <TextInput name={fieldName} formData={formData[fieldName]} key={field}/>;
+        formRender[field] = <TextInput 
+          name={fieldName} 
+          formData={formData[fieldName]} 
+          onChange={this.onChange}
+          key={field}
+        />;
       } else {
         formRender[field] = null;
       }
     }
-    
-    console.log(formData);
     
     return (
       <div>
