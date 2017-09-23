@@ -2,6 +2,32 @@ const leftNavBarLinks = [
   "School", "Students", "Profile"
 ]
 
+class SchoolAdminForm extends Form {
+  // Overload methods:
+  handleSubmit = (event) => {}
+  renderForm = () => {
+    const formData = this.state.formData;
+    let formRender = ['name'];
+    
+    for (let field in formRender) {
+      const fieldName = formRender[field];
+      if (fieldName in formData) {
+        formRender[field] = <TextInput name={fieldName} formData={formData[fieldName]} key={field}/>;
+      } else {
+        formRender[field] = null;
+      }
+    }
+    
+    console.log(formData);
+    
+    return (
+      <div>
+        {formRender}
+      </div>
+    );
+  }
+}
+
 class SchoolPageContent extends React.Component {
   handleSubmit = (event) => {
 
@@ -16,8 +42,7 @@ class SchoolPageContent extends React.Component {
         </div>
         <div className="row">
           <div className="col-12">
-            <form onSubmit={this.handleSubmit}>
-            </form>
+            <SchoolAdminForm url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID}/>
           </div>
         </div>
       </main>
@@ -33,7 +58,7 @@ class MainContent extends LabWatchWebsite {
   renderSchoolPage = () => {
     const schoolPageContent = [
       ["Settings", 
-        
+        <SchoolPageContent />
       ],
       ["Limits", 
       <main className="tab-content">
