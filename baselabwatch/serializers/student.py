@@ -7,7 +7,7 @@ resolution = URLResolution(Student)
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
     url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('student-detail'))
-    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), queryset=School.objects.all())
+    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), read_only=True)
 
     class Meta:
         model = Student
