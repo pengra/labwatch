@@ -16,13 +16,12 @@ class SchoolAdminForm extends Form {
   }
   onSubmitFail = (data) => {
     this.setState({
+      errors: data.responseJSON
+    })
+    this.setState({
       fail: true
     })
-    setTimeout(() => {
-      this.setState({
-        fail: false
-      });
-    }, 3000)
+    console.log(this.state.errors)
   }
 
   renderForm = () => {
@@ -38,15 +37,17 @@ class SchoolAdminForm extends Form {
           name="name" 
           formData={formData.name} 
           onChange={this.onChange}
+          errors={this.state.errors.name}
           key={"name"}
         />
-        <div style={{height: "100"}}>
+        <div style={{height: 100}}>
           <img src={formData.school_image.value} height="100%"/>
         </div>
         <TextInput 
           name="school_image" 
           formData={formData.school_image} 
           onChange={this.onChange}
+          errors={this.state.errors.school_image}
           key={"school_image"}
         />
         <TextInput 
@@ -55,7 +56,7 @@ class SchoolAdminForm extends Form {
           onChange={this.onChange}
           key={"auth_code"}
         />
-        <SubmitInput label="Save" success={this.state.success} fail={this.state.fail}/> 
+        <SubmitInput label="Save" success={this.state.success} fail={this.state.fail}/>
       </div>
       )
     } else {

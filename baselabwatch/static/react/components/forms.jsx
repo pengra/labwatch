@@ -7,7 +7,8 @@ class Form extends React.Component {
   constructor() {
     super();
     this.state = {
-      formData: {}
+      formData: {},
+      errors: {}
     };
   }
 
@@ -96,7 +97,7 @@ class Form extends React.Component {
       formRender = this.renderForm();
     }
     return (
-      <form id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
+      <form noValidate id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
         {formRender}
       </form>
     )
@@ -161,6 +162,7 @@ class TextInput extends React.Component {
     // formData : what formData[key] in Form.state.formData
     // name : field name
     // moreClasses : more classes
+    // errors: if there are errors to display
 
   render() {
     const optionsLoaded = !!("options" in this.props.formData)
@@ -169,7 +171,7 @@ class TextInput extends React.Component {
     // defaults
     let type;
     let placeholder;
-    let className = "form-control";
+    let className = "form-control" + (this.props.errors ? " is-invalid" : "");
     let value;
     let label;
     let helptext;
@@ -208,6 +210,9 @@ class TextInput extends React.Component {
           value={value}
         />
         <small className="form-text text-muted">{helptext}</small>
+        <div className="invalid-feedback">
+          {this.props.errors}
+        </div>
       </div>
     )
   }
