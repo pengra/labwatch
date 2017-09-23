@@ -109,9 +109,15 @@ class Form extends React.Component {
   }
   render() {
     let formRender = null;
-    if (this.state.formData) {
+    const formData = this.state.formData;
+    let proceed = true;
+    const length = Object.keys(formData).length;
+    Object.keys(formData).map((k, i) => {proceed = ("options" in formData[k] && proceed)})
+
+    if (proceed && length > 0) {
       formRender = this.renderForm();
     }
+    
     return (
       <form noValidate id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
         {formRender}
