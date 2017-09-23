@@ -12,20 +12,18 @@ class Form extends React.Component {
   }
 
   // Overload methods:
-  handleSubmit = () => {}
+  handleSubmit = (event) => {}
   renderForm = () => {}
 
   componentDidMount() {
-    let method = 'GET';
     $.ajax({
-      method: method,
+      method: 'GET',
       url: this.props.url
-    }).done((data) => this.loadForm(data, method));
-    method = 'OPTIONS';
+    }).done((data) => this.loadForm(data, 'GET'));
     $.ajax({
-      method: method,
+      method: 'OPTIONS',
       url: this.props.url
-    }).done((data) => this.loadForm(data, method));
+    }).done((data) => this.loadForm(data, 'OPTIONS'));
   }
   loadForm = (data, verb) => {
     let newFormData = this.state.formData;
@@ -56,37 +54,61 @@ class Form extends React.Component {
       }
     }
     this.setState({formData: newFormData});
-    console.log(this.state)
-    // let newFormData = this.state.formData;
-    // if (!(data in newFormData)) {
-    //   this.state.formData[name] = {};
-    // }
-    // let data = this.state.formData[name];
-    // data[stateKey] = stateValue;
-    // newFormData[name] = data;
-    // this.setState({
-    //   formData: newFormData
-    // });
   }
   render() {
+    let formRender = null;
+    if (this.state.formData) {
+      formRender = this.renderForm();
+    }
     return (
       <form className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
-        {this.renderForm()}
+        {formRender}
       </form>
     )
   }
 }
 
 
-class VerticalFormGroup extends React.Component {
+class TextInput extends React.Component {
   // props:
-    // optionsData : what OPTIONS[key] returned
-    // getData : what GET[key] returned
+    // formData : what formData[key] in Form.state.formData
+    // name : field name
 
   render() {
+    const optionsLoaded = !!("options" in this.props.formData)
+    const valueLoaded = !!("value" in this.props.formData)
+
+    // defaults
+    let type;
+    let placeholder;
+    let className = "form-control";
+    let value;
+    let label;
+    let helptext;
+
+    if (optionsLoaded) {
+      type = this.props.formData.options.type;
+      placeholder = this.props.formData.options.react_meta.placeholder || null;
+      label = this.props.formData.options.react_meta.label || this.props.formData.options.label;
+      helptext = this.props.formData.options.react_meta.help_text || null;
+    } else {
+      type = "text";
+      placeholder = null;
+      label = null;
+      helptext = null;
+    }
+
+    if (valueLoaded) {
+      value = this.props.formData.value || "";
+    } else {
+      value = "";
+    }
+    
     return (
       <div className="form-group">
-        <label htmlFor={this.props.field}>{}</label>
+        <label htmlFor={this.props.name}>{label}</label>
+        <input type={type} name={this.props.name} className={className} placeholder={placeholder} value={value}/>
+        <small className="form-text text-muted">{helptext}</small>
       </div>
     )
   }
