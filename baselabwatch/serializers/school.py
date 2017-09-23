@@ -19,12 +19,20 @@ class SchoolSerializer(serializers.HyperlinkedModelSerializer):
             'url': {
                 'hidden': True
             },
-            'name': {},
+            'name': {
+                'placeholder': 'e.g. EWHS',
+                'label': 'School Name',
+                'help_text': 'An abbreviation of your school\'s name'
+            },
             'primary_contact': {
                 # 'display': '{primary_contact.first_name} {primary_contact.last_name}: {primary_contact.email}',
                 'read_only': True
             },
-            'auth_code': {},
-            'school_image': {},
+            'auth_code': {
+                'read_only': True
+            },
+            'school_image': {
+                'placeholder': 'e.g. an imgur link such as https://imgur.com/XrHBZbV.png'
+            },
         }
         fields = tuple(react_data.keys())
