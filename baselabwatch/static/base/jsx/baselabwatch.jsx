@@ -2,6 +2,28 @@ const leftNavBarLinks = [
   "School", "Students", "Profile"
 ]
 
+class PageContent extends React.Component {
+  handleSubmit = (event) => {
+   
+  }
+  render = () => {
+    return (
+      <main className="tab-content">
+        <div className="row">
+          <div className="col-12">
+            <h2>{this.props.title}</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            {this.props.content}
+          </div>
+        </div>
+      </main>
+    )
+  }
+}
+
 class SchoolAdminForm extends Form {
   // Overload methods:
   renderForm = () => {
@@ -93,28 +115,6 @@ class LimitsPage extends React.Component {
           </div>
         </div>
       </div>
-    )
-  }
-}
-
-class PageContent extends React.Component {
-  handleSubmit = (event) => {
-   
-  }
-  render = () => {
-    return (
-      <main className="tab-content">
-        <div className="row">
-          <div className="col-12">
-            <h2>{this.props.title}</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            {this.props.content}
-          </div>
-        </div>
-      </main>
     )
   }
 }
