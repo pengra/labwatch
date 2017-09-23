@@ -96,7 +96,7 @@ class Form extends React.Component {
       formRender = this.renderForm();
     }
     return (
-      <form id={this.props.id} method="POST" className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
+      <form id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
         {formRender}
       </form>
     )
