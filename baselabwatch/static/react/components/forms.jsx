@@ -106,9 +106,28 @@ class Form extends React.Component {
 class SubmitInput extends React.Component {
   // props:
     // label: what to display on button
+    // success : true/false success?
+    // fail : true/false fail?
   render() {
+    let feedback = null;
+    if (this.props.success) {
+      feedback = (
+        <span className="ajax-notification text-success">
+          <i className="fa fa-check" aria-hidden="true"></i> Updated
+        </span>
+      )
+    } else if (this.props.fail) {
+      feedback = (
+        <span className="ajax-notification text-danger">
+        <i className="fa fa-times" aria-hidden="true"></i> Failed. Try Again
+      </span>
+      )
+    }
     return (
+      <div>
       <input type="submit" value={this.props.label} className="btn btn-success"/>
+      {feedback}
+      </div>
     )
   }
 }

@@ -4,8 +4,26 @@ const leftNavBarLinks = [
 
 class SchoolAdminForm extends Form {
   // Overload methods:
-  onSubmitSuccess = (data) => {console.log("worked");}
-  onSubmitFail = (data) => {console.log("failed");}
+  onSubmitSuccess = (data) => {
+    this.setState({
+      success: true
+    })
+    setTimeout(() => {
+      this.setState({
+        success: false
+      });
+    }, 3000)
+  }
+  onSubmitFail = (data) => {
+    this.setState({
+      fail: true
+    })
+    setTimeout(() => {
+      this.setState({
+        fail: false
+      });
+    }, 3000)
+  }
 
   renderForm = () => {
     const formData = this.state.formData;
@@ -14,7 +32,8 @@ class SchoolAdminForm extends Form {
     const length = Object.keys(formData).length;
     console.log(formData);
     if (proceed && length > 0) {
-      return (<div>
+      return (
+      <div>
         <TextInput 
           name="name" 
           formData={formData.name} 
@@ -33,8 +52,9 @@ class SchoolAdminForm extends Form {
           onChange={this.onChange}
           key={"auth_code"}
         />
-        <SubmitInput label="Save"/>
-      </div>)
+        <SubmitInput label="Save" success={this.state.success} fail={this.state.fail}/> 
+      </div>
+      )
     } else {
       return null;
     }
