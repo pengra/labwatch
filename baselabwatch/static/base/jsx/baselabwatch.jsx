@@ -4,26 +4,6 @@ const leftNavBarLinks = [
 
 class SchoolAdminForm extends Form {
   // Overload methods:
-  onSubmitSuccess = (data) => {
-    this.setState({
-      success: true
-    })
-    setTimeout(() => {
-      this.setState({
-        success: false
-      });
-    }, 3000)
-  }
-  onSubmitFail = (data) => {
-    this.setState({
-      errors: data.responseJSON
-    })
-    this.setState({
-      fail: true
-    })
-    console.log(this.state.errors)
-  }
-
   renderForm = () => {
     const formData = this.state.formData;
     let proceed = true;

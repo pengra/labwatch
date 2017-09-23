@@ -14,8 +14,24 @@ class Form extends React.Component {
 
   // Overload methods:
   renderForm = () => {}
-  onSubmitSuccess = (data) => {console.log("worked");}
-  onSubmitFail = (data) => {console.log("failed");}
+  onSubmitSuccess = (data) => {
+    this.setState({
+      success: true
+    })
+    setTimeout(() => {
+      this.setState({
+        success: false
+      });
+    }, 3000)
+  }
+  onSubmitFail = (data) => {
+    this.setState({
+      errors: data.responseJSON
+    })
+    this.setState({
+      fail: true
+    })
+  }
 
   onChange = (event) => {
     this.updateFormDataState(event.target.name, "value", event.target.value);
