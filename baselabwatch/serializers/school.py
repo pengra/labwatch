@@ -29,10 +29,13 @@ class SchoolSerializer(serializers.HyperlinkedModelSerializer):
                 'read_only': True
             },
             'auth_code': {
-                'read_only': True
+                'label': 'School code',
+                'read_only': True,
+                'help_text': 'Give this code to teachers who\'d like to join LabWatch.'
             },
             'school_image': {
-                'placeholder': 'e.g. an imgur link such as https://imgur.com/XrHBZbV.png'
+                'placeholder': 'e.g. an imgur link such as https://imgur.com/XrHBZbV.png',
+                'help_text': 'Your school logo. Upload the image to another website and paste the link here.'
             },
         }
         fields = tuple(react_data.keys())
