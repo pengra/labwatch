@@ -1,10 +1,13 @@
 from baselabwatch.models import Student, School
 from rest_framework import serializers
+from baselabwatch.util.urls import URLResolution
 
+resolution = URLResolution(Student)
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
-    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name='school-detail', queryset=School.objects.all())
+    url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('student-detail'))
+    school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), queryset=School.objects.all())
 
     class Meta:
         model = Student
