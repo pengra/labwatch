@@ -10,3 +10,6 @@ class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     permission_classes = (IsAdminUser,)
     # renderer_classes = [JSONRenderer]
+
+    def perform_create(self, serializer):
+        serializer.save(school=self.request.user.profile.school)
