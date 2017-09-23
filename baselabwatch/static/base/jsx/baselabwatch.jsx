@@ -4,9 +4,9 @@ const leftNavBarLinks = [
 
 class SchoolAdminForm extends Form {
   // Overload methods:
-  onChange = (event) => {
-    this.updateFormDataState(event.target.name, "value", event.target.value);
-  }
+  onSubmitSuccess = (data) => {console.log("worked");}
+  onSubmitFail = (data) => {console.log("failed");}
+
   renderForm = () => {
     const formData = this.state.formData;
     let proceed = true;
