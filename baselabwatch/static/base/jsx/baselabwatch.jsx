@@ -40,6 +40,9 @@ class SchoolAdminForm extends Form {
           onChange={this.onChange}
           key={"name"}
         />
+        <div style={{height: "100"}}>
+          <img src={formData.school_image.value} height="100%"/>
+        </div>
         <TextInput 
           name="school_image" 
           formData={formData.school_image} 
