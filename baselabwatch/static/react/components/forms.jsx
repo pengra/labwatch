@@ -15,6 +15,15 @@ class Form extends React.Component {
   handleSubmit = (event) => {}
   renderForm = () => {}
 
+  updateFormDataState(field, key, value) {
+    let newFormData = this.state.formData;
+    let data = this.state.formData[field];
+    data[key] = value;
+    newFormData[field] = data;
+    this.setState({
+      formData: newFormData
+    });
+  }
   componentDidMount() {
     $.ajax({
       method: 'GET',
@@ -107,7 +116,7 @@ class TextInput extends React.Component {
     return (
       <div className="form-group">
         <label htmlFor={this.props.name}>{label}</label>
-        <input type={type} name={this.props.name} className={className} placeholder={placeholder} value={value}/>
+        <input onChange={this.props.onChange} type={type} name={this.props.name} className={className} placeholder={placeholder} value={value}/>
         <small className="form-text text-muted">{helptext}</small>
       </div>
     )
