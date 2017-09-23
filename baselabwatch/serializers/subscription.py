@@ -9,6 +9,8 @@ class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve("subscription-detail"))
     school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), read_only=True)
 
+    current_student_ids = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Subscription
         fields = (
@@ -17,6 +19,7 @@ class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
             'expires',
             'billing_cycle',
             'max_student_ids',
+            'current_student_ids',
             'max_kiosks',
             'max_logs',
             'student_rewards',
