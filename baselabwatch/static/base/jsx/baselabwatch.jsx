@@ -4,39 +4,46 @@ const leftNavBarLinks = [
 
 class SchoolAdminForm extends Form {
   // Overload methods:
-  handleSubmit = (event) => {}
   onChange = (event) => {
-    this.updateFormDataState(event.target.name, "value", event.target.value)
+    this.updateFormDataState(event.target.name, "value", event.target.value);
   }
   renderForm = () => {
     const formData = this.state.formData;
-    let formRender = ['name'];
-    
-    for (let field in formRender) {
-      const fieldName = formRender[field];
-      if (fieldName in formData) {
-        formRender[field] = <TextInput 
-          name={fieldName} 
-          formData={formData[fieldName]} 
+    let proceed = true;
+    Object.keys(formData).map((k, i) => {proceed = ("options" in formData[k] && proceed)})
+    const length = Object.keys(formData).length;
+    console.log(formData);
+    if (proceed && length > 0) {
+      return (<div>
+        <TextInput 
+          name="name" 
+          formData={formData.name} 
           onChange={this.onChange}
-          key={field}
-        />;
-      } else {
-        formRender[field] = null;
-      }
+          key={"name"}
+        />
+        <TextInput 
+          name="school_image" 
+          formData={formData.school_image} 
+          onChange={this.onChange}
+          key={"school_image"}
+        />
+        <TextInput 
+          name="auth_code" 
+          formData={formData.auth_code} 
+          onChange={this.onChange}
+          key={"auth_code"}
+        />
+        <SubmitInput label="Save"/>
+      </div>)
+    } else {
+      return null;
     }
-    
-    return (
-      <div>
-        {formRender}
-      </div>
-    );
   }
 }
 
 class SchoolPageContent extends React.Component {
   handleSubmit = (event) => {
-
+   
   }
   render = () => {
     return (
@@ -48,7 +55,7 @@ class SchoolPageContent extends React.Component {
         </div>
         <div className="row">
           <div className="col-12">
-            <SchoolAdminForm url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID}/>
+            <SchoolAdminForm url={"http://127.0.0.1:8000/base/api/v1/schools/" + schoolID + '/'} id="school-admin-form"/>
           </div>
         </div>
       </main>
