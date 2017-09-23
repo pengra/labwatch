@@ -1,5 +1,5 @@
 from django.db import models
-from baselabwatch.models.school import School
+from baselabwatch.models import School, Student
 
 class Subscription(models.Model):
     "A field for paid subscriptions."
@@ -25,3 +25,8 @@ class Subscription(models.Model):
 
     percentage_discount = models.FloatField()
     numeric_discount = models.IntegerField()
+
+    @property
+    def current_student_ids(self):
+        "how many students are currently in use rn."
+        return Student.objects.filter(school=self.school).count()
