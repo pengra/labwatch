@@ -11,15 +11,33 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Student
-        fields = (
-            'url',
-            'student_id',
-            'first_name',
-            'last_name',
-            'nick_name',
-            'teacher',
-            'grade',
-            'school',
-            'email',
-            'signed_in',
-        )
+        react_data = {
+            'url': {},
+            'student_id': {
+                'label': 'Student ID',
+                'help_text': 'This number must be unique.'
+            },
+            'first_name': {
+                'label': 'Student First Name',
+            },
+            'last_name': {
+                'label': 'Student Last Name',
+                'help_text': 'If student has multiple last names, place all names here.'
+            },
+            'nick_name': {
+                'label': 'Student "Nickname"',
+                'help_text': 'An additional unique identifier for this student.',
+                'placeholder': 'e.g. pengrnor000'
+            },
+            'teacher': {
+                'help_text': 'Student\'s main teacher.'
+            },
+            'grade': {},
+            'school': {},
+            'email': {
+                'label': 'Student email',
+                'help_text': 'If student would like to recieve emails from LabWatch. We never give emails away to anyone.'
+            },
+            'signed_in': {},
+        }
+        fields = tuple(react_data.keys())
