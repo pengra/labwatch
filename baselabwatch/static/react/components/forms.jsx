@@ -23,7 +23,11 @@ class Form extends React.Component {
         success: false
       });
     }, 3000)
+    if (this.state.method === 'POST') {
+      this.clearForm();
+    }
   }
+
   onSubmitFail = (data) => {
     this.setState({
       errors: data.responseJSON
@@ -33,6 +37,12 @@ class Form extends React.Component {
     })
   }
 
+  clearForm = () => {
+    for (let fieldName in this.state.formData) {
+      this.updateFormDataState(fieldName, "value", "");
+    }
+    
+  }
   onChange = (event) => {
     this.updateFormDataState(event.target.name, "value", event.target.value);
   }
@@ -178,6 +188,57 @@ class HiddenInput extends React.Component {
       name={this.props.name} 
       value={value}
     />
+  }
+}
+
+class SelectInput extends React.Component {
+  // props:
+    // formData : what formData[key] in Form.state.formData
+    // name : field name
+    // moreClasses : more classes
+    // errors: if there are errors to display
+  render() {
+    const optionsLoaded = !!("options" in this.props.formData)
+    const valueLoaded = !!("value" in this.props.formData)
+
+    // defaults
+    let className = "form-control" + (this.props.errors ? " is-invalid" : "");
+    let label;
+    let helptext;
+    let readOnly;
+    let options;
+
+    if (optionsLoaded) {
+      label = this.props.formData.options.react_meta.label || this.props.formData.options.label;
+      helptext = this.props.formData.options.react_meta.help_text || null;
+      readOnly = this.props.formData.options.react_meta.read_only || false;
+      options = this.props.formData.options.choices.map(
+        (value) => <option value={value.value} key={value.value}>{value.display_name}</option>
+      )
+    } else {
+      label = null;
+      helptext = null;
+      readOnly = false;
+      options = null;
+    }
+
+    return (
+      <div className="form-group">
+        <label htmlFor={this.props.name}>{label}</label>
+        <select 
+          readOnly={readOnly} 
+          onChange={readOnly? null: this.props.onChange} 
+          name={this.props.name} 
+          className={className} 
+        >
+          {options}
+        </select>
+        <small className="form-text text-muted">{helptext}</small>
+        <div className="invalid-feedback">
+          {this.props.errors}
+        </div>
+      </div>
+    );
   }
 }
 
