@@ -223,8 +223,7 @@ class MainContent extends LabWatchWebsite {
   }
   renderStudentsPage = () => {
     const example = [
-      [
-        "Create", 
+      ["Create", 
         <PageContent 
           title="Create Student" 
           content={
@@ -235,7 +234,9 @@ class MainContent extends LabWatchWebsite {
           }
         />
       ],
-      ["Find/Edit", <div>morecontent</div>],
+      ["Find/Edit", 
+        <div>morecontent</div>
+      ],
       ["Upload", <div>morecontent2</div>],
     ];
     return (<div>
