@@ -126,7 +126,49 @@ class CreateStudentForm extends Form {
         formData={formData.student_id} 
         onChange={this.onChange}
         errors={this.state.errors.student_id}
-        key={"student_id"}
+        key="student_id"
+      />
+      <TextInput 
+        name="first_name" 
+        formData={formData.first_name} 
+        onChange={this.onChange}
+        errors={this.state.errors.first_name}
+        key="first_name"
+      />
+      <TextInput 
+        name="last_name" 
+        formData={formData.last_name} 
+        onChange={this.onChange}
+        errors={this.state.errors.last_name}
+        key="last_name"
+      />
+      <TextInput 
+        name="nick_name" 
+        formData={formData.nick_name} 
+        onChange={this.onChange}
+        errors={this.state.errors.nick_name}
+        key="nick_name"
+      />
+      <TextInput 
+        name="email" 
+        formData={formData.email} 
+        onChange={this.onChange}
+        errors={this.state.errors.email}
+        key="email"
+      />
+      <TextInput 
+        name="teacher" 
+        formData={formData.teacher} 
+        onChange={this.onChange}
+        errors={this.state.errors.teacher}
+        key="teacher"
+      />
+      <SelectInput
+        name="grade"
+        formData={formData.grade}
+        onChange={this.onChange}
+        errors={this.state.errors.grade}
+        key="grade"
       />
       <SubmitInput label="Save" success={this.state.success} fail={this.state.fail}/>
     </div>
