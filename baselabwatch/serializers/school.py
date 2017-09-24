@@ -16,9 +16,7 @@ class SchoolSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = School
         react_data = {
-            'url': {
-                'hidden': True
-            },
+            'url': {},
             'name': {
                 'placeholder': 'e.g. EWHS',
                 'label': 'School Name',
