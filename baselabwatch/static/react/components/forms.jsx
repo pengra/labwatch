@@ -80,10 +80,12 @@ class Form extends React.Component {
     let newFormData = this.state.formData;
     if (verb === 'GET') {
       for (let fieldName in data) {
-        if (fieldName in newFormData) {
-          newFormData[fieldName].value = data[fieldName];
-        } else {
-          newFormData[fieldName] = {value: data[fieldName]};
+        if (isNaN(fieldName)) { // to protect against list views
+          if (fieldName in newFormData) {
+            newFormData[fieldName].value = data[fieldName];
+          } else {
+            newFormData[fieldName] = {value: data[fieldName]};
+          }
         }
       }
     } else if (verb === 'OPTIONS' && data.actions) {
@@ -112,14 +114,14 @@ class Form extends React.Component {
     const formData = this.state.formData;
     let proceed = true;
     const length = Object.keys(formData).length;
-    Object.keys(formData).map((k, i) => {proceed = ("options" in formData[k] && proceed)})
+    Object.keys(formData).map((k, i) => {if (isNaN(k)) {proceed = ("options" in formData[k] && proceed)}})
 
     if (proceed && length > 0) {
       formRender = this.renderForm();
     }
-    
+
     return (
-      <form noValidate id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
+      <form id={this.props.id} className={this.props.className || null} id={this.props.idName} onSubmit={this.handleSubmit}>
         {formRender}
       </form>
     )

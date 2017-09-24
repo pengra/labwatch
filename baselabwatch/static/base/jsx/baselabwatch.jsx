@@ -3,9 +3,6 @@ const leftNavBarLinks = [
 ]
 
 class PageContent extends React.Component {
-  handleSubmit = (event) => {
-   
-  }
   render = () => {
     return (
       <main className="tab-content">
@@ -119,12 +116,38 @@ class LimitsPage extends React.Component {
   }
 }
 
+class CreateStudentForm extends Form {
+  renderForm = () => {
+    const formData = this.state.formData;
+    return (
+    <div>
+      <TextInput 
+        name="student_id" 
+        formData={formData.student_id} 
+        onChange={this.onChange}
+        errors={this.state.errors.student_id}
+        key={"student_id"}
+      />
+      <SubmitInput label="Save" success={this.state.success} fail={this.state.fail}/>
+    </div>
+    )
+  }
+}
+
 class MainContent extends LabWatchWebsite {
   renderSchoolPage = () => {
     const schoolPageContent = [
       [
         "Settings", 
-        <PageContent title="School Administration" content={<SchoolAdminForm url={"/base/api/v1/schools/" + schoolID + '/'} id="school-admin-form"/>}/>
+        <PageContent 
+          title="School Administration" 
+          content={
+            <SchoolAdminForm 
+              url={"/base/api/v1/schools/" + schoolID + '/'} 
+              id="school-admin-form"
+            />
+          }
+        />
       ],
       [
         "Limits", 
@@ -158,7 +181,18 @@ class MainContent extends LabWatchWebsite {
   }
   renderStudentsPage = () => {
     const example = [
-      ["Create", <div>content</div>],
+      [
+        "Create", 
+        <PageContent 
+          title="Create Student" 
+          content={
+            <CreateStudentForm 
+              url={"/base/api/v1/students/"} 
+              id="student-create-form"
+            />
+          }
+        />
+      ],
       ["Find/Edit", <div>morecontent</div>],
       ["Upload", <div>morecontent2</div>],
     ];
