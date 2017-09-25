@@ -235,7 +235,12 @@ class MainContent extends LabWatchWebsite {
         />
       ],
       ["Find/Edit", 
-        <div>morecontent</div>
+        <PageContent 
+          title="Find or Edit Students" 
+          content={
+            <SearchForm url="/base/api/v1/students/" />
+          }
+       />
       ],
       ["Upload", <div>morecontent2</div>],
     ];
