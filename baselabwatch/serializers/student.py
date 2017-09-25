@@ -13,6 +13,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
         model = Student
         react_data = {
             'url': {},
+            'pk' : {},
             'student_id': {
                 'label': 'Student ID',
                 'help_text': 'This number must be unique.'
