@@ -69,7 +69,6 @@ class EditStudentModal extends Modal {
     this.child.handleSubmit(event);
   }
   onSuccess = (data) => {
-    console.log('done')
     this.setState({
       success: true,
       fail: false
@@ -81,7 +80,6 @@ class EditStudentModal extends Modal {
     }, 3000)
   }
   onFail = (data) => {
-    console.log('fail')
     this.setState({
       success: false,
       fail: true
