@@ -22,7 +22,8 @@ class Form extends React.Component {
     }
 
     this.setState({
-      success: true
+      success: true,
+      errors: {}
     })
     setTimeout(() => {
       this.setState({
