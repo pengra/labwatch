@@ -8,7 +8,7 @@ class Modal extends React.Component {
   constructor() {
     super();
   }
-  handleSubmit = () => {}
+  handleSubmit = (event) => {}
   render = () => {
     return (
       <div>
@@ -26,7 +26,13 @@ class Modal extends React.Component {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Save changes</button>
+                <SubmitInput 
+                  label="Save"
+                  success={this.onSuccess}
+                  fail={this.onFail}
+                  modal={true}
+                  onSubmit={this.handleSubmit}
+                />
               </div>
             </div>
           </div>
