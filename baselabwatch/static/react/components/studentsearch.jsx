@@ -58,15 +58,23 @@ class EditStudentForm extends Form {
 }
 
 class EditStudentModal extends Modal {
+  constructor() {
+    super();
+    this.state = {
+      id: 'student-edit-form'
+    }
+  }
   handleSubmit = (event) => {
     event.preventDefault();
+    this.child.handleSubmit(event);
   }
   renderModalContent = () => {
     if (this.props.pk) {
       return (
         <EditStudentForm 
+          ref={instance => {this.child = instance; }}
           url={"/base/api/v1/students/" + this.props.pk + '/'} 
-          id="student-edit-form"
+          id={this.state.id}
         />
       )
     } else {
