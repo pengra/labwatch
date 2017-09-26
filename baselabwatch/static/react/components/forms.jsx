@@ -4,6 +4,8 @@ class Form extends React.Component {
     // url : url to OPTIONS/GET to find form contents
     // className : this html class
     // id : this html id
+    // overrideSuccess : new success method
+    // overrideFail : new fail method
   constructor() {
     super();
     this.state = {
@@ -15,6 +17,10 @@ class Form extends React.Component {
   // Overload methods:
   renderForm = () => {}
   onSubmitSuccess = (data) => {
+    if (this.props.overrideSuccess) {
+      this.props.overrideSuccess(data);
+    }
+
     this.setState({
       success: true
     })
@@ -29,6 +35,9 @@ class Form extends React.Component {
   }
 
   onSubmitFail = (data) => {
+    if (this.props.overrideSuccess) {
+      this.props.overrideFail(data);
+    }
     this.setState({
       errors: data.responseJSON
     })

@@ -68,13 +68,39 @@ class EditStudentModal extends Modal {
     event.preventDefault();
     this.child.handleSubmit(event);
   }
+  onSuccess = (data) => {
+    console.log('done')
+    this.setState({
+      success: true,
+      fail: false
+    })
+    setTimeout(() => {
+      this.setState({
+        success: false
+      });
+    }, 3000)
+  }
+  onFail = (data) => {
+    console.log('fail')
+    this.setState({
+      success: false,
+      fail: true
+    })
+    setTimeout(() => {
+      this.setState({
+        fail: false
+      });
+    }, 3000)
+  }
   renderModalContent = () => {
     if (this.props.pk) {
       return (
         <EditStudentForm 
-          ref={instance => {this.child = instance; }}
+          ref={instance => {this.child = instance}}
           url={"/base/api/v1/students/" + this.props.pk + '/'} 
           id={this.state.id}
+          overrideSuccess={this.onSuccess}
+          overrideFail={this.onFail}
         />
       )
     } else {
