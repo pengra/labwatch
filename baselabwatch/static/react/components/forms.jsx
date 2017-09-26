@@ -143,6 +143,9 @@ class SubmitInput extends React.Component {
     // label: what to display on button
     // success : true/false success?
     // fail : true/false fail?
+    // modal : true/false
+      // if modal:
+        // onSubmit : method for submission
   render() {
     let feedback = null;
     if (this.props.success) {
@@ -154,16 +157,24 @@ class SubmitInput extends React.Component {
     } else if (this.props.fail) {
       feedback = (
         <span className="ajax-notification text-danger">
-        <i className="fa fa-times" aria-hidden="true"></i> Failed. Try Again
-      </span>
+          <i className="fa fa-times" aria-hidden="true"></i> Failed. Try Again
+        </span>
       )
     }
-    return (
-      <div>
-      <input type="submit" value={this.props.label} className="btn btn-success"/>
-      {feedback}
-      </div>
-    )
+    if (!this.props.modal) {
+      return (
+        <div>
+          <input type="submit" value={this.props.label} className="btn btn-success"/>
+          {feedback}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <button type="button" className="btn btn-primary" onClick={this.props.onSubmit}>{this.props.label}</button>
+        </div>
+      )
+    }
   }
 }
 
