@@ -190,9 +190,70 @@ class UploadPageContent extends React.Component {
   render = () => {
     return (
       <form onSubmit={this.handleSubmit}>
-        <FileInput />
+        <div className="row">
+          <div className="col-12">
+            <FileInput />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <label>What do you want to do about duplicates?</label>
+            <div className="form-group">
+              <select className="form-control" name="dupe_action">
+                <option value="ignore">Ignore duplicate student</option>
+                <option value="overwrite">Overwrite existing student with upload</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-        <SubmitInput />
+        <div className="row">
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="studentIDColumn">Enter the tag name containing student IDs</label>
+            <input type="text" name="studentid" className="form-control" id="studentIDColumn" aria-describedby="studentIDhelp" defaultValue="districtID"/>
+            <small id="studentIDhelp" className="form-text text-muted">In the example, it'd be "districtID" <strong>(required)</strong></small>
+          </div>
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="studentFirstNameColumn">Enter the tag name containing Student First Names</label>
+            <input type="text" name="fname" className="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" defaultValue="nameFirst"/>
+            <small id="studentFirstNamehelp" className="form-text text-muted">In the example, it'd be "nameFirst" <strong>(required)</strong></small>
+          </div>
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="studentLastNamesColumn">Enter the tag name containing Student Last Names</label>
+            <input type="text" name="lname" className="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" defaultValue="nameLast"/>
+            <small id="studentLastNameshelp" className="form-text text-muted">In the example, it'd be "nameLast" <strong>(required)</strong></small>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="gradeLevelColumn">Enter the tag name containing Student Grade level</label>
+            <input type="text" name="grade" className="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" defaultValue="gradeLevel"/>
+            <small id="gradeLevelhelp" className="form-text text-muted">In the example, it'd be "gradeLevel" (optional)</small>
+          </div>
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="homeroomColumn">Enter the tag name containing Student's Teacher</label>
+            <input type="text" name="teacher" className="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" defaultValue="homeroom"/>
+            <small id="homeroomhelp" className="form-text text-muted">In the example, it'd be "homeroom" (optional)</small>
+          </div>
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="nicknameColumn">Enter the tag name containing Student's username</label>
+            <input type="text" name="nickname" className="form-control" id="nicknameColumn" aria-describedby="nicknamehelp"/>
+            <small id="nicknamehelp" className="form-text text-muted">Not shown in example (optional)</small>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-xs-12 col-lg-4">
+            <label htmlFor="emailColumn">Enter the tag name containing Student Email</label>
+            <input type="text" name="email" className="form-control" id="emailColumn" aria-describedby="emailhelp"/>
+            <small id="emailhelp" className="form-text text-muted">Not shown in example (optional)</small>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+            <SubmitInput label="Submit XML Page"/>
+          </div>
+        </div>
       </form>
     );
   }
