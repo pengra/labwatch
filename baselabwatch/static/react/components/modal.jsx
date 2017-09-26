@@ -13,28 +13,7 @@ class Modal extends React.Component {
     }
   }
   handleSubmit = (event) => {}
-  onSuccess = (data) => {
-    this.setState({
-      success: true,
-      fail: false
-    })
-    setTimeout(() => {
-      this.setState({
-        success: false
-      });
-    }, 3000)
-  }
-  onFail = (data) => {
-    this.setState({
-      success: false,
-      fail: true
-    })
-    setTimeout(() => {
-      this.setState({
-        fail: false
-      });
-    }, 3000)
-  }
+  
 
   render = () => {
     return (
