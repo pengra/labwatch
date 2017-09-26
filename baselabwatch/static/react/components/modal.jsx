@@ -7,10 +7,34 @@ class Modal extends React.Component {
     // pk : primary key to focus
   constructor() {
     super();
+    this.state = {
+      success: false,
+      fail: false,
+    }
   }
   handleSubmit = (event) => {}
-  onSuccess = (data) => {}
-  onFail = (data) => {}
+  onSuccess = (data) => {
+    this.setState({
+      success: true,
+      fail: false
+    })
+    setTimeout(() => {
+      this.setState({
+        success: false
+      });
+    }, 3000)
+  }
+  onFail = (data) => {
+    this.setState({
+      success: false,
+      fail: true
+    })
+    setTimeout(() => {
+      this.setState({
+        fail: false
+      });
+    }, 3000)
+  }
 
   render = () => {
     return (
@@ -30,8 +54,8 @@ class Modal extends React.Component {
               <div className="modal-footer">
                 <SubmitInput 
                   label="Save"
-                  success={this.onSuccess}
-                  fail={this.onFail}
+                  success={this.state.success}
+                  fail={this.state.fail}
                   modal={true}
                   onSubmit={this.handleSubmit}
                 />
