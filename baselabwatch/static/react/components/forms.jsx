@@ -148,15 +148,16 @@ class SubmitInput extends React.Component {
         // onSubmit : method for submission
   render() {
     let feedback = null;
+    const modalClassName = this.props.modal ? ' is-modal' : '';
     if (this.props.success) {
       feedback = (
-        <span className="ajax-notification text-success">
+        <span className={"ajax-notification text-success" + modalClassName}>
           <i className="fa fa-check" aria-hidden="true"></i> Updated
         </span>
       )
     } else if (this.props.fail) {
       feedback = (
-        <span className="ajax-notification text-danger">
+        <span className={"ajax-notification text-danger" + modalClassName}>
           <i className="fa fa-times" aria-hidden="true"></i> Failed. Try Again
         </span>
       )
