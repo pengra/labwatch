@@ -264,6 +264,44 @@ class SelectInput extends React.Component {
   }
 }
 
+class FileInput extends React.Component {
+  // note: since no serializer actually uses
+  // a file input, this isn't designed to work with one
+  constructor() {
+    super();
+    this.state = {
+      fileName: "",
+      file: null,
+    }
+  }
+  formChanged = () => {
+    const file = $('#fileUploadInput')[0].files[0];
+    this.setState({
+      fileName: file.name,
+      file: file,
+    })
+  }
+
+  render() {
+    return (
+      <div className="input-group">
+        <label className="input-group-btn">
+          <span className="btn btn-primary" style={{height: '100%'}}>
+            Browse&hellip; 
+            <input type="file" id="fileUploadInput" style={{display: 'none'}}
+              onChange={() => this.formChanged()} name="spreadsheet"
+            />
+          </span>
+        </label>
+        <input type="text" value={this.state.fileName} className="form-control" style={{height: '100%'}} readOnly={true} />
+        <div className="invalid-feedback">
+          {this.props.errors}
+        </div>
+      </div>
+    )
+  }
+}
+
 class TextInput extends React.Component {
   // props:
   // formData : what formData[key] in Form.state.formData

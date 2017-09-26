@@ -176,6 +176,28 @@ class CreateStudentForm extends Form {
   }
 }
 
+class UploadPageContent extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      xmlUploaded: false, // has the user selected an XML file?
+      exampleData: {},    // show the user some example data e.g. "are these student usernames? last names?"
+    }
+  }
+  handleSubmit = (event) => {
+
+  }
+  render = () => {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <FileInput />
+
+        <SubmitInput />
+      </form>
+    );
+  }
+}
+
 class MainContent extends LabWatchWebsite {
   renderSchoolPage = () => {
     const schoolPageContent = [
@@ -222,7 +244,7 @@ class MainContent extends LabWatchWebsite {
     </div>)
   }
   renderStudentsPage = () => {
-    const example = [
+    const studentTabs = [
       ["Create", 
         <PageContent 
           title="Create Student" 
@@ -238,14 +260,21 @@ class MainContent extends LabWatchWebsite {
         <PageContent 
           title="Find or Edit Students" 
           content={
-            <StudentSearchForm url="/base/api/v1/students/" />
+            <StudentSearchForm url="/base/api/v1/students/" id="student-upload-form"/>
           }
        />
       ],
-      ["Upload", <div>morecontent2</div>],
+      ["Upload", 
+        <PageContent
+          title="Upload Student Spreadsheet"
+          content={
+            <UploadPageContent />
+          }
+        />
+      ],
     ];
     return (<div>
-      <TabbedPage tabs={example} />
+      <TabbedPage tabs={studentTabs} />
     </div>)
   }
   renderProfilePage = () => {
