@@ -1,11 +1,10 @@
-
 class Form extends React.Component {
   // props:
-    // url : url to OPTIONS/GET to find form contents
-    // className : this html class
-    // id : this html id
-    // overrideSuccess : new success method
-    // overrideFail : new fail method
+  // url : url to OPTIONS/GET to find form contents
+  // className : this html class
+  // id : this html id
+  // overrideSuccess : new success method
+  // overrideFail : new fail method
   constructor() {
     super();
     this.state = {
@@ -15,7 +14,7 @@ class Form extends React.Component {
   }
 
   // Overload methods:
-  renderForm = () => {}
+  renderForm = () => { }
   onSubmitSuccess = (data) => {
     if (this.props.overrideSuccess) {
       this.props.overrideSuccess(data);
@@ -51,7 +50,7 @@ class Form extends React.Component {
     for (let fieldName in this.state.formData) {
       this.updateFormDataState(fieldName, "value", "");
     }
-    
+
   }
   onChange = (event) => {
     this.updateFormDataState(event.target.name, "value", event.target.value);
@@ -63,12 +62,12 @@ class Form extends React.Component {
       url: this.props.url,
       data: this.serializeForm()
     })
-    .done((data) => {
-      this.onSubmitSuccess(data);
-    })
-    .fail((data) => {
-      this.onSubmitFail(data);
-    });
+      .done((data) => {
+        this.onSubmitSuccess(data);
+      })
+      .fail((data) => {
+        this.onSubmitFail(data);
+      });
   }
   serializeForm = () => {
     let formContents = {};
@@ -104,7 +103,7 @@ class Form extends React.Component {
           if (fieldName in newFormData) {
             newFormData[fieldName].value = data[fieldName];
           } else {
-            newFormData[fieldName] = {value: data[fieldName]};
+            newFormData[fieldName] = { value: data[fieldName] };
           }
         }
       }
@@ -117,24 +116,24 @@ class Form extends React.Component {
       } else {
         throw "Unknown accepted method";
       }
-      this.setState({method: acceptedMethod})
+      this.setState({ method: acceptedMethod })
       const fields = data.actions[acceptedMethod]
       for (let fieldName in fields) {
         if (fieldName in newFormData) {
           newFormData[fieldName].options = fields[fieldName];
         } else {
-          newFormData[fieldName] = {options: fields[fieldName]};
+          newFormData[fieldName] = { options: fields[fieldName] };
         }
       }
     }
-    this.setState({formData: newFormData});
+    this.setState({ formData: newFormData });
   }
   render() {
     let formRender = null;
     const formData = this.state.formData;
     let proceed = true;
     const length = Object.keys(formData).length;
-    Object.keys(formData).map((k, i) => {if (isNaN(k)) {proceed = ("options" in formData[k] && proceed)}})
+    Object.keys(formData).map((k, i) => { if (isNaN(k)) { proceed = ("options" in formData[k] && proceed) } })
 
     if (proceed && length > 0) {
       formRender = this.renderForm();
@@ -150,12 +149,12 @@ class Form extends React.Component {
 
 class SubmitInput extends React.Component {
   // props:
-    // label: what to display on button
-    // success : true/false success?
-    // fail : true/false fail?
-    // modal : true/false
-      // if modal:
-        // onSubmit : method for submission
+  // label: what to display on button
+  // success : true/false success?
+  // fail : true/false fail?
+  // modal : true/false
+  // if modal:
+  // onSubmit : method for submission
   render() {
     let feedback = null;
     const modalClassName = this.props.modal ? ' is-modal' : '';
@@ -175,7 +174,7 @@ class SubmitInput extends React.Component {
     if (!this.props.modal) {
       return (
         <div>
-          <input type="submit" value={this.props.label} className="btn btn-success"/>
+          <input type="submit" value={this.props.label} className="btn btn-success" />
           {feedback}
         </div>
       )
@@ -192,8 +191,8 @@ class SubmitInput extends React.Component {
 
 class HiddenInput extends React.Component {
   // props:
-    // formData : what formData[key] in Form.state.formData
-    // name : field name
+  // formData : what formData[key] in Form.state.formData
+  // name : field name
   render() {
     const valueLoaded = !!("value" in this.props.formData)
 
@@ -206,9 +205,9 @@ class HiddenInput extends React.Component {
       value = "";
     }
 
-    <input 
+    <input
       type="hidden"
-      name={this.props.name} 
+      name={this.props.name}
       value={value}
     />
   }
@@ -216,10 +215,10 @@ class HiddenInput extends React.Component {
 
 class SelectInput extends React.Component {
   // props:
-    // formData : what formData[key] in Form.state.formData
-    // name : field name
-    // moreClasses : more classes
-    // errors: if there are errors to display
+  // formData : what formData[key] in Form.state.formData
+  // name : field name
+  // moreClasses : more classes
+  // errors: if there are errors to display
   render() {
     const optionsLoaded = !!("options" in this.props.formData)
     const valueLoaded = !!("value" in this.props.formData)
@@ -248,11 +247,11 @@ class SelectInput extends React.Component {
     return (
       <div className="form-group">
         <label htmlFor={this.props.name}>{label}</label>
-        <select 
-          readOnly={readOnly} 
-          onChange={readOnly? null: this.props.onChange} 
-          name={this.props.name} 
-          className={className} 
+        <select
+          readOnly={readOnly}
+          onChange={readOnly ? null : this.props.onChange}
+          name={this.props.name}
+          className={className}
         >
           {options}
         </select>
@@ -267,10 +266,10 @@ class SelectInput extends React.Component {
 
 class TextInput extends React.Component {
   // props:
-    // formData : what formData[key] in Form.state.formData
-    // name : field name
-    // moreClasses : more classes
-    // errors: if there are errors to display
+  // formData : what formData[key] in Form.state.formData
+  // name : field name
+  // moreClasses : more classes
+  // errors: if there are errors to display
 
   render() {
     const optionsLoaded = !!("options" in this.props.formData)
@@ -304,17 +303,17 @@ class TextInput extends React.Component {
     } else {
       value = "";
     }
-    
+
     return (
       <div className="form-group">
         <label htmlFor={this.props.name}>{label}</label>
-        <input 
-          readOnly={readOnly} 
-          onChange={readOnly? null: this.props.onChange} 
-          type={type} 
-          name={this.props.name} 
-          className={className} 
-          placeholder={placeholder} 
+        <input
+          readOnly={readOnly}
+          onChange={readOnly ? null : this.props.onChange}
+          type={type}
+          name={this.props.name}
+          className={className}
+          placeholder={placeholder}
           value={value}
         />
         <small className="form-text text-muted">{helptext}</small>
