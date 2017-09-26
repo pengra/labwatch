@@ -1,7 +1,37 @@
 // https://getbootstrap.com/docs/4.0/components/modal/
 
-class EditStudentModal extends Modal {
+class EditStudentForm extends Form {
+  renderForm = () => {
+    const formData = this.state.formData;
+    return (<div>
+      <TextInput 
+        name="student_id" 
+        formData={formData.student_id} 
+        onChange={this.onChange}
+        errors={this.state.errors.student_id}
+        key="student_id"
+      />
+    </div>)
+  }
+}
 
+class EditStudentModal extends Modal {
+  handleSubmit = (event) => {
+    event.preventDefault();
+  }
+  renderModalContent = () => {
+    if (this.props.pk) {
+      return (
+        <EditStudentForm 
+          url={"/base/api/v1/students/" + this.props.pk + '/'} 
+          id="student-edit-form"
+        />
+      )
+    } else {
+      return null;
+    }
+    
+  }
 }
 
 class StudentSearchForm extends React.Component {
@@ -12,6 +42,7 @@ class StudentSearchForm extends React.Component {
     super();
     this.state = {
       results: [],
+      pk: null,
     }
   }
   handleSubmit = (event) => {
@@ -20,7 +51,6 @@ class StudentSearchForm extends React.Component {
     if (query.length === 0) {
       return;
     }
-    console.log(this.props.url)
     $.ajax({
       method: 'GET',
       url: this.props.url,
@@ -28,6 +58,11 @@ class StudentSearchForm extends React.Component {
         search: query
       }
     }).done((data) => this.setState({results: data}));
+  }
+  updatePk = (value) => {
+    this.setState({
+      pk: value
+    });
   }
   renderResults = () => {
     const results = this.state.results;
@@ -52,6 +87,7 @@ class StudentSearchForm extends React.Component {
                   className="btn btn-primary" 
                   data-toggle="modal" 
                   data-target="#student-edit-modal"
+                  onMouseOver={() => this.updatePk(data.pk)}
                 >Details/Edit</button></td>
             </tr>
           )}
@@ -59,6 +95,16 @@ class StudentSearchForm extends React.Component {
       </table>
       
     );
+  }
+  renderModal = () => {
+    return (
+      <EditStudentModal 
+        id="student-edit-modal" 
+        title="Edit a Student" 
+        url={this.props.url + this.state.pk + '/'} 
+        pk={this.state.pk}
+      />
+    )
   }
   render = () => {
     return (
@@ -79,7 +125,7 @@ class StudentSearchForm extends React.Component {
             {this.renderResults()}
           </div>
         </div>
-        <EditStudentModal id="student-edit-modal" />
+          {this.renderModal()}
       </div>
     )
   }
