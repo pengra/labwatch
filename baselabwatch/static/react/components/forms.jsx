@@ -171,6 +171,7 @@ class SubmitInput extends React.Component {
     } else {
       return (
         <div>
+          {feedback}
           <button type="button" className="btn btn-primary" onClick={this.props.onSubmit}>{this.props.label}</button>
         </div>
       )
