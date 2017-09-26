@@ -270,7 +270,7 @@ class FileInput extends React.Component {
   constructor() {
     super();
     this.state = {
-      fileName: "",
+      fileName: "Select an XML file",
       file: null,
     }
   }
