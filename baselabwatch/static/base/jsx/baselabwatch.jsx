@@ -1,5 +1,5 @@
 const leftNavBarLinks = [
-  "School", "Students", "Profile"
+  "School", "Students", // "Profile"
 ]
 
 class PageContent extends React.Component {
