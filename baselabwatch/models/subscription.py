@@ -17,6 +17,7 @@ class Subscription(models.Model):
     # plan_name = models.CharField(max_length=100)
     # Billing: https://apply.braintreegateway.com
 
+    logger_access = models.BooleanField(blank=True, default=False)
     max_student_ids = models.IntegerField()
     max_kiosks = models.IntegerField()
     max_logs = models.IntegerField()

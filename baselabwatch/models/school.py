@@ -11,7 +11,5 @@ class School(models.Model):
     auth_code = models.CharField(max_length=32, unique=True)
     school_image = models.URLField()
 
-    logger_access = models.BooleanField(blank=True, default=False)
-
     def __str__(self):
         return self.short_name
