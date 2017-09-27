@@ -14,7 +14,6 @@ class DashboardBase(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['title_links'] = str(get_app_metadata())
         context['current_app'] = self.current_app
         return context
 

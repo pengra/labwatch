@@ -44,12 +44,10 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link {% block baselabwatch_active %}{% endblock %}" href="#">Administration</a>
-          <!-- Page to add/remove people from this school -->
         </li>
         {% if request.user.profile.school.subscription.logger_access %}
           <li class="nav-item">
             <a class="nav-link {% block logger_active %}{% endblock %}" href="#">Logger</a>
-            <!-- Page to manipulate this profile -->
           </li>
         {% endif %}
         <li class="nav-item">

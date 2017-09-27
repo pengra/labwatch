@@ -1,20 +1,19 @@
+{% extends 'base/_base.html' %}
 {% block predocument %}
 {% endblock %}
+
+{% block baselabwatch_active %} active{% endblock %}
 
 {% block left_navigation %}
 <ul class="nav nav-pills flex-column">
   <li class="nav-item">
-    <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">{{school}} Overview <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block school_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">{{request.user.profile.school.short_name}} Administration <span class="badge badge-warning">Beta</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% block students_active %}{% endblock %}" href="#">Student Administration <span class="badge badge-warning">Beta</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% block profile_active %}{% endblock %}" href="#">Profile Administration <span class="badge badge-warning">Beta</span></a>
   </li>
 </ul>
-{% endblock %}
-
-{% block left_navigation_when_unregistered %}
-{% endblock %}
-
-{% block content %}
-<h1>Content Unavailable</h1>
-{% endblock %}
-
-{% block scripts %}
 {% endblock %}
