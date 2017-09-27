@@ -11,6 +11,9 @@ from baselabwatch.models import Student
 class XMLUploadView(View):
 
     def post(self, request):
+        # FOR DEBUGGING FRONT END
+        # import time; time.sleep(5);
+
         xmlform = XMLFileUploadForm(request.POST, request.FILES)
         if xmlform.is_valid() and xmlform.cleaned_data['spreadsheet'].size < MAXUPLOADSIZE:
             dupes = 0
@@ -48,13 +51,15 @@ class XMLUploadView(View):
                 except IntegrityError:
                     if overwrite_dupes:
                         old_student = Student.objects.get(
-                            Student, student_id=student_data['student_id'])
+                            student_id=student_data['student_id'])
                         old_student.delete()
                         try:
                             student.save()  
                             dupes += 1
                         except ValueError:
                             fails += 1
+                    else:
+                        dupes += 1
                 except ValueError:
                     fails += 1
 
