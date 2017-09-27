@@ -24,7 +24,7 @@
     <h2>School Settings</h2>
     <form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'baselabwatch:api:school-detail' pk=request.user.profile.school.pk %}');" id="settings-form">
       {% csrf_token %}
-      {% render_form serializer template_pack='rest_framework/vertical' %}
+      {% render_form serializer %}
       <div class="row">
         <div class="col-12">
           Current Image: 
@@ -40,10 +40,22 @@
     </form>
   </div>
   <div class="tab-pane fade" id="limits">
-
+    <h2>Subscription Limits</h2>
+    <div class="alert alert-info">
+      We are currently in a free beta stage. All users of LabWatch have
+      access to unlimited resources for free! Users will be notified of 
+      pricing and limit changes.
+    </div>
   </div>
-  <div class="tab-pane fade" id="payments">
-
+  <div class="tab-pane fade" id="payment">
+    <h2>Payment Method</h2>
+    <div class="alert alert-info">
+      We are currently in a free beta stage. All users of LabWatch have
+      access to unlimited resources for free! Users will be notified of 
+      pricing and limit changes. Currently, LabWatch is planning
+      on charging around $100 per year for services at the end of
+      the free beta. This is subject to change.
+    </div>
   </div>
 </div>
 {% endblock %}
