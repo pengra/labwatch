@@ -11,6 +11,29 @@
   
   {% block predocument %}
   {% endblock %}
+  <script type="text/javascript">
+    // util.js
+    
+    updateUrl = (tabId) => {
+      window.history.pushState(null, tabId, '?tab=' + tabId);
+    }
+    
+    getUrlParameter = (sParam) => {
+      let sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+      for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+      }
+    };
+
+  </script>
 
   {% if request.user.profile.school %}
     <title>{{request.user.profile.school.short_name}} - {% block subtitle %}Overview{% endblock %}</title>
@@ -82,7 +105,7 @@
       <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
         {% if request.user.profile.school %}
           {% block content %}
-              <h1>Content Unavailable</h1>
+            <h1>Content Unavailable</h1>
           {% endblock %}
         {% else %}
           {% block content_when_unregistered %}
@@ -108,13 +131,16 @@
   <script src="{% static 'jquery/jquery.min.js' %}"></script>
   <script src="{% static 'base/popper.min.js' %}"></script>
   <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
-  {% block scripts %}
-  {% endblock %}
-  <script>
+  <script type="text/javascript">
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
+      $('[data-toggle="tooltip"]').tooltip(); 
+      if (getUrlParameter('tab')) {
+        $('#' + getUrlParameter('tab') + '-tab').click();
+      }
     });
   </script>
+  {% block scripts %}
+  {% endblock %}
 </body>
 
 </html>
