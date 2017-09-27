@@ -8,37 +8,22 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
     url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('student-detail'))
     school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), read_only=True)
+    signed_in = serializers.BooleanField(read_only=True)
+    student_id = serializers.CharField(label='Student ID', help_text='This number must be unique.')
+    nick_name = serializers.CharField(help_text='Should the user forget his/her ID, they can alternatively type in a username or nickname.', style={'placeholder': 'e.g. pengrnor000'})
 
     class Meta:
         model = Student
-        react_data = {
-            'url': {},
-            'pk' : {},
-            'student_id': {
-                'label': 'Student ID',
-                'help_text': 'This number must be unique.'
-            },
-            'first_name': {
-                'label': 'Student First Name',
-            },
-            'last_name': {
-                'label': 'Student Last Name',
-                'help_text': 'If student has multiple last names, place all names here.'
-            },
-            'nick_name': {
-                'label': 'Student "Nickname"',
-                'help_text': 'An additional unique identifier for this student.',
-                'placeholder': 'e.g. pengrnor000'
-            },
-            'teacher': {
-                'help_text': 'Student\'s main teacher.'
-            },
-            'grade': {},
-            'school': {},
-            'email': {
-                'label': 'Student email',
-                'help_text': 'If student would like to recieve emails from LabWatch. We never give emails away to anyone.'
-            },
-            'signed_in': {},
-        }
-        fields = tuple(react_data.keys())
+        fields = (
+            'url',
+            'pk',
+            'student_id',
+            'first_name',
+            'last_name',
+            'nick_name',
+            'email',
+            'teacher',
+            'grade',
+            'school',
+            'signed_in',
+        )
