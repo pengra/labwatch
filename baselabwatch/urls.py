@@ -15,6 +15,7 @@ router.register(r'reports', api.UserReportViewSet)
 
 urlpatterns = [
     url(r'^$', views.SchoolView.as_view(), name='index'),
+    url(r'^student/$', views.StudentView.as_view(), name='student'),
     url(r'^api/v1/', include(router.urls, namespace='api')),
     url(r'^api/v1/upload/$', views.XMLUploadView.as_view(), name='student-upload'),
 ]
