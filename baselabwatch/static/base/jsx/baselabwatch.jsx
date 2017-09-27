@@ -189,7 +189,9 @@ class UploadPageContent extends React.Component {
     event.preventDefault();
 
     this.setState({
-      uploading: true
+      uploading: true,
+      success: false,
+      fail: false,
     })
 
     if (!window.FormData) {
