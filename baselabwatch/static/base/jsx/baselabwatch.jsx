@@ -218,7 +218,7 @@ class UploadPageContent extends React.Component {
     }).done((data) => {
       this.successfulUpload(data);
     }).fail((data) => {
-      this.failedUpload(data.responseJSON);
+      this.failedUpload(data);
     })
   }
   
@@ -235,6 +235,7 @@ class UploadPageContent extends React.Component {
   }
 
   failedUpload = (data) => {
+    console.log(data)
     this.setState({
       uploading: false,
       message: (
@@ -246,7 +247,7 @@ class UploadPageContent extends React.Component {
   }
 
   statusMessage = () => {
-    if (this.state.success || this.state.fail) {
+    if (this.state.success || this.state.fail && !this.state.uploading) {
       return (
         <div className="row">
           <div className="col-12">
