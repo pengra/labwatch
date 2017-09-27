@@ -29,21 +29,30 @@ class XMLUploadView(View):
                 student_data = {
                     'school': request.user.profile.school
                 }
+                failed = False
                 for data in row:
-                    if data.tag == xmlform.cleaned_data['studentid'] and len(data.text) > 0:
-                        student_data['student_id'] = data.text
-                    elif data.tag == xmlform.cleaned_data['fname'] and len(data.text) > 0:
-                        student_data['first_name'] = data.text
-                    elif data.tag == xmlform.cleaned_data['lname'] and len(data.text) > 0:
-                        student_data['last_name'] = data.text
-                    elif data.tag == xmlform.cleaned_data['grade'] and len(data.text) > 0:
-                        student_data['grade'] = data.text
-                    elif data.tag == xmlform.cleaned_data['teacher'] and len(data.text) > 0:
-                        student_data['teacher'] = data.text
-                    elif len(xmlform.cleaned_data['nickname']) and data.tag == xmlform.cleaned_data['nickname'] and len(data.text) > 0:
-                        student_data['nick_name'] = data.text
-                    elif len(xmlform.cleaned_data['email']) and data.tag == xmlform.cleaned_data['email'] and len(data.text) > 0:
-                        student_data['email'] = data.text
+                    try:
+                        if data.tag == xmlform.cleaned_data['studentid'] and len(data.text) > 0:
+                            student_data['student_id'] = data.text
+                        elif data.tag == xmlform.cleaned_data['fname'] and len(data.text) > 0:
+                            student_data['first_name'] = data.text
+                        elif data.tag == xmlform.cleaned_data['lname'] and len(data.text) > 0:
+                            student_data['last_name'] = data.text
+                        elif data.tag == xmlform.cleaned_data['grade'] and len(data.text) > 0:
+                            student_data['grade'] = data.text
+                        elif data.tag == xmlform.cleaned_data['teacher'] and len(data.text) > 0:
+                            student_data['teacher'] = data.text
+                        elif len(xmlform.cleaned_data['nickname']) and data.tag == xmlform.cleaned_data['nickname'] and len(data.text) > 0:
+                            student_data['nick_name'] = data.text
+                        elif len(xmlform.cleaned_data['email']) and data.tag == xmlform.cleaned_data['email'] and len(data.text) > 0:
+                            student_data['email'] = data.text
+                    except KeyError:
+                        fails += 1
+                        failed = True
+                
+                if failed:
+                    continue
+
                 student = Student(**student_data)
                 try:
                     student.save()
