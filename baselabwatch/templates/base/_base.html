@@ -75,11 +75,6 @@
       <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
         {% if request.user.profile.school %}
           {% block left_navigation %}
-            <ul class="nav nav-pills flex-column">
-              <li class="nav-item">
-                <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">{{school}} Overview <span class="badge badge-warning">Beta</span></a>
-              </li>
-            </ul>
           {% endblock %}
         {% else %}
           {% block left_navigation_when_unregistered %}
