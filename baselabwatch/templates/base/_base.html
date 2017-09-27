@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,28 @@
   
   {% block predocument %}
   {% endblock %}
+  <style>
+    label {
+      display: inline-block;
+      margin-bottom: 5rem;
+      touch-action: manipulation;
+      cursor: default;
+    }
+    span.help-block {
+      color: #868e96;
+      display: block;
+      margin-top: .25rem;
+      font-size: 80%;
+      font-weight: 400;
+    }
+    h2 {
+      margin-top: 2%!important;
+      margin-bottom: 1%!important;
+    }
+    .form-status {
+      margin-left: 1%;
+    }
+  </style>
   <script type="text/javascript">
     // util.js
     
@@ -32,6 +55,22 @@
         }
       }
     };
+
+    getCookie = (name) => {
+      let cookieValue = null;
+      if (document.cookie && document.cookie != '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) == (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
 
   </script>
 
@@ -129,6 +168,7 @@
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="{% static 'jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'jquery/jquery.form.min.js' %}"></script>
   <script src="{% static 'base/popper.min.js' %}"></script>
   <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
   <script type="text/javascript">
@@ -137,7 +177,66 @@
       if (getUrlParameter('tab')) {
         $('#' + getUrlParameter('tab') + '-tab').click();
       }
+      $.ajaxSetup({
+        headers: {"X-CSRFToken": getCookie('csrftoken')}
+      });
     });
+    
+    ajaxSubmit = (event, form, method, target) => {
+      event.preventDefault();
+      updateStatus(form, false, false);
+      unflagAllErrors();
+      $.ajax({
+        method: method,
+        url: target,
+        data: $(form).serialize(),
+      }).done((data) => {
+        updateStatus(form, true, false);
+      }).fail((data) => {
+        console.log(data.responseJSON)
+        for (let key in data.responseJSON) {
+          flagErrors(key, data.responseJSON[key])
+        }
+        updateStatus(form, false, true);
+      })
+    }
+
+    unflagAllErrors = () => {
+      $('input').removeClass('is-invalid');
+      let spans = $('input').next();
+      spans.removeClass('text-danger');
+    }
+
+    flagErrors = (inputName, error) => {
+      $('input[name="' + inputName + '"]').addClass('is-invalid');
+      let span = $('input[name="' + inputName + '"]').next();
+      span.text(span.text() + ' (Required!)');
+      span.addClass('text-danger');
+    }
+
+    updateStatus = (form, success, fail) => {
+      let status = $(form).find('span.form-status');
+      if (success) {
+        status.text('Success!');
+        status.addClass('text-success');
+        status.removeClass('text-danger');
+        
+      } else if (fail) {
+        status.text('Please correct the highlighted fields')
+        status.addClass('text-danger');
+        status.removeClass('text-success');
+      } else {
+        status.text('')
+        status.removeClass('text-success');
+        status.removeClass('text-danger');
+      }
+      setTimeout(() => {
+        let status = $(form).find('span.form-status');
+        status.text('')
+        status.removeClass('text-success');
+        status.removeClass('text-danger');
+      }, 3000);
+    }
   </script>
   {% block scripts %}
   {% endblock %}

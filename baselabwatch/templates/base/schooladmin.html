@@ -1,7 +1,49 @@
 {% extends 'base/_admin_settings.html' %}
+{% load rest_framework %}
+
+{% block predocument %}
+{% endblock %}
 
 {% block school_active %} active{% endblock %}
 
 {% block content %}
-<h1>Content Unavailable</h1>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#settings" id='settings-tab' onClick="updateUrl('settings');">Settings</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#limits" id='limits-tab' onClick="updateUrl('limits');">Limits</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#payment" id='payment-tab' onClick="updateUrl('payment');">Payment</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="settings">
+    <h2>School Settings</h2>
+    <form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'baselabwatch:api:school-detail' pk=request.user.profile.school.pk %}');" id="settings-form">
+      {% csrf_token %}
+      {% render_form serializer template_pack='rest_framework/vertical' %}
+      <div class="row">
+        <div class="col-12">
+          Current Image: 
+          <img id="school-image" src="{{request.user.profile.school.school_image}}" height="100px" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <span class="form-status"></span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="limits">
+
+  </div>
+  <div class="tab-pane fade" id="payments">
+
+  </div>
+</div>
 {% endblock %}

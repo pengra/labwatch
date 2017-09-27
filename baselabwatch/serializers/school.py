@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+import django.forms
 from rest_framework import serializers
 from baselabwatch.models import School
 from baselabwatch.util.urls import URLResolution
@@ -7,33 +8,23 @@ resolution = URLResolution(School)
 
 
 class SchoolSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('school-detail'), read_only=True)
     primary_contact = serializers.HyperlinkedRelatedField(
         source='primary_contact.pk',
         view_name=resolution.resolve('user-detail'),
         read_only=True)
-    url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('school-detail'), read_only=True)
+    name = serializers.CharField(label='School Name', help_text='Your school\'s full name', style={'placeholder': 'e.g. Edmonds Woodway High School'})
+    short_name = serializers.CharField(label='School Abbreviation', help_text='A short name for your school.', style={'placeholder': 'e.g. EWHS'})
+    auth_code = serializers.CharField(label='School Code', help_text='A code for letting other teachers join.', read_only=True)
+    school_image = serializers.CharField(label='School Logo', help_text='A link to a school image.')
 
     class Meta:
         model = School
-        react_data = {
-            'url': {},
-            'name': {
-                'placeholder': 'e.g. EWHS',
-                'label': 'School Name',
-                'help_text': 'An abbreviation of your school\'s name'
-            },
-            'primary_contact': {
-                # 'display': '{primary_contact.first_name} {primary_contact.last_name}: {primary_contact.email}',
-                'read_only': True
-            },
-            'auth_code': {
-                'label': 'School code',
-                'read_only': True,
-                'help_text': 'Give this code to teachers who\'d like to join LabWatch.'
-            },
-            'school_image': {
-                'placeholder': 'e.g. an imgur link such as https://imgur.com/XrHBZbV.png',
-                'help_text': 'Your school logo. Upload the image to another website and paste the link here.'
-            },
-        }
-        fields = tuple(react_data.keys())
+        fields = (
+            'url',
+            'name',
+            'short_name',
+            'primary_contact',
+            'auth_code',
+            'school_image'
+        )
