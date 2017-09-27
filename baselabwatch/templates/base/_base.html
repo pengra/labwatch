@@ -191,9 +191,9 @@
         url: target,
         data: $(form).serialize(),
       }).done((data) => {
+        console.log(data);
         updateStatus(form, true, false);
       }).fail((data) => {
-        console.log(data.responseJSON)
         for (let key in data.responseJSON) {
           flagErrors(key, data.responseJSON[key])
         }
@@ -207,10 +207,10 @@
       spans.removeClass('text-danger');
     }
 
-    flagErrors = (inputName, error) => {
+    flagErrors = (inputName, errors) => {
       $('input[name="' + inputName + '"]').addClass('is-invalid');
       let span = $('input[name="' + inputName + '"]').next();
-      span.text(span.text() + ' (Required!)');
+      span.text(span.text() + ' (' + errors[0] + ')');
       span.addClass('text-danger');
     }
 
@@ -236,6 +236,10 @@
         status.removeClass('text-success');
         status.removeClass('text-danger');
       }, 3000);
+    }
+
+    clearForm = (form) => {
+      $(form)[0].reset();
     }
   </script>
   {% block scripts %}

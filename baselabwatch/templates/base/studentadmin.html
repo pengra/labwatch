@@ -1,7 +1,41 @@
 {% extends 'base/_admin_settings.html' %}
+{% load rest_framework %}
 
 {% block students_active %} active{% endblock %}
 
 {% block content %}
-<h1>Content Unavailable</h1>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#create" id='create-tab' onClick="updateUrl('create');">Create Student</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#findedit" id='findedit-tab' onClick="updateUrl('findedit');">Find/Edit Student</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#upload" id='upload-tab' onClick="updateUrl('upload');">Upload Spreadsheet</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="create">
+    <h2>Create a Student</h2>
+    <form onSubmit="ajaxSubmit(event, this, 'POST', '{% url 'baselabwatch:api:student-list' %}');">
+      {% csrf_token %}
+      {% render_form serializer %}
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Create Student</button>
+          <span class="form-status"></span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="findedit">
+    <h2>Find/Edit a Student</h2>
+  </div>
+  <div class="tab-pane fade" id="upload">
+    <h2>Upload Spreadsheet</h2>
+  </div>
+</div>
+
 {% endblock %}
