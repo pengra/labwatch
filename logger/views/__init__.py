@@ -1,1 +1,1 @@
-from logger.views.logview import LogDashView
+from logger.views.overview import OverviewView

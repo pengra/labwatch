@@ -1,0 +1,16 @@
+{% extends 'base/_base.html' %}
+{% block predocument %}
+{% endblock %}
+
+{% block logger_active %} active{% endblock %}
+
+{% block left_navigation %}
+<ul class="nav nav-pills flex-column">
+  <li class="nav-item">
+    <a class="nav-link {% block overview_active %}{% endblock %}" href="#">Overview <span class="badge badge-warning">Beta</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% block kiosk_active %}{% endblock %}" href="#">Kiosk Management <span class="badge badge-warning">Beta</span></a>
+  </li>
+</ul>
+{% endblock %}

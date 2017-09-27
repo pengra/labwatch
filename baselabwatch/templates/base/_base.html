@@ -43,11 +43,11 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link {% block baselabwatch_active %}{% endblock %}" href="#">Administration</a>
+          <a class="nav-link {% block baselabwatch_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">Administration</a>
         </li>
         {% if request.user.profile.school.subscription.logger_access %}
           <li class="nav-item">
-            <a class="nav-link {% block logger_active %}{% endblock %}" href="#">Logger</a>
+            <a class="nav-link {% block logger_active %}{% endblock %}" href="{% url 'logger:index' %}">Logger</a>
           </li>
         {% endif %}
         <li class="nav-item">
