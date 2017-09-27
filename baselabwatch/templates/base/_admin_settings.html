@@ -13,7 +13,7 @@
     <a class="nav-link {% block students_active %}{% endblock %}" href="{% url 'baselabwatch:student' %}">Student Administration <span class="badge badge-warning">Beta</span></a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% block profile_active %}{% endblock %}" href="#">Profile Administration <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block profile_active %}{% endblock %}" href="{% url 'baselabwatch:profile' %}">Profile Administration <span class="badge badge-warning">Beta</span></a>
   </li>
 </ul>
 {% endblock %}
