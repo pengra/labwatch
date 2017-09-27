@@ -232,7 +232,6 @@ class UploadPageContent extends React.Component {
       success: true,
       fail: false
     });
-    console.log(data);
   }
 
   failedUpload = (data) => {
@@ -244,7 +243,6 @@ class UploadPageContent extends React.Component {
       fail: true,
       success: false
     });
-    console.log(data);
   }
 
   statusMessage = () => {
