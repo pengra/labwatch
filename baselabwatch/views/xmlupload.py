@@ -59,13 +59,13 @@ class XMLUploadView(View):
                     new_students += 1
                 except IntegrityError:
                     if overwrite_dupes:
-                        old_student = Student.objects.get(
-                            student_id=student_data['student_id'])
-                        old_student.delete()
                         try:
+                            old_student = Student.objects.get(
+                                student_id=student_data['student_id'])
+                            old_student.delete()
                             student.save()  
                             dupes += 1
-                        except ValueError:
+                        except (ValueError, KeyError):
                             fails += 1
                     else:
                         dupes += 1
