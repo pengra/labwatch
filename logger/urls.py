@@ -13,5 +13,6 @@ router.register(r'imagecards', api.ImageCardViewSet)
 
 urlpatterns = [
     url(r'^$', views.OverviewView.as_view(), name='index'),
+    url(r'^kiosk/$', views.KioskView.as_view(), name='kiosk'),
     url(r'^api/v1/', include(router.urls)),
 ]
