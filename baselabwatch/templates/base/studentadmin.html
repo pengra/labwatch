@@ -1,7 +1,8 @@
-{% extends 'base/_admin_settings.html' %}
-{% load rest_framework %}
+{% extends 'base/_admin_settings.html' %} 
+{% load rest_framework %} 
+{% load static %}
 
-{% block students_active %} active{% endblock %}
+{% block students_active %} active{% endblock %} 
 
 {% block content %}
 <ul class="nav nav-tabs">
@@ -20,7 +21,7 @@
   <div class="tab-pane fade show active" id="create">
     <h2>Create a Student</h2>
     <form onSubmit="ajaxSubmit(event, this, 'POST', '{% url 'baselabwatch:api:student-list' %}');">
-      {% csrf_token %}
+      {% csrf_token %} 
       {% render_form serializer %}
       <div class="row">
         <div class="col-12">
@@ -55,7 +56,7 @@
             </tr>
           </thead>
           <tbody id="search-results">
-
+            <!-- results -->
           </tbody>
         </table>
       </div>
@@ -63,7 +64,136 @@
 
   </div>
   <div class="tab-pane fade" id="upload">
-    <h2>Upload Spreadsheet</h2>
+    <h2>Upload Spreadsheet
+      <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      <i class="fa fa-file-code-o" aria-hidden="true"></i>
+    </h2>
+    {% if request.GET.upload == 'true' %}
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-info">
+          Spreadsheet Uploaded.
+          {% if request.GET.new != '0' %}
+          Created {{request.GET.new}} new students.
+          {% endif %}
+          {% if request.GET.dupes != '0' %}
+          {% if request.GET.overwrite == 'True' %}Overwrote{% else %}Ignored{% endif %} {{request.GET.dupes}} existing students.
+          {% endif %}
+          {% if request.GET.fails != '0' %}
+            Unable to read {{request.GET.fails}} students due to incomplete data and ignored them.
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    
+    <div>
+      <form class="row" method="POST" enctype="multipart/form-data"> <!-- action='{% url "baselabwatch:student-upload" %}' -->
+        {% csrf_token %}
+        <div class="col-12">
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-primary" style="height: 100%;">
+                Browse&hellip; <input type="file" id="fileUploadInput" style="display: none;"
+                onchange="formChanged(this);" name="spreadsheet"
+                >
+              </span>
+            </label>
+            <input type="text" id="fileUploadText" class="form-control" style="height:100%;" readonly>
+          </div>
+          <span class="help-block" id="instructions">
+            Currently accepts XML (Microsoft Excel files coming soon!)<!--  and Microsoft Excel files -->.
+          </span>
+        </div>
+
+        <!-- XML Upload -->
+        <div id="xml-upload" class="col-12 hidden" style="margin-top: 2%; margin-bottom: 5%;">
+          <p><strong>
+            Open the XML file you're trying to upload in notepad. Inside, you should find
+            something like the example. Fill out the form based on your XML file.
+          </strong></p>
+          <pre>
+EXAMPLE DATA:
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;DestinyCustomReport&gt;
+  &lt;Row&gt;
+    &lt;dateAddedUpdated&gt;&lt;![CDATA[2017-09-13]]&gt;&lt;/dateAddedUpdated&gt;
+    &lt;districtID&gt;&lt;![CDATA[1234567]]&gt;&lt;/districtID&gt;
+    &lt;nameLast&gt;&lt;![CDATA[Pengra]]&gt;&lt;/nameLast&gt;
+    &lt;nameFirst&gt;&lt;![CDATA[Norton]]&gt;&lt;/nameFirst&gt;
+    &lt;gradeLevel&gt;&lt;![CDATA[09]]&gt;&lt;/gradeLevel&gt;
+    &lt;homeroom&gt;&lt;![CDATA[StenslandT]]&gt;&lt;/homeroom&gt;
+  &lt;/Row&gt;
+  ...
+          </pre>
+          <div class="row">
+            <div class="col-12">
+              <label for="method">What do you want to do about duplicates?</label>
+              <div class="form-group">
+                <select class="form-control" name="dupe_action">
+                  <option value="ignore">Ignore duplicate student</option>
+                  <option value="overwrite">Overwrite existing student with upload</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentIDColumn">Enter the tag name containing student IDs</label>
+              <input type="text" name="studentid" class="form-control" aria-describedby="studentIDhelp" value="districtID">
+              <small id="studentIDhelp" class="form-text text-muted">In the example, it'd be "districtID" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentFirstNameColumn">Enter the tag name containing Student First Names</label>
+              <input type="text" name="fname" class="form-control" id="studentFirstNameColumn" aria-describedby="studentFirstNamehelp" value="nameFirst">
+              <small id="studentFirstNamehelp" class="form-text text-muted">In the example, it'd be "nameFirst" <strong>(required)</strong></small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="studentLastNamesColumn">Enter the tag name containing Student Last Names</label>
+              <input type="text" name="lname" class="form-control" id="studentLastNamesColumn" aria-describedby="studentLastNameshelp" value="nameLast">
+              <small id="studentLastNameshelp" class="form-text text-muted">In the example, it'd be "nameLast" <strong>(required)</strong></small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="gradeLevelColumn">Enter the tag name containing Student Grade level</label>
+              <input type="text" name="grade" class="form-control" id="gradeLevelColumn" aria-describedby="gradeLevelhelp" value="gradeLevel">
+              <small id="gradeLevelhelp" class="form-text text-muted">In the example, it'd be "gradeLevel" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="homeroomColumn">Enter the tag name containing Student's Teacher</label>
+              <input type="text" name="teacher" class="form-control" id="homeroomColumn" aria-describedby="homeroomhelp" value="homeroom">
+              <small id="homeroomhelp" class="form-text text-muted">In the example, it'd be "homeroom" (optional)</small>
+            </div>
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="nicknameColumn">Enter the tag name containing Student's username</label>
+              <input type="text" name="nickname" class="form-control" id="nicknameColumn" aria-describedby="nicknamehelp">
+              <small id="nicknamehelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-12 col-lg-4">
+              <label for="emailColumn">Enter the tag name containing Student Email</label>
+              <input type="text" name="email" class="form-control" id="emailColumn" aria-describedby="emailhelp">
+              <small id="emailhelp" class="form-text text-muted">Not shown in example (optional)</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" onclick="uploadForm();" class="btn btn-primary">Upload XML Page <i class="fa fa-file-code-o" aria-hidden="true"></i> </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="loading" class="col-12 hidden" style="margin-top: 2%; margin-bottom: 5%;">
+          <div class="container text-center">
+            <h4>Got it. We're processing your spreadsheet. This could take a minute.</h4>
+            <img src="{% static 'images/loading1.gif' %}" alt="">
+          </div>
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>
 
@@ -78,9 +208,7 @@
           </button>
         </div>
         <div class="modal-body">
-          
-            {% render_form serializer %}
-          
+          {% render_form serializer %}
         </div>
         <div class="modal-footer">
           <span class="form-status"></span>
@@ -92,11 +220,16 @@
   </form>
 </div>
 
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script type="text/javascript">
   let thisStudentPk = null;
+
+  uploadForm = () => {
+    $('#excel-upload').addClass('hidden');
+    $('#xml-upload').addClass('hidden');
+    $('#loading').removeClass('hidden');
+  }
+
   $('#student-detail').on('show.bs.modal', (event) => {
     console.log('here');
     let button = $(event.relatedTarget) // Button that triggered the modal
@@ -120,21 +253,42 @@
     })
   })
 
+  formChanged = (input) => {
+    const file = $(input)[0].files[0];
+    $('#fileUploadText').val(file.name);
+    if (file.name.endsWith('.xml')) {
+      // XML file
+      $('#instructions').removeClass('text-danger')
+      $('#excel-upload').addClass('hidden');
+      $('#xml-upload').removeClass('hidden');
+    // } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+    //   // Excel file
+    //   $('#instructions').removeClass('text-danger')
+    //   $('#excel-upload').removeClass('hidden');
+    //   $('#xml-upload').addClass('hidden');
+    } else {
+      $('#fileUploadText').val(file.name + ' (Invalid File Type!)');
+      $('#instructions').addClass('text-danger')
+      $('#excel-upload').addClass('hidden');
+      $('#xml-upload').addClass('hidden');
+    }
+  }
+
   findStudent = (event, form) => {
     event.preventDefault();
     let formData = $(form).serialize();
     if (formData.search.length > 0) {
       $.ajax({
-        method: 'GET',
-        data: formData,
-        url: "{% url 'baselabwatch:api:student-list' %}"
-      })
-      .done((data) => {
-        displayResults(data);
-      })
-      .fail((data) => {
-        
-      });
+          method: 'GET',
+          data: formData,
+          url: "{% url 'baselabwatch:api:student-list' %}"
+        })
+        .done((data) => {
+          displayResults(data);
+        })
+        .fail((data) => {
+
+        });
     }
   }
 
@@ -142,16 +296,20 @@
     $('#search-results').text('');
     for (let index in data) {
       $('#search-results').append(
-        ("<tr>\
-          <td><button class='btn btn-primary' data-toggle=\"modal\" data-target='#student-detail' data-id='" + data[index].pk + "'>\
+        (
+          "<tr>\
+          <td><button class='btn btn-primary' data-toggle=\"modal\" data-target='#student-detail' data-id='" +
+          data[index].pk +
+          "'>\
           <i class=\"fa fa-id-card\" aria-hidden=\"true\"></i></button></td>\
-          <td>" + data[index].student_id +  "</td>\
-          <td>" + data[index].first_name +  "</td>\
-          <td>" + data[index].last_name +  "</td>\
+          <td>" + data[
+            index].student_id + "</td>\
+          <td>" + data[index].first_name + "</td>\
+          <td>" + data[
+            index].last_name + "</td>\
         </tr>")
       )
     }
   }
-
 </script>
 {% endblock %}
