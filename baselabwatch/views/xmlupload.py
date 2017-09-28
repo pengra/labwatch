@@ -6,6 +6,7 @@ from defusedxml.ElementTree import parse
 from labwatch.settings import MAXUPLOADSIZE
 from baselabwatch.forms import XMLFileUploadForm
 from baselabwatch.models import Student
+from baselabwatch.util import sanitize_name
 
 
 class XMLUploadView(View):
@@ -35,13 +36,13 @@ class XMLUploadView(View):
                         if data.tag == xmlform.cleaned_data['studentid'] and len(data.text) > 0:
                             student_data['student_id'] = data.text
                         elif data.tag == xmlform.cleaned_data['fname'] and len(data.text) > 0:
-                            student_data['first_name'] = data.text
+                            student_data['first_name'] = sanitize_name(data.text)
                         elif data.tag == xmlform.cleaned_data['lname'] and len(data.text) > 0:
-                            student_data['last_name'] = data.text
+                            student_data['last_name'] = sanitize_name(data.text)
                         elif data.tag == xmlform.cleaned_data['grade'] and len(data.text) > 0:
                             student_data['grade'] = data.text
                         elif data.tag == xmlform.cleaned_data['teacher'] and len(data.text) > 0:
-                            student_data['teacher'] = data.text
+                            student_data['teacher'] = sanitize_name(data.text)
                         elif len(xmlform.cleaned_data['nickname']) and data.tag == xmlform.cleaned_data['nickname'] and len(data.text) > 0:
                             student_data['nick_name'] = data.text
                         elif len(xmlform.cleaned_data['email']) and data.tag == xmlform.cleaned_data['email'] and len(data.text) > 0:

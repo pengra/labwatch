@@ -22,3 +22,8 @@ def get_app_metadata():
         # Intel i7 timeit tests
         del app
     return meta_data
+
+
+def sanitize_name(text):
+    "make names all lower w/ no symbols"
+    return text.replace('-', '').replace(' ', '').lower()
