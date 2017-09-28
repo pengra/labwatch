@@ -19,11 +19,11 @@ class StudentSession(models.Model):
 
     student = models.ForeignKey(Student)
 
-    sign_in_mode = models.CharField(max_length=3, choices=INPUT_MODE)
-    sign_out_mode = models.CharField(max_length=3, choices=INPUT_MODE)
+    sign_in_mode = models.CharField(max_length=4, choices=INPUT_MODE)
+    sign_out_mode = models.CharField(max_length=4, choices=INPUT_MODE, blank=True)
 
     sign_in_timestamp = models.DateTimeField(default=timezone.now)
-    sign_out_timestamp = models.DateTimeField()
+    sign_out_timestamp = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return "{}".format(self.student)
