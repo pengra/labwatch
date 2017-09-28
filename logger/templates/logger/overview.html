@@ -17,12 +17,12 @@
 <div class="tab-content">
   <div class="tab-pane fade show active" id="current">
     <h2>Current Students</h2>
-    <div class="tab-pane fade show active" id="loggedinstudents" role="tabpanel" aria-labelledby="loggedinstudents-tab">
+    <div id="loggedinstudents">
       <div class="table-responsive">
         <table class="table table-striped" style="margin-bottom: 2%">
           <thead>
             <tr>
-              <th><input id="selectAllButton" type="checkbox" onclick="selectAllStudents(this);"></th>
+              <th><input id="selectAllButton" type="checkbox" class="student-select-all" onclick="selectAllStudents();"></th>
               <th>ID</th>
               <th>Name</th>
               <th>Teacher</th>
@@ -36,13 +36,15 @@
           </tbody>
         </table>
       </div>
+
       <div id="bulk-options" class="hidden">
         <div style="margin-bottom: 2%">
           <button class='btn btn-danger' onclick="logSelectedStudentsOut();">Log selected students out</button>
-          <!-- <button class='btn btn-primary'>Export selected students</button>
-          <button class='btn btn-primary'>Mark selected students as...</button> -->
+          <!-- <button class='btn btn-primary'>Export selected students</button> -->
+          <!-- <button class='btn btn-primary'>Mark selected students as...</button> -->
         </div>
       </div>
+
     </div>
   </div>
   <div class="tab-pane fade" id="history">
@@ -82,6 +84,54 @@
 <script>
 
   let thisSessionPk;
+
+  toggleBulkOptions = () => {
+    let showBulk = false;
+    let boxes = $('.student-select')
+    for (let index in boxes) {
+      if (boxes[index].checked) {
+        showBulk = true
+        break
+      }
+    }
+    const bulkOptions = $('#bulk-options');
+    if (showBulk) {
+      bulkOptions.removeClass('hidden')
+    } else {
+      bulkOptions.addClass('hidden')
+    }
+    
+  }
+
+  partialSelectTop = () => {
+    let boxes = $('.student-select')
+    let checked = 0;
+    for (let index in boxes) {
+      if (boxes[index].checked) {
+        checked++
+      }
+    }
+    if (checked === boxes.length) {
+      $('.student-select-all')[0].checked = true
+      $('.student-select-all')[0].indeterminate = false
+    } else if (checked > 0) {
+      $('.student-select-all')[0].indeterminate = true
+      $('.student-select-all')[0].checked = false
+    } else {
+      $('.student-select-all')[0].checked = false
+      $('.student-select-all')[0].indeterminate = false
+    }
+    toggleBulkOptions()
+  }
+
+  selectAllStudents = () => {
+    const checkedVal = $('#selectAllButton')[0].checked
+    let boxes = $('.student-select')
+    for (let index in boxes) {
+      boxes[index].checked = checkedVal
+    }
+    toggleBulkOptions()
+  }
 
   signStudentOut = (event) => {
     event.preventDefault();
@@ -133,7 +183,7 @@
       for (let index in data) {
         results.append(
           `<tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" class="student-select" onclick="partialSelectTop()"></td>
             <td>` + data[index].student_id + `</td>
             <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
             <td>` + data[index].teacher + `</td>
