@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'users', api.UserViewSet)
 router.register(r'profiles', api.ProfileViewSet)
 router.register(r'schools', api.SchoolViewSet)
-router.register(r'students', api.StudentViewSet)
+router.register(r'students', api.StudentViewSet, base_name='student')
 router.register(r'subscriptions', api.SubscriptionViewSet)
 router.register(r'reports', api.UserReportViewSet)
 

@@ -32,10 +32,121 @@
   </div>
   <div class="tab-pane fade" id="findedit">
     <h2>Find/Edit a Student</h2>
+    <form class="row" onSubmit="findStudent(event, this);">
+      <div class="col-10">
+        <div class="form-group">
+          <input type="text" name="search" class="form-control" placeholder="Find a student...">
+        </div>
+      </div>
+      <div class="col-2">
+        <button type="submit" class="btn btn-primary btn-block">Search</button>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><i class="fa fa-id-card" aria-hidden="true"></i> Edit</th>
+              <th>Student ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+          </thead>
+          <tbody id="search-results">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
   <div class="tab-pane fade" id="upload">
     <h2>Upload Spreadsheet</h2>
   </div>
 </div>
 
+<div class="modal fade" id="student-detail" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Student: <span id="title-id"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form onSubmit="(event) => event.preventDefault()">
+          {% render_form serializer %}
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Update Student</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $('#student-detail').on('show.bs.modal', (event) => {
+    console.log('here');
+    let button = $(event.relatedTarget) // Button that triggered the modal
+    let studentID = button.data('id') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    $.ajax({
+      method: 'GET',
+      url: "{% url 'baselabwatch:api:student-list' %}" + studentID + '/'
+    }).done((data) => {
+      const modal = $('#student-detail');
+      modal.find('#title-id').text(data.first_name + ' ' + data.last_name)
+      modal.find('input[name="student_id"]').val(data.student_id)
+      modal.find('input[name="first_name"]').val(data.first_name)
+      modal.find('input[name="last_name"]').val(data.last_name)
+      modal.find('input[name="nick_name"]').val(data.nick_name)
+      modal.find('input[name="email"]').val(data.email)
+      modal.find('input[name="teacher"]').val(data.teacher)
+      modal.find('select[name="grade"]').val(data.grade)
+    })
+  })
+
+  findStudent = (event, form) => {
+    event.preventDefault();
+    let formData = $(form).serialize();
+    if (formData.search.length > 0) {
+      $.ajax({
+        method: 'GET',
+        data: formData,
+        url: "{% url 'baselabwatch:api:student-list' %}"
+      })
+      .done((data) => {
+        displayResults(data);
+      })
+      .fail((data) => {
+        
+      });
+    }
+  }
+
+  displayResults = (data) => {
+    $('#search-results').text('');
+    for (let index in data) {
+      $('#search-results').append(
+        ("<tr>\
+          <td><button class='btn btn-primary' data-toggle=\"modal\" data-target='#student-detail' data-id='" + data[index].pk + "'>\
+          <i class=\"fa fa-id-card\" aria-hidden=\"true\"></i></button></td>\
+          <td>" + data[index].student_id +  "</td>\
+          <td>" + data[index].first_name +  "</td>\
+          <td>" + data[index].last_name +  "</td>\
+        </tr>")
+      )
+    }
+  }
+
+</script>
 {% endblock %}
