@@ -3,5 +3,88 @@
 {% block overview_active %} active{% endblock %}
 
 {% block content %}
-<h1>Content Unavailable</h1>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#current" id='current-tab' onClick="updateUrl('current');">Current Students</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#history" id='history-tab' onClick="updateUrl('history');">History</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="current">
+    <h2>Current Students</h2>
+    <div class="tab-pane fade show active" id="loggedinstudents" role="tabpanel" aria-labelledby="loggedinstudents-tab">
+      <div class="table-responsive">
+        <table class="table table-striped" style="margin-bottom: 2%">
+          <thead>
+            <tr>
+              <th><input id="selectAllButton" type="checkbox" onclick="selectAllStudents(this);"></th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Teacher</th>
+              <th>Grade</th>
+              <th>Sign in time</th>
+              <th><i class="fa fa-id-card" aria-hidden="true"></i></th>
+            </tr>
+          </thead>
+          <tbody id="current-students">
+            
+          </tbody>
+        </table>
+      </div>
+      <div id="bulk-options" class="hidden">
+        <div style="margin-bottom: 2%">
+          <button class='btn btn-danger' onclick="logSelectedStudentsOut();">Log selected students out</button>
+          <!-- <button class='btn btn-primary'>Export selected students</button>
+          <button class='btn btn-primary'>Mark selected students as...</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="history">
+    <h2>Previous Students</h2>
+  </div>
+  
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  getCurrentStudents = () => {
+    $.ajax({
+      method: 'GET',
+      url: '{% url "logger:api:session-list" %}',
+      data: {signed_in: true}
+    }).done((data) => {
+      console.log(data)
+      const results = $('#current-students');
+      results.text('')
+      for (let index in data) {
+        results.append(
+          `<tr>
+            <td><input type="checkbox"></td>
+            <td>` + data[index].student_id + `</td>
+            <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
+            <td>` + data[index].teacher + `</td>
+            <td>` + data[index].grade + `</td>
+            <td>` + data[index].sign_in_timestamp + `</td>
+          </tr>
+          `
+        )
+      }
+      
+    })
+  }
+
+  $(document).ready(() => {
+    getCurrentStudents();
+    setInterval(
+      () => {getCurrentStudents();},
+      30000
+    )
+    
+  });
+</script>
 {% endblock %}
