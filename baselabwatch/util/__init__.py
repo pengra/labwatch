@@ -25,5 +25,5 @@ def get_app_metadata():
 
 
 def sanitize_name(text):
-    "make names all lower w/ no symbols"
-    return text.replace('-', '').replace(' ', '').lower()
+    "replace symbols in names with empty strings"
+    return text.replace('-', '').replace(' ', '')
