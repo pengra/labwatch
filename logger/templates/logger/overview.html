@@ -82,8 +82,32 @@
 {% block scripts %}
 <script src="{% static 'logger/moment.min.js' %}"></script>
 <script>
-
   let thisSessionPk;
+
+  logSelectedStudentsOut = () => {
+    $('.current-student-session').each((index, value) => {
+      if ($(value).find(".student-select")[0].checked) {
+        const pk = $(value).data('pk');
+        const signinMode = $(value).data('signinmode')
+        const signinTimestamp = $(value).data('signintimestamp')
+        console.log(pk)
+        $.ajax({
+          method: 'PUT',
+          url: '{% url "logger:api:session-list" %}' + pk + '/',
+          data: {
+            sign_out_mode: 'ADMI',
+            sign_out_timestamp: moment().format('YYYY-MM-DDThh:mm:ssZ'),
+            sign_in_mode: signinMode,
+            sign_in_timestamp: signinTimestamp,
+          }
+        }).done((data) => {
+          clearCheckboxes()
+          getCurrentStudents()
+        })
+      }
+    })
+    
+  }
 
   toggleBulkOptions = () => {
     let showBulk = false;
@@ -100,7 +124,6 @@
     } else {
       bulkOptions.addClass('hidden')
     }
-    
   }
 
   partialSelectTop = () => {
@@ -171,34 +194,53 @@
     })
   })
 
-  getCurrentStudents = () => {
-    $.ajax({
-      method: 'GET',
-      url: '{% url "logger:api:session-list" %}',
-      data: {signed_in: true}
-    }).done((data) => {
-      console.log(data)
-      const results = $('#current-students');
-      results.text('')
-      for (let index in data) {
-        results.append(
-          `<tr>
-            <td><input type="checkbox" class="student-select" onclick="partialSelectTop()"></td>
-            <td>` + data[index].student_id + `</td>
-            <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
-            <td>` + data[index].teacher + `</td>
-            <td>` + data[index].grade + `</td>
-            <td data-toggle="tooltip" data-placement="right" title="` + data[index].sign_in_timestamp + `
-            ">` + moment(data[index].sign_in_timestamp).fromNow() + `</td>
-            <td><button class='btn btn-primary' data-toggle="modal" data-target='#student-detail' 
-              data-id='` + data[index].pk + `'><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-            </td>
-          </tr>
-          `
-        )
-      }
-      
+  clearCheckboxes = () => {
+    $('.student-select').each((index, value) => {
+      value.checked = false
     })
+    $('.student-select-all')[0].checked = false
+    $('.student-select-all')[0].indeterminate = false
+    $('#bulk-options').addClass('hidden')
+  }
+
+  getCurrentStudents = () => {
+    let checked = false;
+    for (let index in $('.student-select')) {
+      if ($('.student-select')[index].checked) {
+        checked = true
+        break
+      }
+    }
+
+    if (!checked) {
+      $.ajax({
+        method: 'GET',
+        url: '{% url "logger:api:session-list" %}',
+        data: {signed_in: true}
+      }).done((data) => {
+        console.log(data)
+        const results = $('#current-students');
+        results.text('')
+        for (let index in data) {
+          results.append(
+            `<tr class="current-student-session" data-pk="` + data[index].pk + `" data-signinmode='` + data[index].sign_in_mode + `'
+              data-signintimestamp='` +  data[index].sign_in_timestamp + `'>
+              <td><input type="checkbox" class="student-select" onchange="partialSelectTop()"></td>
+              <td>` + data[index].student_id + `</td>
+              <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
+              <td>` + data[index].teacher + `</td>
+              <td>` + data[index].grade + `</td>
+              <td data-toggle="tooltip" data-placement="right" title="` + data[index].sign_in_timestamp + `
+              ">` + moment(data[index].sign_in_timestamp).fromNow() + `</td>
+              <td><button class='btn btn-primary' data-toggle="modal" data-target='#student-detail' 
+                data-id='` + data[index].pk + `'><i class="fa fa-clock-o" aria-hidden="true"></i></button>
+              </td>
+            </tr>`
+          )
+        }
+      })
+    }
+    
   }
 
   $(document).ready(() => {
