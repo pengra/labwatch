@@ -9,7 +9,7 @@ resolution2 = URLResolution(Student)
 class StudentSessionSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for profile."
     url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('session-detail'))
-    student = serializers.HyperlinkedRelatedField(source="student.pk", view_name=resolution2.resolve('student-detail'), queryset=Student.objects.all())
+    student = serializers.HyperlinkedRelatedField(source="student.pk", view_name=resolution2.resolve('student-detail'), read_only=True)
 
     student_id = serializers.IntegerField(source='student.student_id', read_only=True)
     first_name = serializers.CharField(source='student.first_name', read_only=True)
@@ -21,6 +21,7 @@ class StudentSessionSerializer(serializers.HyperlinkedModelSerializer):
         model = StudentSession
         fields = (
             'url',
+            'pk',
             'student',
             'student_id',
             'first_name',

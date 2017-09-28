@@ -1,4 +1,6 @@
 {% extends 'logger/_logger_settings.html' %}
+{% load static %}
+{% load rest_framework %}
 
 {% block overview_active %} active{% endblock %}
 
@@ -48,10 +50,59 @@
   </div>
   
 </div>
+
+<div class="modal fade" id="student-detail" tabindex="-1" aria-hidden="true">
+  <form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'logger:api:session-list' %}' + thisSessionPk + '/'); getCurrentStudents();" id="student-detail-form">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login Details of <span id="title-id"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% render_form serializer %}
+        </div>
+        <div class="modal-footer">
+          <span class="form-status"></span>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onClick='$("#student-detail-form").submit()'>Update Session</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'logger/moment.min.js' %}"></script>
 <script>
+
+  let thisSessionPk;
+
+  $('#student-detail').on('show.bs.modal', (event) => {
+    console.log('here');
+    let button = $(event.relatedTarget) // Button that triggered the modal
+    let sessionPK = button.data('id') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    $.ajax({
+      method: 'GET',
+      url: "{% url 'logger:api:session-list' %}" + sessionPK + '/'
+    }).done((data) => {
+      console.log(data);
+      const modal = $('#student-detail');
+      modal.find('#title-id').text(data.first_name + ' ' + data.last_name)
+      modal.find('select[name="sign_in_mode"]').val(data.sign_in_mode)
+      modal.find('input[name="sign_in_timestamp"]').val(moment(data.sign_in_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+      modal.find('select[name="sign_out_mode"]').val(data.sign_out_mode)
+      modal.find('input[name="sign_out_timestamp"]').val(moment(data.sign_out_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+      thisSessionPk = sessionPK
+    })
+  })
+
   getCurrentStudents = () => {
     $.ajax({
       method: 'GET',
@@ -69,7 +120,11 @@
             <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
             <td>` + data[index].teacher + `</td>
             <td>` + data[index].grade + `</td>
-            <td>` + data[index].sign_in_timestamp + `</td>
+            <td data-toggle="tooltip" data-placement="right" title="` + data[index].sign_in_timestamp + `
+            ">` + moment(data[index].sign_in_timestamp).fromNow() + `</td>
+            <td><button class='btn btn-primary' data-toggle="modal" data-target='#student-detail' 
+              data-id='` + data[index].pk + `'><i class="fa fa-id-card" aria-hidden="true"></i></button>
+            </td>
           </tr>
           `
         )

@@ -178,8 +178,10 @@
   <script src="{% static 'base/popper.min.js' %}"></script>
   <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
   <script type="text/javascript">
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
     $(document).ready(() => {
-      $('[data-toggle="tooltip"]').tooltip(); 
       if (getUrlParameter('tab')) {
         $('#' + getUrlParameter('tab') + '-tab').click();
       }
@@ -229,8 +231,6 @@
         status.text('Success!');
         status.addClass('text-success');
         status.removeClass('text-danger');
-        button.addClass('btn-success');
-        button.removeClass('btn-primary');
       } else if (fail) {
         status.text('Please correct the highlighted fields')
         status.addClass('text-danger');
