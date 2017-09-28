@@ -218,7 +218,11 @@
         url: '{% url "logger:api:session-list" %}',
         data: {signed_in: true}
       }).done((data) => {
-        console.log(data)
+        if (data.length === 0) {
+          $('.student-select-all')[0].disabled = true
+        } else {
+          $('.student-select-all')[0].disabled = false
+        }
         const results = $('#current-students');
         results.text('')
         for (let index in data) {
