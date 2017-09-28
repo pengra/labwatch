@@ -178,7 +178,7 @@
   <script src="{% static 'base/popper.min.js' %}"></script>
   <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
   <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(() => {
       $('[data-toggle="tooltip"]').tooltip(); 
       if (getUrlParameter('tab')) {
         $('#' + getUrlParameter('tab') + '-tab').click();
