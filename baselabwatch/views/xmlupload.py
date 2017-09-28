@@ -44,7 +44,7 @@ class XMLUploadView(View):
                         elif data.tag == xmlform.cleaned_data['teacher'] and len(data.text) > 0:
                             student_data['teacher'] = sanitize_name(data.text)
                         elif len(xmlform.cleaned_data['nickname']) and data.tag == xmlform.cleaned_data['nickname'] and len(data.text) > 0:
-                            student_data['nick_name'] = data.text
+                            student_data['nick_name'] = data.text.lower()
                         elif len(xmlform.cleaned_data['email']) and data.tag == xmlform.cleaned_data['email'] and len(data.text) > 0:
                             student_data['email'] = data.text
                     except KeyError:
