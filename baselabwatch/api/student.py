@@ -20,4 +20,5 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer.save(school=self.request.user.profile.school)
 
     def get_queryset(self):
-        return self.request.user.profile.school.student_set.all()
+        queryset = self.request.user.profile.school.student_set.all()
+        return queryset

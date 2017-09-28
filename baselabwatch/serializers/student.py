@@ -9,7 +9,6 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
     "Serializer for user."
     url = serializers.HyperlinkedIdentityField(view_name=resolution.resolve('student-detail'))
     school = serializers.HyperlinkedRelatedField(source="school.pk", view_name=resolution.resolve('school-detail'), read_only=True)
-    signed_in = serializers.BooleanField(read_only=True)
     student_id = serializers.IntegerField(label='Student ID', help_text='A unique numerical student identifier.',
         validators=[UniqueValidator(queryset=Student.objects.all())]
     )
@@ -28,5 +27,4 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
             'teacher',
             'grade',
             'school',
-            'signed_in',
         )

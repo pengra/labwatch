@@ -35,9 +35,5 @@ class Student(models.Model):
     email = models.EmailField(
         blank=True, help_text="Student can submit email if they choose to")
 
-    # Used for logging
-    signed_in = models.BooleanField(
-        default=False, help_text="Status regarding student is signed in or not")
-
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
