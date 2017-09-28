@@ -28,7 +28,7 @@
               <th>Teacher</th>
               <th>Grade</th>
               <th>Sign in time</th>
-              <th><i class="fa fa-id-card" aria-hidden="true"></i></th>
+              <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
             </tr>
           </thead>
           <tbody id="current-students">
@@ -67,6 +67,7 @@
         <div class="modal-footer">
           <span class="form-status"></span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="sign-out-btn" type="button" class="btn btn-danger" data-dismiss="modal" onclick="signStudentOut(event)">Sign Student Out</button>
           <button type="button" class="btn btn-primary" onClick='$("#student-detail-form").submit()'>Update Session</button>
         </div>
       </div>
@@ -81,6 +82,18 @@
 <script>
 
   let thisSessionPk;
+
+  signStudentOut = (event) => {
+    event.preventDefault();
+    const modal = $('#student-detail');
+    modal.find('select[name="sign_out_mode"]').val('ADMI')
+    modal.find('input[name="sign_out_timestamp"]').val(moment().format('YYYY-MM-DDThh:mm:ss'))
+    ajaxSubmit(event, modal.find('form'), 'PUT', '{% url "logger:api:session-list" %}' + thisSessionPk + '/');
+    setTimeout(
+      () => getCurrentStudents(),
+      500
+    )
+  }
 
   $('#student-detail').on('show.bs.modal', (event) => {
     console.log('here');
@@ -97,8 +110,13 @@
       modal.find('#title-id').text(data.first_name + ' ' + data.last_name)
       modal.find('select[name="sign_in_mode"]').val(data.sign_in_mode)
       modal.find('input[name="sign_in_timestamp"]').val(moment(data.sign_in_timestamp).format('YYYY-MM-DDThh:mm:ss'))
-      modal.find('select[name="sign_out_mode"]').val(data.sign_out_mode)
-      modal.find('input[name="sign_out_timestamp"]').val(moment(data.sign_out_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+      if (data.sign_out_mode === null && data.sign_out_mode === '') {
+        modal.find('#sign-out-btn').removeClass('hidden')
+      } else {
+        modal.find('#sign-out-btn').addClass('hidden')
+        modal.find('select[name="sign_out_mode"]').val(data.sign_out_mode)
+        modal.find('input[name="sign_out_timestamp"]').val(moment(data.sign_out_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+      }
       thisSessionPk = sessionPK
     })
   })
@@ -123,7 +141,7 @@
             <td data-toggle="tooltip" data-placement="right" title="` + data[index].sign_in_timestamp + `
             ">` + moment(data[index].sign_in_timestamp).fromNow() + `</td>
             <td><button class='btn btn-primary' data-toggle="modal" data-target='#student-detail' 
-              data-id='` + data[index].pk + `'><i class="fa fa-id-card" aria-hidden="true"></i></button>
+              data-id='` + data[index].pk + `'><i class="fa fa-clock-o" aria-hidden="true"></i></button>
             </td>
           </tr>
           `
