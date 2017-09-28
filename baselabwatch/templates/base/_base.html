@@ -193,10 +193,12 @@
         method: method,
         url: target,
         data: $(form).serialize(),
-      }).done((data) => {
-        console.log(data);
+      }).done(((method) => {
         updateStatus(form, true, false);
-      }).fail((data) => {
+        if (method === 'POST') {
+          clearForm(form);
+        }
+      })(method)).fail((data) => {
         for (let key in data.responseJSON) {
           flagErrors(key, data.responseJSON[key])
         }
@@ -213,7 +215,7 @@
     flagErrors = (inputName, errors) => {
       $('input[name="' + inputName + '"]').addClass('is-invalid');
       let span = $('input[name="' + inputName + '"]').next();
-      span.text(span.text() + ' (' + errors[0] + ')');
+      span.text(errors[0]);
       span.addClass('text-danger');
     }
 
@@ -226,12 +228,6 @@
         status.removeClass('text-danger');
         button.addClass('btn-success');
         button.removeClass('btn-primary');
-        setTimeout(() => (((form, button) => {
-          clearForm(form);
-          button.removeClass('btn-success');
-          button.addClass('btn-primary');
-        })(form, button)), 3000)
-        
       } else if (fail) {
         status.text('Please correct the highlighted fields')
         status.addClass('text-danger');

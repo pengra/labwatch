@@ -68,31 +68,35 @@
 </div>
 
 <div class="modal fade" id="student-detail" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Student: <span id="title-id"></span></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form onSubmit="(event) => event.preventDefault()">
-          {% render_form serializer %}
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Update Student</button>
+  <form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'baselabwatch:api:student-list' %}' + thisStudentPk + '/')" id="student-detail-form">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Student: <span id="title-id"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            {% render_form serializer %}
+          
+        </div>
+        <div class="modal-footer">
+          <span class="form-status"></span>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onClick='$("#student-detail-form").submit()'>Update Student</button>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
+  let thisStudentPk = null;
   $('#student-detail').on('show.bs.modal', (event) => {
     console.log('here');
     let button = $(event.relatedTarget) // Button that triggered the modal
@@ -112,6 +116,7 @@
       modal.find('input[name="email"]').val(data.email)
       modal.find('input[name="teacher"]').val(data.teacher)
       modal.find('select[name="grade"]').val(data.grade)
+      thisStudentPk = data.pk
     })
   })
 
