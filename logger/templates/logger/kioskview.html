@@ -3,5 +3,43 @@
 {% block kiosk_active %} active{% endblock %}
 
 {% block content %}
-<h1>Content Unavailable</h1>
+<ul class="nav nav-tabs" id="kiosk-tabs">
+  
+</ul>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  
+  generateTabs = () => {
+    $.ajax({
+      method: 'GET',
+      url: "{% url 'logger:api:kiosk-list' %}"
+    }).done((data) => {
+      let first = true
+      data.forEach((kiosk) => {
+        $('#kiosk-tabs').append(`
+          <li class="nav-item">
+            <a class="nav-link` + (first ? " active" : "") + `" data-toggle="tab" href="#kiosk` + kiosk.pk + `" id="kiosk` + kiosk.pk + `-tab" onclick="updateUrl('kiosk` + kiosk.pk + `')">
+              ` + kiosk.name + `
+            </a>
+          </li>
+        `)
+        first = false
+      })
+      
+      $('#kiosk-tabs').append(
+      `<li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#newkiosk" id='newkiosk-tab' onClick="updateUrl('newkiosk');">
+          <span class="text-success"><i class="fa fa-plus" aria-hidden="true"></i></span>
+        </a>
+      </li>`
+      )
+    })
+  }
+
+  $(document).ready(() => {
+    generateTabs()
+  });
+</script>
 {% endblock %}
