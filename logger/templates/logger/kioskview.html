@@ -4,13 +4,18 @@
 
 {% block content %}
 <ul class="nav nav-tabs" id="kiosk-tabs">
-  
 </ul>
+
+<div class="tab-content">
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
   
+  
+
   generateTabs = () => {
     $.ajax({
       method: 'GET',
@@ -25,6 +30,11 @@
             </a>
           </li>
         `)
+        $('.tab-content').append(`
+          <div class="tab-pane fade` + (first ? " show active" : "") + `" id="kiosk` + kiosk.pk + `">
+            <h2>Kiosk: "` + kiosk.name + `"</h2>
+          </div>
+        `)
         first = false
       })
       
@@ -35,6 +45,11 @@
         </a>
       </li>`
       )
+      $('.tab-content').append(`
+        <div class="tab-pane fade" id="newkiosk">
+          <h2>Create New Kiosk</h2>
+        </div>
+      `)
     })
   }
 
