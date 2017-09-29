@@ -6,7 +6,6 @@ from defusedxml.ElementTree import parse
 from labwatch.settings import MAXUPLOADSIZE
 from baselabwatch.forms import XMLFileUploadForm
 from baselabwatch.models import Student
-from baselabwatch.util import sanitize_name
 
 
 class XMLUploadView(View):
