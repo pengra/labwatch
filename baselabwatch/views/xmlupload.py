@@ -17,6 +17,10 @@ class XMLUploadView(View):
             response = HttpResponse(json.dumps({'error': 'not authenticated'}), content_type='application/json')
             response.status_code = 403
             return response
+        elif not request.user.profile.school:
+            response = HttpResponse(json.dumps({'error': 'no school association'}), content_type='application/json')
+            response.status_code = 403
+            return response
 
         # FOR DEBUGGING FRONT END
         # import time; time.sleep(5);
