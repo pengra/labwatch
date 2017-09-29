@@ -12,6 +12,12 @@ from baselabwatch.util import sanitize_name
 class XMLUploadView(View):
 
     def post(self, request):
+        
+        if not request.user.is_authenticated():
+            response = HttpResponse(json.dumps({'error': 'not authenticated'}), content_type='application/json')
+            response.status_code = 403
+            return response
+
         # FOR DEBUGGING FRONT END
         # import time; time.sleep(5);
 
