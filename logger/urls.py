@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^$', views.OverviewView.as_view(), name='index'),
     url(r'^kiosk/$', views.KioskView.as_view(), name='kiosk'),
     url(r'^api/v1/', include(router.urls, namespace='api')),
+    url(r'^api/v1/export/$', views.ReportExportView.as_view(), name='export'),
 ]
