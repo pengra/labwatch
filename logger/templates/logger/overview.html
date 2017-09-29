@@ -107,7 +107,7 @@
           </select>
         </div>
       </div>
-      <div class="col-lg-4 col-sm-6">
+      <div class="col-lg-4 col-sm-12">
         <div class="form-group">
           <label>Query <span class="text-muted">(Optional)</span></label>
           <input type="text" class="form-control" name="search" placeholder='e.g. Student name'>
@@ -132,7 +132,7 @@
               <th>Teacher</th>
               <th>Grade</th>
               <th>Sign in Time</th>
-              <th>Sing Out Time</th>
+              <th>Sign Out Time</th>
               <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
             </tr>
           </thead>
@@ -183,7 +183,7 @@
             <form id="export-options">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" checked name="in">
+                  <input class="form-check-input" type="checkbox" checked name="in_column">
                   Time in
                 </label>
               </div>
@@ -207,7 +207,7 @@
               </div>
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" checked name="id">
+                  <input class="form-check-input" type="checkbox" checked name="id_column">
                   Student ID
                 </label>
               </div>
@@ -252,16 +252,11 @@
   let selectedLogs;
 
   downloadFile = () => {
-    $.ajax({
-      url: '{% url "logger:export" %}',
-      method: 'POST',
-      data: JSON.stringify(
-        $('#export-options').serialize() + '&target=' +
-        selectedLogs.map((index, value) => $(value).data('pk')).toArray()
-      ).replace(/"/g, '')
-    }).done((data) => {
-      console.log(data)
-    })
+    const target = '{% url "logger:export" %}?' + JSON.stringify(
+      $('#export-options').serialize() + '&target=' +
+      selectedLogs.map((index, value) => $(value).data('pk')).toArray()
+    ).replace(/"/g, '')
+    window.open(target, '_blank')
   }
 
   recordSelectedLogs = () => {
