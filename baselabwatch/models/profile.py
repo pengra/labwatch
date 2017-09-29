@@ -1,6 +1,7 @@
 """
 Extra data associated with the user.
 """
+from pytz import all_timezones
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -11,6 +12,9 @@ from baselabwatch.models.school import School
 
 class Profile(models.Model):
     "Profile data for each user."
+
+    potential_timezones = [(tz, tz) for tz in all_timezones]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, null=True, blank=True, related_name='teachers')
 
@@ -18,6 +22,12 @@ class Profile(models.Model):
     librarian = models.BooleanField(default=False)
     techsavy = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=True)
+
+    timezone = models.CharField(
+        max_length=255,
+        choices=potential_timezones,
+        default='US/Pacific',
+    )
 
     def __str__(self):
         return str(self.user)

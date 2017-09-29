@@ -17,29 +17,15 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Profile
-        react_data = {
-            'url': {
-                'hidden': True
-            },
-            'user': {
-                'hidden': True
-            },
-            'school': {
-                'read_only': True
-            },
-            'engineer': {
-                'hidden': True
-            },
-            'librarian': {
-                'hidden': True
-            },
-            'techsavy': {
-                'hidden': True
-            },
-            'beta_tester': {
-                'secondary_label': "You'll get access to new but potentially buggy features."
-            },
-        }
-        fields = tuple(react_data.keys())
+        fields = (
+            'url',
+            'user',
+            'school',
+            'engineer',
+            'librarian',
+            'techsavy',
+            'beta_tester',
+            'timezone'
+        )
         
         
