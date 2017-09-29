@@ -11,13 +11,16 @@ from baselabwatch.models import Student
 class XMLUploadView(View):
 
     def post(self, request):
-        
+
         if not request.user.is_authenticated():
-            response = HttpResponse(json.dumps({'error': 'not authenticated'}), content_type='application/json')
+            response = HttpResponse(json.dumps(
+                {"errors": ["Not authenticated"]}), content_type='application/json')
             response.status_code = 403
             return response
-        elif not request.user.profile.school:
-            response = HttpResponse(json.dumps({'error': 'no school association'}), content_type='application/json')
+
+        if not request.user.profile.school:
+            response = HttpResponse(json.dumps(
+                {"errors": ["Not associated with any school"]}), content_type='application/json')
             response.status_code = 403
             return response
 
@@ -59,7 +62,7 @@ class XMLUploadView(View):
                     except KeyError:
                         fails += 1
                         failed = True
-                
+
                 if failed:
                     continue
 
@@ -73,7 +76,7 @@ class XMLUploadView(View):
                             old_student = Student.objects.get(
                                 student_id=student_data['student_id'])
                             old_student.delete()
-                            student.save()  
+                            student.save()
                             dupes += 1
                         except (ValueError, KeyError):
                             fails += 1
