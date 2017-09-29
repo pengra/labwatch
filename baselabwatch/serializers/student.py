@@ -15,12 +15,6 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
     )
     nick_name = serializers.CharField(help_text='Should the user forget his/her ID, they can alternatively type in a username or nickname.', style={'placeholder': 'e.g. pengrnor000'}, required=False)
 
-    def create(self, validated_data):
-        validated_data['first_name'] = sanitize_name(validated_data['first_name'])
-        validated_data['last_name'] = sanitize_name(validated_data['last_name'])
-        validated_data['teacher'] = sanitize_name(validated_data['teacher'])
-        return self.Meta.model(**validated_data)
-
     class Meta:
         model = Student
         fields = (

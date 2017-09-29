@@ -48,7 +48,100 @@
     </div>
   </div>
   <div class="tab-pane fade" id="history">
-    <h2>Previous Students</h2>
+    <h2>Retrieve Student Logs</h2>
+    <form onSubmit="queryTimeRange(event, this)" class="row">
+      
+      <div class="col-lg-5 col-sm-12">
+        <div class="form-group">
+          <label>Timestamp Starting Range</label>
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="checkbox" checked name="regard_gte" onchange="updateRegardTimeUI()">
+            </span>
+            <input type="datetime-local" class="form-control" name="time_gte">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-sm-12">
+        <div class="form-group">
+          <label>Timestamp Ending Range</label>
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="checkbox" checked name="regard_lte" onchange="updateRegardTimeUI()">
+            </span>
+            <input type="datetime-local" class="form-control" name="time_lte">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-12">
+        <div class="form-group">
+          <label style="color: white">ignore me</label>
+          <div class="dropdown btn-block">
+            <button class="btn btn-secondary dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Quick Values
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" onclick="setTimeRange('this-day')" href="#">Today</a>
+              <a class="dropdown-item" onclick="setTimeRange('last-day')" href="#">Yesterday</a>
+              <a class="dropdown-item" onclick="setTimeRange('this-week')" href="#">This Week</a>
+              <a class="dropdown-item" onclick="setTimeRange('this-month')" href="#">This Month</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="form-group">
+          <label style="color: white">Actions</label>
+          <button class="btn btn-primary btn-block" id="exportButton" disabled>Export Selected Sessions</button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="form-group">
+          <label>Timestamp Target</label>
+          <select class="form-control" name="mode">
+            <option value="all">All</option>
+            <option value="in">Sign ins</option>
+            <option value="out">Sign outs</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="form-group">
+          <label>Query <span class="text-muted">(Optional)</span></label>
+          <input type="text" class="form-control" name="search" placeholder='e.g. Student name'>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-12">
+        <label style="color: white">ignore me</label>
+        <button class="btn btn-primary btn-block" type="submit">
+          Submit
+        </button>
+      </div>
+    </form>
+
+    <div id="log-history" class="row">
+      <div class="table-responsive col-12">
+        <table class="table table-striped" style="margin-bottom: 2%">
+          <thead>
+            <tr>
+              <th><input disabled id="selectAllHistoryButton" type="checkbox" class="history-select-all" onclick="selectAllHistory();"></th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Teacher</th>
+              <th>Grade</th>
+              <th>Sign in Time</th>
+              <th>Sing Out Time</th>
+              <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
+            </tr>
+          </thead>
+          <tbody id="current-history">
+            
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
   </div>
   
 </div>
@@ -84,19 +177,120 @@
 <script>
   let thisSessionPk;
 
+  toggleBulkSessionOptions = () => {
+    let boxes = $('.session-entry')
+    let checked = false;
+    boxes.each((index, value) => {
+      if (value.checked) {
+        checked = true
+      }
+    })
+    $('#exportButton')[0].disabled = !checked
+  }
+
+  selectAllHistory = () => {
+    const checkedVal = $('#selectAllHistoryButton')[0].checked
+    let boxes = $('.session-entry')
+    for (let index in boxes) {
+      boxes[index].checked = checkedVal
+    }
+    toggleBulkSessionOptions()
+  }
+
+  partialSelectHistory = () => {
+    let boxes = $('.session-entry')
+    let checked = 0;
+    boxes.each((index, value) => {
+      if (value.checked) {
+        checked++
+      }
+    })
+
+    if (checked === boxes.length) {
+      $('#selectAllHistoryButton')[0].checked = true
+      $('#selectAllHistoryButton')[0].indeterminate = false
+    } else if (checked > 0) {
+      $('#selectAllHistoryButton')[0].indeterminate = true
+      $('#selectAllHistoryButton')[0].checked = false
+    } else {
+      $('#selectAllHistoryButton')[0].checked = false
+      $('#selectAllHistoryButton')[0].indeterminate = false
+    }
+    toggleBulkSessionOptions()
+  }
+
+  queryTimeRange = (event, form) => {
+    event.preventDefault();
+    $.ajax({
+      url: '{% url "logger:api:session-list" %}',
+      data: $(form).serialize(),
+      method: 'GET'
+    }).done((data) => {
+      updateHistoryResults(data)
+    })
+  }
+
+  updateHistoryResults = (data) => {
+    const historyElement = $('#current-history');
+    historyElement.text('')
+    if (Object.keys(data).length > 0) {
+      $('#selectAllHistoryButton')[0].disabled = false
+    }
+    for (let index in data) {
+      historyElement.append(
+        `<tr>
+          <td><input type="checkbox" class="session-entry" onchange="partialSelectHistory()"></td>
+          <td>` + data[index].student_id + `</td>
+          <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
+          <td>` + data[index].teacher + `</td>
+          <td>` + data[index].grade + `</td>
+          <td>` + moment(data[index].sign_in_timestamp).format('MM/DD/YY hh:mm a') + `</td>
+          <td>` + moment(data[index].sign_out_timestamp).format('MM/DD/YY hh:mm a') + `</td>
+          <td>~` + moment.duration(moment(data[index].sign_out_timestamp).diff(moment(data[index].sign_in_timestamp))).humanize() + `</td>
+        </tr>`
+      )
+    }
+  }
+  
+  setTimeRange = (range) => {
+    let beginTime;
+    let endTime;
+    if (range.startsWith('this')) {
+      endTime = moment().format('YYYY-MM-DDTkk:mm')
+      if (range.endsWith('day')) {
+        beginTime = moment().startOf('day').format('YYYY-MM-DDT00:00')
+      } else if (range.endsWith('week')) {
+        beginTime = moment().startOf('week').format('YYYY-MM-DDT00:00')
+      } else if (range.endsWith('month')) {
+        beginTime = moment().startOf('month').format('YYYY-MM-DDT00:00')
+      }
+    } else if (range.startsWith('last')) {
+      if (range.endsWith('day')) {
+        endTime = moment().startOf('day').format('YYYY-MM-DDT00:00')
+        beginTime = moment().subtract(1, 'd').format('YYYY-MM-DDT00:00')
+      }
+    }
+    $('input[name=time_lte]').val(endTime)
+    $('input[name=time_gte]').val(beginTime)
+  }
+
+  updateRegardTimeUI = () => {
+    $("input[name=time_lte]")[0].disabled = !$("input[name=regard_lte]")[0].checked
+    $("input[name=time_gte]")[0].disabled = !$("input[name=regard_gte]")[0].checked
+  }
+
   logSelectedStudentsOut = () => {
     $('.current-student-session').each((index, value) => {
       if ($(value).find(".student-select")[0].checked) {
         const pk = $(value).data('pk');
         const signinMode = $(value).data('signinmode')
         const signinTimestamp = $(value).data('signintimestamp')
-        console.log(pk)
         $.ajax({
           method: 'PUT',
           url: '{% url "logger:api:session-list" %}' + pk + '/',
           data: {
             sign_out_mode: 'ADMI',
-            sign_out_timestamp: moment().format('YYYY-MM-DDThh:mm:ssZ'),
+            sign_out_timestamp: moment().format('YYYY-MM-DDTkk:mm:ssZ'),
             sign_in_mode: signinMode,
             sign_in_timestamp: signinTimestamp,
           }
@@ -160,7 +354,7 @@
     event.preventDefault();
     const modal = $('#student-detail');
     modal.find('select[name="sign_out_mode"]').val('ADMI')
-    modal.find('input[name="sign_out_timestamp"]').val(moment().format('YYYY-MM-DDThh:mm:ss'))
+    modal.find('input[name="sign_out_timestamp"]').val(moment().format('YYYY-MM-DDTkk:mm:ss'))
     ajaxSubmit(event, modal.find('form'), 'PUT', '{% url "logger:api:session-list" %}' + thisSessionPk + '/');
     setTimeout(
       () => getCurrentStudents(),
@@ -182,13 +376,13 @@
       const modal = $('#student-detail');
       modal.find('#title-id').text(data.first_name + ' ' + data.last_name)
       modal.find('select[name="sign_in_mode"]').val(data.sign_in_mode)
-      modal.find('input[name="sign_in_timestamp"]').val(moment(data.sign_in_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+      modal.find('input[name="sign_in_timestamp"]').val(moment(data.sign_in_timestamp).format('YYYY-MM-DDTkk:mm:ss'))
       if (data.sign_out_mode === null && data.sign_out_mode === '') {
         modal.find('#sign-out-btn').removeClass('hidden')
       } else {
         modal.find('#sign-out-btn').addClass('hidden')
         modal.find('select[name="sign_out_mode"]').val(data.sign_out_mode)
-        modal.find('input[name="sign_out_timestamp"]').val(moment(data.sign_out_timestamp).format('YYYY-MM-DDThh:mm:ss'))
+        modal.find('input[name="sign_out_timestamp"]').val(moment(data.sign_out_timestamp).format('YYYY-MM-DDTkk:mm:ss'))
       }
       thisSessionPk = sessionPK
     })
