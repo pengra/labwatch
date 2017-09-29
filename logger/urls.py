@@ -1,7 +1,7 @@
-from django.conf.urls import url, include
+from django.conf.urls import include, url
 from rest_framework import routers
-from logger import api
-from logger import views
+
+from logger import api, views
 
 router = routers.DefaultRouter()
 router.register(r'sessions', api.StudentSessionViewSet, base_name='session')
