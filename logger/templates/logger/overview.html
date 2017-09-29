@@ -92,7 +92,9 @@
       <div class="col-lg-3 col-sm-6">
         <div class="form-group">
           <label style="color: white">Actions</label>
-          <button class="btn btn-primary btn-block" id="exportButton" disabled>Export Selected Sessions</button>
+          <button onclick="recordSelectedLogs()" data-toggle="modal" data-target="#export-detail" class="btn btn-primary btn-block" id="exportButton" type="button" disabled>
+            Export Selected
+          </button>
         </div>
       </div>
       <div class="col-lg-3 col-sm-6">
@@ -139,11 +141,8 @@
           </tbody>
         </table>
       </div>
-
     </div>
-
   </div>
-  
 </div>
 
 <div class="modal fade" id="student-detail" tabindex="-1" aria-hidden="true">
@@ -170,12 +169,104 @@
   </form>
 </div>
 
+<div class="modal fade" id="export-detail" tabindex="-1" aria-hidden="true">
+    <div onSubmit="" id="student-detail-form">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Select Columns in Export Data </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="export-options">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="in">
+                  Time in
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="out">
+                  Time out
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="in_method">
+                  Sign in method
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="out_method">
+                  Sign out method
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="id">
+                  Student ID
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="names">
+                  Student First/Last name
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="grade">
+                  Student Grade
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" checked name="teacher">
+                  Student Teacher
+                </label>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <span class="form-status"></span>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=''>Cancel</button>
+            <button type="button" class="btn btn-success" onClick='downloadFile()'>Download Report <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static 'logger/moment.min.js' %}"></script>
 <script>
   let thisSessionPk;
+  let selectedLogs;
+
+  downloadFile = () => {
+    $.ajax({
+      url: '{% url "logger:export" %}',
+      method: 'POST',
+      data: JSON.stringify(
+        $('#export-options').serialize() + '&target=' +
+        selectedLogs.map((index, value) => $(value).data('pk')).toArray()
+      ).replace(/"/g, '')
+    }).done((data) => {
+      console.log(data)
+    })
+  }
+
+  recordSelectedLogs = () => {
+    selectedLogs = $('input.session-entry:checked')
+  }
 
   toggleBulkSessionOptions = () => {
     let boxes = $('.session-entry')
@@ -239,7 +330,7 @@
     for (let index in data) {
       historyElement.append(
         `<tr>
-          <td><input type="checkbox" class="session-entry" onchange="partialSelectHistory()"></td>
+          <td><input type="checkbox" class="session-entry" onchange="partialSelectHistory()" data-pk="` + data[index].pk + `"></td>
           <td>` + data[index].student_id + `</td>
           <td>` + data[index].first_name + ' ' + data[index].last_name + `</td>
           <td>` + data[index].teacher + `</td>
