@@ -8,3 +8,6 @@ class KioskViewSet(viewsets.ModelViewSet):
     queryset = Kiosk.objects.all()
     serializer_class = KioskSerializer
     permission_classes = (IsAdminUser,)
+
+    def perform_create(self, serializer):
+        serializer.save(school=self.request.user.profile.school)
