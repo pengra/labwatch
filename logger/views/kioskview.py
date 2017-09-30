@@ -10,7 +10,6 @@ class KioskView(DashboardBase):
 
     def post(self, request, *args, **kwargs):
         "Handle post requests."
-        context = self.get_context_data(**kwargs)
         form = KioskForm(request.POST)
         response = {}
         status_code = None
