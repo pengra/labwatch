@@ -7,7 +7,6 @@ class Kiosk(models.Model):
     name = models.CharField(max_length=255)
     school = models.ForeignKey(School)
     auth_code = models.CharField(max_length=32, unique=True)
-    active = models.BooleanField(default=False)
     poll = models.ForeignKey(PollQuestion, blank=True, null=True)
 
     def __str__(self):

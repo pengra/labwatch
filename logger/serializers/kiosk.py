@@ -18,6 +18,5 @@ class KioskSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'school',
             'auth_code',
-            'active',
             'poll'
         )
