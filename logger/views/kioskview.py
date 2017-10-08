@@ -40,7 +40,8 @@ class KioskView(DashboardBase):
             try:
                 kiosk = Kiosk.objects.get(pk=form.cleaned_data['kiosk_pk'])
                 kiosk.name = form.cleaned_data['name']
-                kiosk.poll = update_poll(
+                kiosk.save()
+                update_poll(
                     kiosk,
                     form.cleaned_data['poll_question'],
                     form.cleaned_data['poll_choices']
