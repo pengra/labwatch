@@ -190,7 +190,7 @@
       });
     });
     
-    ajaxSubmit = (event, form, method, target) => {
+    ajaxSubmit = (event, form, method, target, callback) => {
       event.preventDefault();
       updateStatus(form, false, false);
       unflagAllErrors();
@@ -203,11 +203,13 @@
         if (method === 'POST') {
           clearForm(form);
         }
+        callback && callback();
       })(method)).fail((data) => {
         for (let key in data.responseJSON) {
           flagErrors(key, data.responseJSON[key])
         }
         updateStatus(form, false, true);
+        callback && callback();
       })
     }
 
