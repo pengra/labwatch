@@ -2,7 +2,7 @@ import xlsxwriter
 from pytz import timezone
 from django.core.files.temp import NamedTemporaryFile
 from baselabwatch.models import Student
-from logger.models import StudentSession
+from logger.models import StudentSession, Kiosk, PollChoice, PollQuestion
 
 
 ALPHABET = [
@@ -128,3 +128,12 @@ def export_logs(export_form_data, target_tz):
     del workbook
     del worksheet
     
+def update_poll(kiosk, new_question, new_choices):
+    "Directly take form data and create new objects."
+    if kiosk.poll:
+        kiosk.poll.delete()
+    new_question = PollQuestion(question_text=new_question)
+    new_question.save()
+    for choice in new_choices.split('\n'):
+        PollChoice(question=new_question, choice_text=choice).save()
+    return new_question
