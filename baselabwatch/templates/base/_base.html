@@ -195,7 +195,7 @@
       updateStatus(form, false, false);
       unflagAllErrors();
       $.ajax({
-        method: method,
+        method: method.replace('dontclear_', ''),
         url: target,
         data: $(form).serialize(),
       }).done(((method) => {
