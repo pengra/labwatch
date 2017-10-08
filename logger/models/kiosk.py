@@ -1,7 +1,10 @@
-from django.db import models
 import uuid
-from logger.models import PollQuestion
+
+from django.db import models
+
 from baselabwatch.models import School
+from logger.models import PollQuestion
+
 
 class Kiosk(models.Model):
     "An object representing a kiosk available for a school to use."
@@ -12,4 +15,3 @@ class Kiosk(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.school, self.name)
-
