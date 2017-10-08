@@ -47,7 +47,6 @@
 
               <div class="row">
                 <div class="col-12">
-                  <input type="hidden" name="kiosk_pk" value="` + kiosk.pk + `">
                   <div class="form-group ">
                     <label>Name</label>
                     <input name="name" class="form-control" type="text">
@@ -93,10 +92,42 @@
       $('.tab-content').append(`
         <div class="tab-pane fade" id="newkiosk">
           <h2>Create New Kiosk</h2>
-          <form>
+          <form method="POST">
+            
+            <input type="hidden" name="kiosk_pk" value="-1">
+
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group ">
+                  <label>Name</label>
+                  <input name="name" class="form-control" type="text">
+                  <span class="help-block">Name of Kiosk</span>
+                </div>
+                <div class="form-group ">
+                  <label>Poll Question</label>
+                  <input name="poll_question" class="form-control" type="text">
+                  <span class="help-block">Leave blank to disable poll</span>
+                </div>
+                <div class="form-group">
+                  <label>Poll Choices</label>
+                  <textarea class="form-control" name="poll_choices" rows="10" placeholder="Answer1&#10;Answer2&#10;..."></textarea>
+                  <span class="help-block">Seperate answers by new lines</span>
+                </div>
+                
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="submit" class="btn btn-success" value="Create Kiosk"> 
+              <span class="form-status"></span>
+            </div>
           </form>
         </div>
       `)
+    }).always(() => {
+      if (getUrlParameter('tab')) {
+        $('#' + getUrlParameter('tab') + '-tab').click();
+      }
     })
   }
 
