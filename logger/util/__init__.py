@@ -130,10 +130,10 @@ def export_logs(export_form_data, target_tz):
     
 def update_poll(kiosk, new_question, new_choices):
     "Directly take form data and create new objects."
-    if kiosk.poll:
-        kiosk.poll.delete()
     new_question = PollQuestion(question_text=new_question)
     new_question.save()
     for choice in new_choices.split('\n'):
         PollChoice(question=new_question, choice_text=choice).save()
-    return new_question
+    if kiosk.poll:
+        kiosk.poll.delete()
+    kiosk.poll = new_question
