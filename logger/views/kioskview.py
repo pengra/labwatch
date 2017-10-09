@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from baselabwatch.views import DashboardBase
 from logger.util import update_poll
 from logger.forms import KioskForm
-from logger.models import Kiosk
+from logger.models import Kiosk, PollQuestion, PollChoice
 from logger.serializers import (KioskSerializer, PollChoiceSerializer,
                                 PollQuestionSerializer)
 
@@ -33,7 +33,7 @@ class KioskView(DashboardBase):
         response = {}
         status_code = None
 
-        if form.is_valid():
+        if form.is_valid() and form.cleaned_data['kiosk_pk'] != -1:
             status_code = 201
 
             # Update the form
@@ -51,6 +51,28 @@ class KioskView(DashboardBase):
                 response['errors'] = 'PK not found'
                 response['data'] = form.cleaned_data
                 status_code = 404
+
+        elif form.is_valid() and form.cleaned_data['kiosk_pk'] == -1:
+            kiosk = Kiosk(
+                name=form.cleaned_data['name'],
+                school=self.request.user.profile.school,
+            )
+            kiosk.save()
+            if form.cleaned_data['poll_question']:
+                kiosk.poll = PollQuestion(
+                    question_text=form.cleaned_data['poll_question']
+                )
+                kiosk.poll.save()
+                for choice in form.cleaned_data['poll_choices'].split('\n'):
+                    PollChoice(
+                        question=kiosk.poll,
+                        choice_text=choice
+                    ).save()
+            kiosk.save()
+            
+            status_code = 201
+            response['data'] = form.cleaned_data
+            response['data']['kiosk_pk'] = kiosk.pk
 
         else:
             response['errors'] = form.errors

@@ -13,6 +13,17 @@
 
 {% block scripts %}
 <script>
+  let maxIndex = 0;
+  let currentIndex = 0;
+
+  deleteKiosk = (kioskPk) => {
+    $.ajax({
+      method: 'DELETE',
+      url: "{% url 'logger:api:kiosk-list' %}" + kioskPk + '/'
+    }).done((data) => {
+      generateTabs(currentIndex)
+    })
+  }
 
   generateTabs = (activeTab) => {
     $.ajax({
@@ -22,6 +33,7 @@
       let first = true
       $('#kiosk-tabs').text('')
       $('.tab-content').text('')
+      maxIndex = data.length
       data.forEach((kiosk, index) => {
         if (kiosk.poll) {
           $.ajax({
@@ -33,7 +45,7 @@
         }
         $('#kiosk-tabs').append(`
           <li class="nav-item">
-            <a class="nav-link` + (index === activeTab ? " active" : "") + `" data-toggle="tab" href="#kiosk` + kiosk.pk + `" id="kiosk` + kiosk.pk + `-tab" onclick="updateUrl('kiosk` + kiosk.pk + `')">
+            <a class="nav-link` + (index === activeTab ? " active" : "") + `" data-toggle="tab" href="#kiosk` + kiosk.pk + `" id="kiosk` + kiosk.pk + `-tab" onclick="updateUrl('kiosk` + kiosk.pk + `'); currentIndex = ` + index + `">
               ` + kiosk.name + `
             </a>
           </li>
@@ -68,8 +80,8 @@
 
               <div class="form-group">
                 <input type="submit" class="btn btn-success" value="Save Kiosk"> 
-                <button class="btn btn-info">Preview Kiosk</button>
-                <button class="btn btn-danger">Delete Kiosk</button>
+                <button type="button" class="btn btn-info">Preview Kiosk</button>
+                <button type="button" class="btn btn-danger" onclick="deleteKiosk(` + kiosk.pk + `)">Delete Kiosk</button>
                 <span class="form-status"></span>
               </div>
             </form>
@@ -84,15 +96,19 @@
       
       $('#kiosk-tabs').append(
       `<li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#newkiosk" id='newkiosk-tab' onClick="updateUrl('newkiosk');">
+        <a class="nav-link` + (maxIndex === 0 ? " active" : "") +`" data-toggle="tab" href="#newkiosk" id='newkiosk-tab' onClick="updateUrl('newkiosk'); currentIndex = maxIndex">
           <span class="text-success"><i class="fa fa-plus" aria-hidden="true"></i></span>
         </a>
       </li>`
       )
       $('.tab-content').append(`
-        <div class="tab-pane fade" id="newkiosk">
+        <div class="tab-pane fade` + (maxIndex === 0 ? " show active" : "") + `" id="newkiosk">
           <h2>Create New Kiosk</h2>
-          <form method="POST">
+          <div class="alert alert-warning">
+            Creating a Kiosk occasionally doesn't update the tabs. Try refreshing the page if you know
+            you have a kiosk that isn't showing. We apologize for the inconvenience.
+          </div>
+          <form onsubmit="ajaxSubmit(event, this, 'dontclear_POST', '{% url 'logger:kiosk' %}', () => {generateTabs(` + currentIndex + `)});">
             
             <input type="hidden" name="kiosk_pk" value="-1">
 
