@@ -80,7 +80,7 @@
 
               <div class="form-group">
                 <input type="submit" class="btn btn-success" value="Save Kiosk"> 
-                <button type="button" class="btn btn-info">Preview Kiosk</button>
+                <a class="btn btn-info" href="{% url 'logger:client' %}?kiosk_code=` + kiosk.auth_code + `">Preview Kiosk</a>
                 <button type="button" class="btn btn-danger" onclick="deleteKiosk(` + kiosk.pk + `)">Delete Kiosk</button>
                 <span class="form-status"></span>
               </div>
