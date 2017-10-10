@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- <h1>Allow user to type in their name AND then also allow them to hite vote as the "submit" button</h1> -->
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>{{kiosk.name}}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+    crossorigin="anonymous"></script>
+
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/favicon.ico">
+
+</head>
+
+<body class="code-snippets-visible" onkeydown='$("#cardinput").focus();'>
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <section class="header" style="margin-top: 10vh; text-align: center;">
+      <img src="{{request.user.profile.school.school_image}}" id="mainImage" style="height: 20vh" />
+      <h2 class="title" id="displayText"></h2>
+      <form class="twelve columns" onsubmit="submitStudent();">
+        <input 
+          class="u-full-width" 
+          type="text" 
+          autofocus 
+          placeholder="Scan your ID, type your name or type in your username. You can vote once you sign in."
+          id="cardinput"
+        >
+      </form>
+    </section>
+  </div>
+  <div class="container">
+    <section class="header" id="poll" style="text-align: center;">
+    </section>
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+</body>
+<script>
+  const defaultDisplayText = "Hello {{kiosk.school.short_name}}, Please Sign in!";
+  let lastLog = -1;
+  let ableToVote = false;
+
+  $(document).ready(() => {
+    // configure csrf headers
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": getCookie('csrftoken')
+      }
+    });
+
+    // display default text at first
+    $('#displayText').text(defaultDisplayText);
+  });
+
+  // Submit Student via ajax.
+  submitStudent = () => {
+    $.ajax({
+      method: 'GET',
+      url: "{% url 'baselabwatch:api:student-list' %}",
+      data: {search: $('#cardinput').val()}
+    })
+    // prevent default
+    return false;
+  }
+
+  // Get cookie function for csrf configuration
+  getCookie = (name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  
+
+  
+</script>
+
+</html>
