@@ -27,7 +27,6 @@
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
@@ -47,7 +46,7 @@
     <section class="header" style="margin-top: 10vh; text-align: center;">
       <img src="{{request.user.profile.school.school_image}}" id="mainImage" style="height: 20vh" />
       <h2 class="title" id="displayText"></h2>
-      <form class="twelve columns" onsubmit="submitStudent();">
+      <form class="twelve columns" onsubmit="submitStudent(event);">
         <input 
           class="u-full-width" 
           type="text" 
@@ -69,8 +68,6 @@
 </body>
 <script>
   const defaultDisplayText = "Hello {{kiosk.school.short_name}}, Please Sign in!";
-  let lastLog = -1;
-  let ableToVote = false;
 
   $(document).ready(() => {
     // configure csrf headers
@@ -85,14 +82,32 @@
   });
 
   // Submit Student via ajax.
-  submitStudent = () => {
-    $.ajax({
-      method: 'GET',
-      url: "{% url 'baselabwatch:api:student-list' %}",
-      data: {search: $('#cardinput').val()}
-    })
-    // prevent default
-    return false;
+  submitStudent = (e) => {
+    e.preventDefault();
+    if ($('#cardinput')[0].value.length > 1) {
+      $.ajax({
+        method: 'GET',
+        url: "{% url 'baselabwatch:api:student-list' %}",
+        data: {search: $('#cardinput').val()}
+      }).done((data) => {
+        if (data.length === 1) {
+          console.log(data);
+          logStudentIn(data[0]);
+        } else {
+          studentNotFound();
+        }
+      })
+    }
+  }
+
+  // Log Student In
+  logStudentIn = () => {
+
+  }
+
+  // Display Error
+  studentNotFound = () => {
+
   }
 
   // Get cookie function for csrf configuration
