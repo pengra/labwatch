@@ -57,6 +57,14 @@
         >
       </form>
     </section>
+    <section class="poll" style="text-align: center;">
+      {% if poll_question %}
+        <h3 class="title">Poll: {{ poll_question }}</h3>
+        {% for choice in poll_choices %}
+          <button class="btn btn-large poll-option">{{choice}}</button>
+        {% endfor %}
+      {% endif %}
+    </section>
   </div>
   <div class="container">
     <section class="header" id="poll" style="text-align: center;">

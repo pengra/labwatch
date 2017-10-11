@@ -18,9 +18,12 @@ class ClientView(DashboardBase):
     def get(self, request, uuid=None):
         "Basic GET"
         if uuid:
+            kiosk = get_object_or_404(Kiosk, auth_code=uuid)
             return render(request, self.uuid_template_name, {
                 "uuid": uuid,
-                "kiosk": get_object_or_404(Kiosk, auth_code=uuid)
+                "kiosk": kiosk,
+                "poll_question": kiosk.poll,
+                "poll_choices": (lambda x: kiosk.poll.pollchoice_set.all() if x else None)(kiosk.poll)
             })
         return super().get(request)
 
@@ -33,8 +36,8 @@ class ClientView(DashboardBase):
                 student = get_object_or_404(Student, pk=form.cleaned_data['pk'])
                 status = log_student(student, form.mode)
                 return JsonResponse({
-                    'data': form.data, 
-                    'student': student.first_name + ' ' + student.last_name, 
+                    'data': form.data,
+                    'student': student.first_name,
                     'status': status,
                     'mode': form.mode
                 })
