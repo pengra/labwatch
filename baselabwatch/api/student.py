@@ -11,9 +11,8 @@ class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
     filter_backends = (SearchFilter, )
     search_fields = (
-        'first_name', 'last_name', 'nick_name',
-        'student_id', 'teacher', 'grade',
-        'email',
+        '^first_name', '^last_name', '$last_name', '=nick_name',
+        '=student_id', '=email',
     )
 
     def perform_create(self, serializer):
