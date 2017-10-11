@@ -91,7 +91,6 @@
         data: {search: $('#cardinput').val()}
       }).done((data) => {
         if (data.length === 1) {
-          console.log(data);
           logStudentIn(data[0]);
         } else {
           studentNotFound();
@@ -101,8 +100,16 @@
   }
 
   // Log Student In
-  logStudentIn = () => {
-
+  logStudentIn = (student) => {
+    $.ajax({
+      method: 'POST',
+      data: {
+        pk: student.pk,
+        query_input: $('#cardinput').val(),
+      }
+    }).done((data) => {
+      console.log(data);
+    })
   }
 
   // Display Error
