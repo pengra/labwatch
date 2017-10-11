@@ -1,6 +1,7 @@
 from baselabwatch.views import DashboardBase
 from logger.models import Kiosk, StudentSession
 from baselabwatch.models import Student
+from logger.models import PollChoice
 from logger.forms import LogForm
 from logger.util import log_student
 
@@ -34,13 +35,22 @@ class ClientView(DashboardBase):
             form = LogForm(request.POST)
             if form.is_valid():
                 student = get_object_or_404(Student, pk=form.cleaned_data['pk'])
-                status = log_student(student, form.mode)
-                return JsonResponse({
-                    'data': form.data,
-                    'student': student.first_name,
-                    'status': status,
-                    'mode': form.mode
-                })
+                if form.mode == 'VOTE':
+                    poll = get_object_or_404(PollChoice, pk=form.cleaned_data['poll_result'])
+                    poll.votes += 1
+                    poll.save()
+                    return JsonResponse({
+                        'data': form.data,
+                        'poll_votes': poll.votes
+                    })
+                else:
+                    status = log_student(student, form.mode)
+                    return JsonResponse({
+                        'data': form.data,
+                        'student': student.first_name,
+                        'status': status,
+                        'mode': form.mode
+                    })
             else:
                 response = JsonResponse({'errors': form.errors, 'data': form.data})
                 response.status_code = 400
