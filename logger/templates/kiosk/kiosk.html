@@ -51,6 +51,7 @@
           class="u-full-width" 
           type="text" 
           autofocus 
+          autocomplete='off'
           placeholder="Scan your ID, type your name or type in your username. You can vote once you sign in."
           id="cardinput"
         >
@@ -108,13 +109,50 @@
         query_input: $('#cardinput').val(),
       }
     }).done((data) => {
-      console.log(data);
+      $('#cardinput').focus();
+      if (data.status === 'signin') {
+        displayText('Welcome, ' + data.student + '!', true);
+      } else {
+        displayText('Goodbye, ' + data.student + '!', true);
+      }
+      resetTextBox();
     })
+  }
+
+  // Bounce Text
+  bounceText = () => {
+    $('#displayText').effect('bounce', {times: 3}, 500);
+  }
+
+  // Reset Text
+  resetText = () => {
+    setTimeout(() => {
+      $('#displayText').text(defaultDisplayText);
+      $('#displayText').css('color', 'black')
+    }, 3000)
+  }
+
+  // Rest Textbox
+  resetTextBox = () => {
+    $('#cardinput').val('')
+  }
+
+  // Display Text
+  displayText = (text, bounce, color) => {
+    if (!color) {
+      color = 'black'
+    }
+    $('#displayText').text(text);
+    $('#displayText').css('color', color)
+    if (bounce) { bounceText() }
+    resetText()
   }
 
   // Display Error
   studentNotFound = () => {
-
+    displayText('Hello, Could you try that again?', true, 'red')
+    resetText()
+    resetTextBox();
   }
 
   // Get cookie function for csrf configuration
