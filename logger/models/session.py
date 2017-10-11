@@ -3,19 +3,19 @@ from django.utils import timezone
 from baselabwatch.models import Student
 # Create your models here.
 
+INPUT_MODE = (
+    ('CARD', 'Card Scan'),  # 0
+    ('NAME', 'Name input'),  # 1
+    ('EMAL', 'Email'),  # 2
+    ('NICK', 'Nickname input'),  # 3
+    ('ADMI', 'Admin input')  # 4
+)
+
 class StudentSession(models.Model):
     "A log of a student login/logout."
 
     # Models actually depend on these indexes now
     # Do not change.
-
-    INPUT_MODE = (
-        ('CARD', 'Card Scan'),  # 0
-        ('NAME', 'Name input'),  # 1
-        ('EMAL', 'Email'),  # 2
-        ('NICK', 'Nickname input'),  # 3
-        ('ADMI', 'Admin input')  # 4
-    )
 
     student = models.ForeignKey(Student)
 
