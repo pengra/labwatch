@@ -6,9 +6,11 @@ contexts relating to user:
 """
 
 from django.views.generic import View, TemplateView 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from baselabwatch.util import get_app_metadata
 
-class DashboardBase(TemplateView):
+class DashboardBase(LoginRequiredMixin, TemplateView):
+    login_url = "/login/"
     template_name = 'base/_base.html'
     current_app = 'baselabwatch'
     serializer = None
