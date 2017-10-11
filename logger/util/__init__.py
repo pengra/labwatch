@@ -1,5 +1,6 @@
 import xlsxwriter
 from pytz import timezone
+from django.utils import timezone as django_tz
 from django.core.files.temp import NamedTemporaryFile
 from baselabwatch.models import Student
 from logger.models import StudentSession, Kiosk, PollChoice, PollQuestion
@@ -15,9 +16,31 @@ ALPHABET = [
 # DateTimes appear as: 2017-09-28 15:49:38+00:00
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-def get_last_log(student):
-    "Get last StudentSession for Student."
-    return StudentSession.objects.filter(student=student).last()
+SIGNIN = 'signin'
+SIGNOUT = 'signout'
+
+
+def get_last_open_log(student):
+    "Get last StudentSession for Student if student isn't logged out."
+    logs = StudentSession.objects.filter(student=student, sign_out_timestamp=None)
+    if logs:
+        return logs.latest('sign_in_timestamp')
+
+
+def log_student(student, mode):
+    log = get_last_open_log(student)
+    if log:
+        log.sign_out_timestamp = django_tz.now()
+        log.sign_out_mode = mode
+        log.save()
+        return SIGNOUT
+    log = StudentSession(
+        student=student,
+        sign_in_mode=mode
+    )
+    log.save()
+    return SIGNIN
+        
 
 
 def export_logs(export_form_data, target_tz):
