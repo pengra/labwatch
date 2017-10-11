@@ -61,7 +61,7 @@
       {% if poll_question %}
         <h3 class="title">Poll: {{ poll_question }}</h3>
         {% for choice in poll_choices %}
-          <button class="btn btn-large poll-option">{{choice}}</button>
+          <button class="btn btn-large poll-option" onclick="registerVote({{choice.pk}})">{{choice}}</button>
         {% endfor %}
       {% endif %}
     </section>
@@ -77,6 +77,7 @@
 </body>
 <script>
   const defaultDisplayText = "Hello {{kiosk.school.short_name}}, Please Sign in!";
+  let lastStudentPk;
 
   $(document).ready(() => {
     // configure csrf headers
@@ -110,10 +111,11 @@
 
   // Log Student In
   logStudentIn = (student) => {
+    lastStudentPk = student.pk;
     $.ajax({
       method: 'POST',
       data: {
-        pk: student.pk,
+        pk: lastStudentPk,
         query_input: $('#cardinput').val(),
       }
     }).done((data) => {
@@ -124,6 +126,19 @@
         displayText('Goodbye, ' + data.student + '!', true);
       }
       resetTextBox();
+    })
+  }
+
+  registerVote = (votePk) => {
+    $.ajax({
+      method: 'POST',
+      data: {
+        pk: lastStudentPk,
+        query_input: 'vote',
+        poll_result: votePk
+      }
+    }).done((data) => {
+      console.log(data)
     })
   }
 
@@ -140,7 +155,7 @@
     }, 3000)
   }
 
-  // Rest Textbox
+  // Reset Textbox
   resetTextBox = () => {
     $('#cardinput').val('')
   }
