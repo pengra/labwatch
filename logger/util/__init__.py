@@ -54,7 +54,7 @@ def export_logs(export_form_data, target_tz):
         }
     )
 
-    datetime_format = workbook.add_format({'num_format': "dd/mm/yy hh:mm:ss AM/PM"})
+    datetime_format = workbook.add_format({'num_format': "mm/dd/yy hh:mm:ss AM/PM"})
 
     worksheet = workbook.add_worksheet()
     column_cursor = 0
