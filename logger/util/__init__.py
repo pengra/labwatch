@@ -40,7 +40,6 @@ def log_student(student, mode):
     )
     log.save()
     return SIGNIN
-        
 
 
 def export_logs(export_form_data, target_tz):
