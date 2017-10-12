@@ -23,6 +23,12 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <style>
+  * {
+    user-select: none;
+    -moz-user-select: none;
+  }
+  </style>
 
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -59,10 +65,12 @@
     </section>
     <section class="poll" style="text-align: center;">
       {% if poll_question %}
-        <h3 class="title">Poll: {{ poll_question }}</h3>
-        {% for choice in poll_choices %}
-          <button class="btn btn-large poll-option" onclick="registerVote({{choice.pk}})">{{choice}}</button>
-        {% endfor %}
+        <h3 id="poll"></h3>
+        <div id="choices">
+          {% for choice in poll_choices %}
+            <button class="btn btn-large poll-option" onclick="registerVote({{choice.pk}})">{{choice}}</button>
+          {% endfor %}
+        </div>
       {% endif %}
     </section>
   </div>
@@ -77,7 +85,9 @@
 </body>
 <script>
   const defaultDisplayText = "Hello {{kiosk.school.short_name}}, Please Sign in!";
+  const pollQuestion = "Poll: {{ poll_question }}";
   let lastStudentPk;
+  let votingDisabled;
 
   $(document).ready(() => {
     // configure csrf headers
@@ -89,6 +99,10 @@
 
     // display default text at first
     $('#displayText').text(defaultDisplayText);
+    $('#poll').html(pollQuestion);
+
+    // Disable poll at first
+    disableVoting();
   });
 
   // Submit Student via ajax.
@@ -126,20 +140,46 @@
         displayText('Goodbye, ' + data.student + '!', true);
       }
       resetTextBox();
+      enableVoting();
+      setTimeout(() => {
+        disableVoting()
+      }, 5000)
     })
   }
 
+  // Send a vote to the server
   registerVote = (votePk) => {
-    $.ajax({
-      method: 'POST',
-      data: {
-        pk: lastStudentPk,
-        query_input: 'vote',
-        poll_result: votePk
-      }
-    }).done((data) => {
-      console.log(data)
-    })
+    if (!votingDisabled) {
+      $.ajax({
+        method: 'POST',
+        data: {
+          pk: lastStudentPk,
+          query_input: 'vote',
+          poll_result: votePk
+        }
+      }).done((data) => {
+        disableVoting();
+      })
+    } else {
+      displayText("Please sign in first!");
+      bounceText();
+    }
+  }
+
+  // disable voting and hide options
+  disableVoting = () => {
+    $('#poll').html('Thanks for voting!');
+    setTimeout(() => {
+      $('#poll').html(pollQuestion)
+    }, 2000)
+    $('.poll').css('opacity', .3);
+    votingDisabled = true;
+  }
+
+  // enable voting and show options
+  enableVoting = () => {
+    $('.poll').css('opacity', 1);
+    votingDisabled = false;
   }
 
   // Bounce Text
