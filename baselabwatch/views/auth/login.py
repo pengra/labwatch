@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.shortcuts import redirect, render
 
 def login_view(request, *args, **kwargs):
-    print(request)
     context = {}
     if request.method == 'POST':
         user = authenticate(request, username=request.POST.get('username', ''), password=request.POST.get('password', ''))
