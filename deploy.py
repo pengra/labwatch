@@ -11,3 +11,4 @@ if __name__ == '__main__':
             password=getenv('SUPERUSER_PASSWORD', 'default_p@ssword'),
             email=getenv('SUPERUSER_EMAIL', 'npengra317@gmail.com'),
         )
+        user.save()
