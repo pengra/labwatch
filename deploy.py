@@ -20,5 +20,7 @@ if __name__ == '__main__':
             username=getenv('SUPERUSER_USERNAME', 'qwergram'),
             password=getenv('SUPERUSER_PASSWORD', 'default_p@ssword'),
             email=getenv('SUPERUSER_EMAIL', 'npengra317@gmail.com'),
+            is_superuser=True,
+            is_staff=True,
         )
         user.save()
