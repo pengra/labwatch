@@ -8,7 +8,7 @@ router.register(r'sessions', api.StudentSessionViewSet, base_name='session')
 router.register(r'kiosks', api.KioskViewSet, base_name='kiosk')
 router.register(r'poll-questions', api.PollQuestionViewSet)
 router.register(r'poll-choices', api.PollChoiceViewSet)
-router.register(r'imagecards', api.ImageCardViewSet)
+router.register(r'imagecards', api.ImageCardViewSet, base_name='imagecard')
 
 
 urlpatterns = [
