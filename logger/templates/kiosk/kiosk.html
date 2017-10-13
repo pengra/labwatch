@@ -135,9 +135,9 @@
     }).done((data) => {
       $('#cardinput').focus();
       if (data.status === 'signin') {
-        displayText('Welcome, ' + data.student + '!', true);
+        displayText('Welcome, ' + data.student + '!', false);
       } else {
-        displayText('Goodbye, ' + data.student + '!', true);
+        displayText('Goodbye, ' + data.student + '!', false);
       }
       resetTextBox();
       enableVoting();
