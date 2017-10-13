@@ -4,6 +4,8 @@ if __name__ == '__main__':
     # run migrations
     print('[DEPLOY]: settings DJANGO_SETTINGS_MODULE')
     environ.setdefault("DJANGO_SETTINGS_MODULE", "labwatch.settings")
+    from django import setup
+    setup()
     
     from django.core.management import execute_from_command_line
     from django.contrib.auth.models import User
