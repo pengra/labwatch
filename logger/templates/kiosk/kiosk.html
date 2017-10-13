@@ -158,6 +158,8 @@
           poll_result: votePk
         }
       }).done((data) => {
+        updatePicture();
+        thankVoter();
         disableVoting();
       })
     } else {
@@ -166,12 +168,27 @@
     }
   }
 
-  // disable voting and hide options
-  disableVoting = () => {
+  // update the image
+  updatePicture = () => {
+    $.ajax({
+      method: 'GET',
+      url: '{% url "logger:api:imagecard-list" %}?random=✓'
+    }).done((data) => {
+      console.log(data)
+      $('#mainImage').attr('src', data[0].image)
+    })
+  }
+
+  // thank the user that voted
+  thankVoter = () => {
     $('#poll').html('Thanks for voting!');
     setTimeout(() => {
       $('#poll').html(pollQuestion)
     }, 2000)
+  }
+
+  // disable voting and hide options
+  disableVoting = () => {
     $('.poll').css('opacity', .3);
     votingDisabled = true;
   }
