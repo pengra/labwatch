@@ -1,5 +1,5 @@
 from baselabwatch.views import DashboardBase
-from baselabwatch.serializers import ProfileSerializer
+from baselabwatch.serializers import ProfileSerializer, UserSerializer
 
 class ProfileView(DashboardBase):
     template_name = 'base/profileadmin.html'
@@ -11,6 +11,10 @@ class ProfileView(DashboardBase):
         if context['serializer']:
             context['serializer'] = context['serializer'](
                 instance=self.request.user.profile,
+                context={'request': self.request}
+            )
+            context['user_serializer'] = UserSerializer(
+                instance=self.request.user,
                 context={'request': self.request}
             )
         return context

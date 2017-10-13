@@ -4,6 +4,12 @@ Common useful functions/classes regarding permissions
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+class UserPermission(BasePermission):
+
+    def has_object_permission(self, request, view, user):
+        return user == request.user
+
+
 class ProfilePermission(BasePermission):
     """
     Object-level permission to only allow owners of an object to edit it.
