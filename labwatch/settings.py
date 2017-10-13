@@ -99,21 +99,21 @@ if not DEBUG:
 # https://chrxr.com/django-error-logging-configuration-heroku/
 
 if not DEBUG:
-        LOGGING = {
-            'version': 1,
-            'disable_existing_loggers': False,
-            'handlers': {
-                'console': {
-                    'class': 'logging.StreamHandler',
-                },
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
             },
-            'loggers': {
-                'django': {
-                    'handlers': ['console'],
-                    'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR')
-                }
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR')
             }
         }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

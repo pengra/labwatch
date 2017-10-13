@@ -2,6 +2,7 @@ from baselabwatch.views import DashboardBase
 from baselabwatch.serializers import SchoolSerializer
 from baselabwatch.models import School
 
+
 class SchoolView(DashboardBase):
     template_name = 'base/schooladmin.html'
     current_app = 'baselabwatch'
@@ -15,6 +16,7 @@ class SchoolView(DashboardBase):
                 context={'request': self.request}
             )
         if self.request.user.profile.school:
-            context['students'] = self.request.user.profile.school.student_set.all().count()
-        
+            context['students'] = self.request.user.profile.school.student_set.all(
+            ).count()
+
         return context
