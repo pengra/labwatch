@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+
+{% block title %}PengraLabs Staff Page{% endblock %}
+
+{% block userlinks %}
+    <a href="{% url 'baselabwatch:index' %}">Non-Staff Dashboard</a> /
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">Change password</a> /
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">Log out</a>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">PengraLabs Staff Page</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
