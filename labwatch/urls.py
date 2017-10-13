@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include, static
 from django.contrib import admin
 from labwatch import settings
-from baselabwatch.views import IndexView, login_view
+from baselabwatch.views import IndexView, login_view, logout_view
 import baselabwatch.urls
 import logger.urls
 
@@ -24,6 +24,7 @@ import logger.urls
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^login/$', login_view, name='login'),
+    url(r'^logout/$', logout_view, name='logout'),
     url(r'^staff/', admin.site.urls),
     url(r'^base/', include(baselabwatch.urls, namespace='baselabwatch')),
     url(r'^logger/', include(logger.urls, namespace='logger')),
