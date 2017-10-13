@@ -14,5 +14,7 @@ class SchoolView(DashboardBase):
                 instance=self.request.user.profile.school,
                 context={'request': self.request}
             )
-        context['students'] = self.request.user.profile.school.student_set.all().count()
+        if self.request.user.profile.school:
+            context['students'] = self.request.user.profile.school.student_set.all().count()
+        
         return context
