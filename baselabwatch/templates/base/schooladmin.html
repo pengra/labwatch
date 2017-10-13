@@ -33,8 +33,10 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <span class="form-status"></span>
+          {% if request.user.profile.school.primary_contact == request.user %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <span class="form-status"></span>
+          {% endif %}
         </div>
       </div>
     </form>
