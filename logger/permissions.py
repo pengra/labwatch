@@ -16,3 +16,13 @@ class SessionPermission(BasePermission):
         return session.student.school == request.user.profile.school and (request.user.profile.librarian or request.user.profile.engineer)
 
 
+class KioskPermission(BasePermission):
+    """
+    Allow librarians to create and modify kiosks.
+    """
+
+    def has_object_permission(self, request, view, kiosk):
+        if request.method in SAFE_METHODS:
+            return kiosk.school == request.user.profile.school
+        return kiosk.school == request.user.profile.school and (request.user.profile.librarian)
+        
