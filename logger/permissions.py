@@ -25,4 +25,12 @@ class KioskPermission(BasePermission):
         if request.method in SAFE_METHODS:
             return kiosk.school == request.user.profile.school
         return kiosk.school == request.user.profile.school and (request.user.profile.librarian)
-        
+
+
+class ImageCardPermission(BasePermission):
+    """
+    Allow librarians to modify image cards. Allow anyone to see them.
+    """
+
+    def has_object_permission(self, request, view, card):
+        return request.method in SAFE_METHODS or (card.school == request.user.profile.school and request.user.profile.librarian)
