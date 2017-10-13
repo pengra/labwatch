@@ -174,8 +174,9 @@
       method: 'GET',
       url: '{% url "logger:api:imagecard-list" %}?random=✓'
     }).done((data) => {
-      console.log(data)
-      $('#mainImage').attr('src', data[0].image)
+      if (data) {
+        $('#mainImage').attr('src', data[0].image)
+      }
     })
   }
 
