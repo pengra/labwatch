@@ -4,6 +4,8 @@ if __name__ == '__main__':
     # run migrations
     print('[DEPLOY]: settings DJANGO_SETTINGS_MODULE')
     environ.setdefault("DJANGO_SETTINGS_MODULE", "labwatch.settings")
+
+    print('[DEPLOY]: Calling Setup')
     from django import setup
     setup()
     
@@ -11,7 +13,7 @@ if __name__ == '__main__':
     from django.contrib.auth.models import User
     
     print('[DEPLOY]: running migrations')
-    execute_from_command_line('migrate')
+    execute_from_command_line([None, 'migrate'])
     if User.objects.filter(username=getenv('SUPERUSER_USERNAME', 'qwergram')).count() == 0:
         print('[DEPLOY]: creating superuser')
         user = User(
