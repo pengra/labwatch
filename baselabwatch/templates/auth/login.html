@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../../../favicon.ico">
+
+  <title>Signin</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+
+  <style>
+    body {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: #eee;
+    }
+
+    .form-signin {
+      max-width: 330px;
+      padding: 15px;
+      margin: 0 auto;
+    }
+
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+      margin-bottom: 10px;
+    }
+
+    .form-signin .checkbox {
+      font-weight: normal;
+    }
+
+    .form-signin .form-control {
+      position: relative;
+      height: auto;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  </style>
+
+  <!-- Font Awesome -->
+  <link href="{% static 'bootstrap/font-awesome.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <form class="form-signin" method="POST">
+      {% csrf_token %}
+      <h2 class="form-signin-heading">LabWatch Signin</h2>
+      <label for="inputUsername" class="sr-only">Username</label>
+      <input name='username' type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+  </div>
+  <!-- /container -->
+
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="../../../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>
