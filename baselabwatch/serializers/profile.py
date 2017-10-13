@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     engineer = serializers.BooleanField(read_only=True)
     librarian = serializers.BooleanField(read_only=True)
     techsavy = serializers.BooleanField(read_only=True)
-
+    beta_tester = serializers.BooleanField(help_text='At this point, beta tester status doesn\'t matter. However, by leaving it checked, we\'ll release new features and bug fixes to you before anyone else.')
 
     class Meta:
         model = Profile

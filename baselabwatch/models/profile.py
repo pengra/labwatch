@@ -27,6 +27,7 @@ class Profile(models.Model):
         max_length=255,
         choices=potential_timezones,
         default='US/Pacific',
+        help_text='Select your timezone.'
     )
 
     def __str__(self):
