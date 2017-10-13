@@ -11,7 +11,7 @@ class ProfilePermission(BasePermission):
     """
 
     def has_object_permission(self, request, view, profile):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        # Instance must have an attribute named `owner`.
-        return (request.method in SAFE_METHODS) or (profile.user == request.user)
+        "Allow only the owner of the profile to view."
+        return profile.user == request.user
+
+

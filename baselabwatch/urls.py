@@ -6,7 +6,7 @@ from baselabwatch import views
 
 router = routers.DefaultRouter()
 router.register(r'users', api.UserViewSet)
-router.register(r'profiles', api.ProfileViewSet)
+router.register(r'profiles', api.ProfileViewSet, base_name='profile')
 router.register(r'schools', api.SchoolViewSet)
 router.register(r'students', api.StudentViewSet, base_name='student')
 router.register(r'subscriptions', api.SubscriptionViewSet)
