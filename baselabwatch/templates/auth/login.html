@@ -78,6 +78,12 @@
       <input name='username' type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
       <input name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      
+      {% if error %}
+        <p class='text-danger'>
+          Incorrect username &amp; password combination
+        </p>
+      {% endif %}
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 
