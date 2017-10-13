@@ -16,11 +16,9 @@ if __name__ == '__main__':
     execute_from_command_line(['manage.py', 'migrate'])
     if User.objects.filter(username=getenv('SUPERUSER_USERNAME', 'qwergram')).count() == 0:
         print('[DEPLOY]: creating superuser')
-        user = User(
+        user = User.objects.create_superuser(
             username=getenv('SUPERUSER_USERNAME', 'qwergram'),
-            password=getenv('SUPERUSER_PASSWORD', 'default_p@ssword'),
             email=getenv('SUPERUSER_EMAIL', 'npengra317@gmail.com'),
-            is_superuser=True,
-            is_staff=True,
+            password=getenv('SUPERUSER_PASSWORD', 'default_p@ssword'),
         )
         user.save()
