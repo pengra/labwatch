@@ -15,3 +15,8 @@ class ProfilePermission(BasePermission):
         return profile.user == request.user
 
 
+class StudentPermission(BasePermission):
+
+    def has_object_permission(self, request, view, student):
+        "Allow only the school librarians view "
+        return student.school == request.user.profile.school

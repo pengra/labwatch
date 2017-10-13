@@ -1,14 +1,14 @@
 from baselabwatch.models import Student
 from baselabwatch.serializers import StudentSerializer
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser
+from baselabwatch.permissions import StudentPermission
 from rest_framework.filters import SearchFilter
 
 class StudentViewSet(viewsets.ModelViewSet):
     "Viewsets for Students."
     # queryset = Student.objects.all
     serializer_class = StudentSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (StudentPermission,)
     filter_backends = (SearchFilter, )
     search_fields = (
         '^first_name', '^last_name', 'last_name', '=nick_name',
