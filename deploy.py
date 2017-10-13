@@ -13,7 +13,7 @@ if __name__ == '__main__':
     from django.contrib.auth.models import User
     
     print('[DEPLOY]: running migrations')
-    execute_from_command_line([None, 'migrate'])
+    execute_from_command_line(['manage.py', 'migrate'])
     if User.objects.filter(username=getenv('SUPERUSER_USERNAME', 'qwergram')).count() == 0:
         print('[DEPLOY]: creating superuser')
         user = User(
