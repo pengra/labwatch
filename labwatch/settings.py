@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     'labwatch.herokuapp.com',
     'lab-watch-beta.herokuapp.com',
     'lab-watch.herokuapp.com',
+    'labwatch2.herokuapp.com',
     '127.0.0.1',
 ]
 
