@@ -118,9 +118,9 @@
             <a class="nav-link {% block logger_active %}{% endblock %}" href="{% url 'logger:index' %}">Logger</a>
           </li>
         {% endif %}
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">Help</a>
-        </li>
+        </li> -->
         {% if request.user.is_staff %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'admin:index' %}">Staff Page</a>
