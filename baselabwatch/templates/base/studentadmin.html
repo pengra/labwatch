@@ -214,6 +214,14 @@ EXAMPLE DATA:
           <span class="form-status"></span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onClick='$("#student-detail-form").submit()'>Update Student</button>
+          <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Delete
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" onClick="ajaxSubmit(event, this, 'DELETE', '{% url 'baselabwatch:api:student-list' %}' + thisStudentPk + '/', ()=>{location.reload()})">Confirm Deletion</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
