@@ -127,7 +127,7 @@ def export_logs(export_form_data, target_tz):
                     session.sign_in_mode
                 )
                 column_cursor += 1
-            if export_form_data.get('out'):
+            if export_form_data.get('out') and session.sign_out_timestamp:
                 worksheet.write_datetime(
                     ALPHABET[column_cursor] + str(row_index), 
                     session.sign_out_timestamp.astimezone(timezone(target_tz)), 
