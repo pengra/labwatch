@@ -1,9 +1,11 @@
 defusedxml==0.5.0
 dj-database-url==0.4.2
-djangorestframework==3.6.4
-django-filter==1.0.4
 Django==1.11.5
+django-filter==1.0.4
+djangorestframework==3.6.4
 gunicorn==19.7.1
-psycopg2==2.7.1
+pkg-resources==0.0.0
+psycopg2==2.7.5
+pytz==2018.5
 whitenoise==3.3.0
 XlsxWriter==0.9.9
