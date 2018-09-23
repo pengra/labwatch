@@ -30,6 +30,9 @@ class Profile(models.Model):
         help_text='Select your timezone.'
     )
 
+    monthly_donation = models.IntegerField(default=0)
+    billing = models.CharField(default="monthly", choices=(("monthly", "Monthly"), ("yearly", "Yearly")), max_length=10)
+
     def __str__(self):
         return str(self.user)
 

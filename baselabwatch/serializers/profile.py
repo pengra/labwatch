@@ -14,6 +14,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     librarian = serializers.BooleanField(read_only=True)
     techsavy = serializers.BooleanField(read_only=True)
     beta_tester = serializers.BooleanField(help_text='At this point, beta tester status doesn\'t matter. However, by leaving it checked, we\'ll release new features and bug fixes to you before anyone else.')
+    monthly_donation = serializers.IntegerField(help_text="A recomended donation is $6/month. An email will ask for payment details.")
 
     class Meta:
         model = Profile
@@ -25,7 +26,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'librarian',
             'techsavy',
             'beta_tester',
-            'timezone'
+            'timezone',
+            'monthly_donation',
+            'billing'
         )
         
         
