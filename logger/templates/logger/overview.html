@@ -16,7 +16,7 @@
 
 <div class="tab-content">
   <div class="tab-pane fade show active" id="current">
-    <h2>Current Students</h2>
+    <h2>Current Students&nbsp;<span class="badge badge-primary" id="currentStudentCount">0</span></h2>
     <div id="loggedinstudents">
       <div class="table-responsive">
         <table class="table table-striped" style="margin-bottom: 2%">
@@ -504,8 +504,10 @@
           $('.student-select-all')[0].disabled = false
         }
         const results = $('#current-students');
+        let count = 0
         results.text('')
         for (let index in data) {
+          count += 1
           results.append(
             `<tr class="current-student-session" data-pk="` + data[index].pk + `" data-signinmode='` + data[index].sign_in_mode + `'
               data-signintimestamp='` +  data[index].sign_in_timestamp + `'>
@@ -522,6 +524,7 @@
             </tr>`
           )
         }
+        $('#currentStudentCount').text(count)
       })
     }
     
