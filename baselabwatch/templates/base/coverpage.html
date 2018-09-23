@@ -1,74 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/favicon.ico">
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Eventually by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>LabWatch</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'cover/main.css' %}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	</head>
+	<body class="is-preload">
 
-    <title>Lab Watch</title>
+		<!-- Header -->
+			<header id="header">
+				<h1>LabWatch</h1>
+				<p>A simple, cheap and opensource way for librarians to track library usage. 
+        <br/>
+        {% if request.user.is_authenticated %}
+        You're logged in. <a href="{% url 'baselabwatch:index' %}">Go to your dashboard</a>
+        {% else %}
+        Already have an account? <a href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a></p>
+        {% endif %}
+			</header>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Signup Form -->
+			<form id="signup-form" method="post" action="#">
+				<input type="email" name="email" id="email" placeholder="Email Address" />
+        <input type="submit" value="Sign Up" />
+        <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="{{csrf_token}}" />
+      </form>
+      
 
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.0/examples/cover/cover.css" rel="stylesheet">
-  </head>
+		<!-- Footer -->
+			<footer id="footer">
+          <ul class="icons">
+              <li><a href="https://github.com/pengra/labwatch/" class="icon fa-github"><span class="label">GitHub</span></a></li>
+            </ul>
+				<ul class="copyright">
+					<li>&copy; Pengra Labs.</li><li>Credits: <a href="http://unsplash.com">Unsplash</a> + <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
 
-  <body>
+		<!-- Scripts -->
+			<script src="{% static 'cover/main.js' %}"></script>
 
-    <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">LabWatch</h3>
-              <nav class="nav nav-masthead">
-                <a class="nav-link active" href="#">Home</a>
-                {% if request.user.is_authenticated %}
-                  <a class="nav-link" href="{% url 'baselabwatch:index' %}">Dashboard</a>
-                {% else %}
-                  <a class="nav-link" href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a>
-                  <!-- <a class="nav-link" href="#">Sign up</a> -->
-                {% endif %}
-                <!-- <a class="nav-link" href="#">Student Portal</a> -->
-              </nav>
-            </div>
-          </div>
-
-          <div class="inner cover">
-            <h1 class="cover-heading">Lab Watch</h1>
-            <p class="lead">Lab watch is used to help schools track their library usage.</p>
-            <p class="lead">
-              <!-- <a href="#" class="btn btn-lg btn-secondary">Learn more</a> -->
-            </p>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>
-                Cover template for <a href="https://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>. 
-                <br/>
-                Backend written with &lt;3 in Python/Django/Gunicorn/Heroku by <a href="https://qwergram.github.io/">Norton Pengra</a>
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-  </body>
+	</body>
 </html>
