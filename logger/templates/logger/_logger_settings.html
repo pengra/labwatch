@@ -7,10 +7,10 @@
 {% block left_navigation %}
 <ul class="nav nav-pills flex-column">
   <li class="nav-item">
-    <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'logger:index' %}">Overview <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block overview_active %}{% endblock %}" href="{% url 'logger:index' %}">Overview</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% block kiosk_active %}{% endblock %}" href="{% url 'logger:kiosk' %}">Kiosk Management <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block kiosk_active %}{% endblock %}" href="{% url 'logger:kiosk' %}">Kiosk Management</a>
   </li>
 </ul>
 {% endblock %}
