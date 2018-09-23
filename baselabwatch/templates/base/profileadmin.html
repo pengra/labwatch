@@ -11,15 +11,16 @@
     {% render_form user_serializer %}
 </form>
 
-<form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'baselabwatch:api:profile-detail' pk=request.user.profile.pk %}');" id="profile-form">
+<form onSubmit="ajaxSubmit(event, this, 'PUT', '{% url 'baselabwatch:api:profile-detail' pk=request.user.profile.pk %}');"
+    id="profile-form">
     {% csrf_token %}
     {% render_form serializer %}
 </form>
 
-<button class="btn btn-success" onclick="$('#profile-form').submit(); $('#user-form').submit(); $('.form-status').text('Saved!');">Save Profile</button> 
+<button class="btn btn-success" onclick="$('#profile-form').submit(); $('#user-form').submit(); $('.form-status').text('Saved!');">Save
+    Profile</button>
 <a href="{% url 'logout' %}" class="btn btn-danger">Log out</a>
 <span class="form-status"></span>
-
 
 
 {% endblock %}
