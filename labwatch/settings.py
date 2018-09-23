@@ -96,7 +96,7 @@ DB = {
     'NAME': os.getenv('DB_NAME', 'CIA_FBI_SUPER_HQ_DB'),
     'USER': os.getenv('DB_USER', 'JackRyan'),
     'PASSWORD': os.getenv('DB_PASS', 'p@ssword1'),
-    'HOST': 'localhost',
+    'HOST': os.getenv('DB_HOST', 'localhost'),
     'PORT': '',
 }
 
