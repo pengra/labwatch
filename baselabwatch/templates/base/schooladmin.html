@@ -12,11 +12,11 @@
     <a class="nav-link active" data-toggle="tab" href="#settings" id='settings-tab' onClick="updateUrl('settings');">Settings</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#limits" id='limits-tab' onClick="updateUrl('limits');">Limits</a>
+    <a class="nav-link" data-toggle="tab" href="#limits" id='limits-tab' onClick="updateUrl('limits');">Stats</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#payment" id='payment-tab' onClick="updateUrl('payment');">Payment</a>
-  </li>
+  {% comment %} <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#payment" id='payment-tab' onClick="updateUrl('payment');">Donating</a>
+  </li> {% endcomment %}
 </ul>
 
 <div class="tab-content">
@@ -42,24 +42,14 @@
     </form>
   </div>
   <div class="tab-pane fade" id="limits">
-    <h2>Subscription Limits</h2>
+    <h2>Subscription Statistics</h2>
     <div class="alert alert-info">
-      We are currently in a free beta stage. All users of LabWatch have
-      access to unlimited resources for free! Users will be notified of 
-      pricing and limit changes. 
-      It's worth noting {{request.user.profile.school.name}} currently
-      tracks {{students}} students.
+      {{request.user.profile.school.name}} currently tracks {{students}} students. Thank you for using our service!
     </div>
   </div>
   <div class="tab-pane fade" id="payment">
-    <h2>Payment Method</h2>
-    <div class="alert alert-info">
-      We are currently in a free beta stage. All users of LabWatch have
-      access to unlimited resources for free! Users will be notified of 
-      pricing and limit changes. Currently, LabWatch is planning
-      on charging around $100 per year for services at the end of
-      the free beta. This is subject to change.
-    </div>
+    <h2>Donation Method</h2>
+    
   </div>
 </div>
 {% endblock %}
