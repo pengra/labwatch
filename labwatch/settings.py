@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -92,9 +91,19 @@ DATABASES = {
     }
 }
 
-if not DEBUG:
-    # Set up database for Heroku
-    DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
+DB = {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': os.getenv('DB_NAME', 'CIA_FBI_SUPER_HQ_DB'),
+    'USER': os.getenv('DB_USER', 'JackRyan'),
+    'PASSWORD': os.getenv('DB_PASS', 'p@ssword1'),
+    'HOST': 'localhost',
+    'PORT': '',
+}
+
+DATABASES['default'] = DB
+#if not DEBUG:
+# Set up database for Heroku
+    
 
 # Logging
 # https://chrxr.com/django-error-logging-configuration-heroku/
