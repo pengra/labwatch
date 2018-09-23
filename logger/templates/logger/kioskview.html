@@ -86,12 +86,32 @@
               </div>
             </form>
 
+            <div>
+              <ul id="results">
+              </ul>
+            </div>
           </div>
         `)
         const kioskTab = $('#kiosk' + kiosk.pk)
         kioskTab.find('input[name=name]')[0].value = kiosk.name
         kioskTab.find('input[name=poll_question]')[0].value = kiosk.poll_question
-        kioskTab.find('textarea[name=poll_choices]')[0].value = kiosk.tb_formatted_pollchoices
+        kioskTab.find('textarea[name=poll_choices]')[0].value = kiosk.tb_formatted_pollchoices;
+        if (kiosk.poll_question) {
+          kiosk.tb_formatted_pollchoices.split("\n").map(
+            (item) => {
+              fetch('{% url "logger:api:pollchoice-list" %}?choice=' + item)
+                .then((response) => {
+                  return response.json()
+                })
+                .then(data => data[0])
+                .then(data => {
+                  kioskTab.find('#results').append(`
+                    <li>` + data.choice_text + `: ` + data.votes + ` votes
+                  `)
+                })
+            }
+          )
+        }
       })
       
       $('#kiosk-tabs').append(
