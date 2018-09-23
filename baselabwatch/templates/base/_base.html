@@ -148,6 +148,13 @@
         {% endif %}
       </nav>
       <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+        
+        <div class="col-sm-12">
+          <div class="alert alert-info" role="alert">
+            LabWatch is moving to a new address: <a href="https://pengra.github.io/labwatch/" target="_blank">Info here</a>
+          </div>
+        </div>
+        
         {% if request.user.profile.school %}
           {% block content %}
             <h1>Content Unavailable</h1>
