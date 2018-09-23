@@ -69,6 +69,10 @@
 
 <body>
 
+  {% if request.user.is_authenticated %}
+    <script>location.href="/base/"</script>
+  {% endif %}
+
   <div class="container">
 
     <form class="form-signin" method="POST">
