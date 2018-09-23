@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 ]
 
 ROOT_URLCONF = 'labwatch.urls'
@@ -104,27 +105,6 @@ DATABASES['default'] = DB
 #if not DEBUG:
 # Set up database for Heroku
     
-
-# Logging
-# https://chrxr.com/django-error-logging-configuration-heroku/
-
-if not DEBUG:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-            },
-        },
-        'loggers': {
-            'django': {
-                'handlers': ['console'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR')
-            }
-        }
-    }
-
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -188,3 +168,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # 250MB - 214958080
 # 500MB - 429916160
 MAXUPLOADSIZE = 2621440
+
+# Emails
+ADMINS = MANAGERS = [('Norton', 'qwergram@localhost')]
+
