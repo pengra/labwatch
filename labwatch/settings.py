@@ -27,7 +27,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 IS_BETA = os.getenv('BETA', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
-    'library.pengra.io'
+    'library.pengra.io',
     '127.0.0.1',
 ]
 
