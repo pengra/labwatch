@@ -106,3 +106,5 @@ db.sqlite3
 
 # secrets
 secrets.sh
+
+.vscode/
