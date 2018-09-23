@@ -1,4 +1,4 @@
-# Sunsetting lab-watch
+# Migrating lab-watch
 // Written on **September 15th, 2018**
 
 Hello users of lab-watch. I thank you for continuing to use Lab-watch despite all its bugs. Unfortunately, as more and more students (and their sessions) are added to the database, the cost of running the app has become unsustainable for a mere college student. In fact, the past few months have been a net-loss. Because of this, I'm making the decision to host the app on my personal server.
