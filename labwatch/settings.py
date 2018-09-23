@@ -27,10 +27,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 IS_BETA = os.getenv('BETA', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
-    'labwatch.herokuapp.com',
-    'lab-watch-beta.herokuapp.com',
-    'lab-watch.herokuapp.com',
-    'labwatch2.herokuapp.com',
+    'library.pengra.io'
     '127.0.0.1',
 ]
 
