@@ -7,13 +7,13 @@
 {% block left_navigation %}
 <ul class="nav nav-pills flex-column">
   <li class="nav-item">
-    <a class="nav-link {% block school_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">{{request.user.profile.school.short_name}} Administration <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block school_active %}{% endblock %}" href="{% url 'baselabwatch:index' %}">{{request.user.profile.school.short_name}} Administration</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% block students_active %}{% endblock %}" href="{% url 'baselabwatch:student' %}">Student Administration <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block students_active %}{% endblock %}" href="{% url 'baselabwatch:student' %}">Student Administration</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% block profile_active %}{% endblock %}" href="{% url 'baselabwatch:profile' %}">Profile Administration <span class="badge badge-warning">Beta</span></a>
+    <a class="nav-link {% block profile_active %}{% endblock %}" href="{% url 'baselabwatch:profile' %}">Profile Administration</a>
   </li>
 </ul>
 {% endblock %}
