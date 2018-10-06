@@ -18,12 +18,12 @@
 		<!-- Header -->
 			<header id="header">
 				<h1>LabWatch</h1>
-				<p>A simple, cheap and opensource way for librarians to track library usage. 
+				<p>A simple, cheap and opensource way for librarians to track library usage. Currently in use by a few local high schools.
         <br/>
         {% if request.user.is_authenticated %}
         You're logged in. <a href="{% url 'baselabwatch:index' %}">Go to your dashboard</a>
         {% else %}
-        Already have an account? <a href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a></p>
+				Already have an account? <strong><a href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a></strong></p>
         {% endif %}
 			</header>
 
