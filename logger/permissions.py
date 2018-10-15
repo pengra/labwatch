@@ -11,9 +11,11 @@ class SessionPermission(BasePermission):
 
     def has_object_permission(self, request, view, session):
         "Only allow librarians to view/create and teachers and other associated accounts to view."
-        if request.method in SAFE_METHODS:
-            return session.student.school == request.user.profile.school
-        return session.student.school == request.user.profile.school and (request.user.profile.librarian or request.user.profile.engineer)
+        if request.user.is_authenticated:
+            if request.method in SAFE_METHODS:
+                return session.student.school == request.user.profile.school
+            return session.student.school == request.user.profile.school and (request.user.profile.librarian or request.user.profile.engineer)
+        return False
 
 
 class KioskPermission(BasePermission):
@@ -22,9 +24,11 @@ class KioskPermission(BasePermission):
     """
 
     def has_object_permission(self, request, view, kiosk):
-        if request.method in SAFE_METHODS:
-            return kiosk.school == request.user.profile.school
-        return kiosk.school == request.user.profile.school and (request.user.profile.librarian)
+        if request.user.is_authenticated:
+            if request.method in SAFE_METHODS:
+                return kiosk.school == request.user.profile.school
+            return kiosk.school == request.user.profile.school and (request.user.profile.librarian)
+        return False
 
 
 class ImageCardPermission(BasePermission):
@@ -33,4 +37,8 @@ class ImageCardPermission(BasePermission):
     """
 
     def has_object_permission(self, request, view, card):
-        return request.method in SAFE_METHODS or (card.school == request.user.profile.school and request.user.profile.librarian)
+        return (
+            request.user.is_authenticated and 
+            request.method in SAFE_METHODS or 
+            (card.school == request.user.profile.school and request.user.profile.librarian)
+        )
