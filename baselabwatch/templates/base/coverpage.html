@@ -23,17 +23,13 @@
         {% if request.user.is_authenticated %}
         You're logged in. <a href="{% url 'baselabwatch:index' %}">Go to your dashboard</a>
         {% else %}
-				Already have an account? <strong><a href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a></strong></p>
+				Already have an account? <strong><a href="{% url 'login' %}?next={% url 'baselabwatch:index' %}">Login</a></strong>
+				or <strong><a href="https://goo.gl/forms/lB7GIHb2za95jJUw2">Sign Up</a></strong>
+			  </p>
+
         {% endif %}
 			</header>
 
-		<!-- Signup Form -->
-			<form id="signup-form" method="post" action="#">
-				<input type="email" name="email" id="email" placeholder="Email Address" />
-        <input type="submit" value="Sign Up" />
-        <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="{{csrf_token}}" />
-      </form>
-      
 
 		<!-- Footer -->
 			<footer id="footer">
