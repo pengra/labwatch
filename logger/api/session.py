@@ -13,8 +13,11 @@ class StudentSessionViewSet(viewsets.ModelViewSet):
     permission_classes = (SessionPermission,)
     
     def get_queryset(self):
-        queryset = StudentSession.objects.filter(
-            student__school=self.request.user.profile.school)
+        if self.request.user.is_authenticated:
+            queryset = StudentSession.objects.filter(
+                student__school=self.request.user.profile.school)
+        else:
+            queryset = StudentSession.objects.none()
 
         # Dummy search because foreign key searches don't work
         search = self.request.query_params.get('search')
